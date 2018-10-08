@@ -46,7 +46,7 @@ class User_model extends CI_Model{
         
         //sending confirmEmail($receiver) function calling link to the user, inside message body
         $message = 'Dear User,<br><br> Please click on the below activation link to verify your email address<br><br>
-        <a href=\'http://localhost:8080/automated/Register/confirmEmail/'.md5($receiver).'\'>http://localhost:8080/automated/Register/confirmEmail/'. md5($receiver) .'</a><br><br>Thanks';
+        <a href=\'http://localhost:8080/draggableprototype/Register/confirmEmail/'.md5($receiver).'\'>http://localhost:8080/draggableprototype/Register/confirmEmail/'. md5($receiver) .'</a><br><br>Thanks';
         
         
         

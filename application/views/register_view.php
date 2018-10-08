@@ -3,7 +3,7 @@
 	<div class="container">
 			<div id="login-box" class="reg-box">
 				<div class="logo">
-					<img src="<?php echo base_url(); ?>assets/automated/img/login-image.jpg" class="img img-responsive img-circle center-block"/>
+					<img src="<?php echo base_url(); ?>assets/images/login-image.jpg" class="img img-responsive img-circle center-block"/>
 					<h1 class="logo-caption"><span class="tweak">R</span>egister</h1>
 					<br>
 				</div><!-- /.logo -->
