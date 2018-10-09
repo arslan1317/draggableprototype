@@ -309,10 +309,10 @@
 				<!-- About slider -->
 				<div class="col-md-6">
 					<div id="about-slider" class="owl-carousel owl-theme">
-						<img class="img-responsive" src="assets/images/about1.jpg" alt="">
-						<img class="img-responsive" src="assets/images/about2.jpg" alt="">
-						<img class="img-responsive" src="assets/images/about1.jpg" alt="">
-						<img class="img-responsive" src="assets/images/about2.jpg" alt="">
+						<img class="img-responsive height-420px" src="assets/images/newabout1.jpg" alt="">
+						<img class="img-responsive height-420px" src="assets/images/about2.jpg" alt="">
+						<img class="img-responsive height-420px" src="assets/images/about1.jpg" alt="">
+						<img class="img-responsive height-420px" src="assets/images/newabout4.jpg" alt="">
 					</div>
 				</div>
 				<!-- /About slider -->
@@ -412,7 +412,7 @@
 				<div class="col-sm-3">
 					<div class="team">
 						<div class="team-img">
-							<img class="img-responsive" src="assets/images/team1.jpg" alt="">
+                                                    <img class="img-responsive height-220px" src="assets/images/daniyal.jpg" alt="" width="100%">
 							<div class="overlay">
 								<div class="team-social">
 									<a href="#"><i class="fa fa-facebook"></i></a>
@@ -433,7 +433,7 @@
 				<div class="col-sm-3">
 					<div class="team">
 						<div class="team-img">
-							<img class="img-responsive" src="assets/images/team2.jpg" alt="">
+							<img class="img-responsive height-220px" src="assets/images/mirza.jpg" alt="" width="100%">
 							<div class="overlay">
 								<div class="team-social">
 									<a href="#"><i class="fa fa-facebook"></i></a>
@@ -454,7 +454,7 @@
 				<div class="col-sm-3">
 					<div class="team">
 						<div class="team-img">
-							<img class="img-responsive" src="assets/images/team3.jpg" alt="">
+                                                        <img class="img-responsive height-220px" src="assets/images/team1.jpg" alt="" width="100%">
 							<div class="overlay">
 								<div class="team-social">
 									<a href="#"><i class="fa fa-facebook"></i></a>
@@ -473,7 +473,7 @@
 				<div class="col-sm-3">
 					<div class="team">
 						<div class="team-img">
-							<img class="img-responsive" src="assets/images/team3.jpg" alt="">
+							<img class="img-responsive height-220px" src="assets/images/mohsin.jpg" alt="" width="100%">
 							<div class="overlay">
 								<div class="team-social">
 									<a href="#"><i class="fa fa-facebook"></i></a>

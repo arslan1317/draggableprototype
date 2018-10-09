@@ -3,7 +3,11 @@
 	<div class="container">
 			<div id="login-box">
 				<div class="logo">
-					<img src="<?php echo base_url(); ?>assets/images/login-image.jpg" class="img img-responsive img-circle center-block"/>
+					<div class="main-logo">
+						<a href="#">
+							<h2 id="index-logo" style="color:#6195FF; margin-bottom: 0px;border-bottom: 2px solid white;">D<span style="font-size: 20px; color:white">raggable</span> P<span style="font-size: 20px;color:white">rototype</span></h2>
+						</a>
+					</div>
 					<h1 class="logo-caption"><span class="tweak">L</span>ogin</h1>
 					<br>
 				</div><!-- /.logo -->
@@ -14,10 +18,10 @@
 				?>
 				
 				<div class="controls">
-					<input type="text" id="user-name" name="user-name" placeholder="Username" class="form-control" />
-					<input type="text" id="user-password" name="user-password" placeholder="Password" class="form-control" />
-					<input type="submit" id="btnLogIn" class="btn btn-default btn-block btn-custom" value="Login">
-					<input type="button" id="btnSignUp" class="btn btn-default btn-block btn-custom" value="Register?" onclick="location.href='<?php echo base_url()?>register';">
+					<input type="text" id="user-name" name="user-name" placeholder="Username" class="form-control login-btn-padding mb-1" />
+					<input type="text" id="user-password" name="user-password" placeholder="Password" class="form-control login-btn-padding mb-1" />
+					<input type="submit" id="btnLogIn" class="btn btn-default btn-block btn-custom main-btn width-48per" value="Login">
+					<input type="button" id="btnSignUp" class="btn btn-default btn-custom main-btn width-48per pull-right" value="Register?" onclick="location.href='<?php echo base_url()?>register';">
 				</div><!-- /.controls -->
 			</div><!-- /#login-box -->
 	</div><!-- /.container -->

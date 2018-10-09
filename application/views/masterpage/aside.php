@@ -5,10 +5,14 @@
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-menu" aria-controls="main-menu" aria-expanded="false" aria-label="Toggle navigation">
                     <i class="fa fa-bars"></i>
                 </button>
-                <a class="navbar-brand" href="./"><img src="<?php echo base_url(); ?>assets/images/automed_logo.png" alt="Logo" class="img-responsives"></a>
+                <div class="main-logo mt-4 mb-3">
+                    <a href="index.html">
+			<h2 id="index-logo" style="color:#6195FF; margin-bottom: 0px;border-bottom: 2px solid white;">D<span style="font-size: 20px; color:white">raggable</span> P<span style="font-size: 20px;color:white">rototype</span></h2>
+                    </a>
+                </div>
             </div>
 
-            <div id="main-menu" class="main-menu collapse navbar-collapse">
+            <div id="main-menu" class="main-menu collapse navbar-collapse no-padding">
                 <div id="wireframe-box" style="display: none">
                     <div class="panel-group" id="accordion">
                 <div class="panel panel-default">
@@ -83,35 +87,35 @@
                 </div>
             </div>
                 </div>
-                <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav aside-bar-padding">
                     <li class="active">
-                        <a href="<?php echo base_url();?>user"> <i class="menu-icon fa fa-dashboard"></i>Dashboard </a>
+                        <a href="<?php echo base_url();?>user">Dashboard </a>
                     </li>
-                    <h3 class="menu-title">Provided By You</h3>
+                    <h3 class="menu-title"><span class="tweak" style="font-size: 20px;">P</span>rovided <span class="tweak" style="font-size: 20px;">B</span>y <span class="tweak" style="font-size: 20px;">Y</span>ou</h3>
                     <li>
-                        <a href="<?php echo base_url();?>assign"> <i class="menu-icon fa fa-dashboard"></i>Assign </a>
-                    </li>
-                    <li>
-                        <a href="<?php echo base_url();?>task"> <i class="menu-icon fa fa-dashboard"></i>Task </a>
+                        <a href="<?php echo base_url();?>assign">Assign </a>
                     </li>
                     <li>
-                        <a href="<?php echo base_url();?>project"> <i class="menu-icon fa fa-dashboard"></i>Project </a>
-                    </li>
-                    <h3 class="menu-title">Assign To You</h3>
-                    <li>
-                        <a href="<?php echo base_url();?>notification"> <i class="menu-icon fa fa-dashboard"></i>Assigned Work </a>
+                        <a href="<?php echo base_url();?>task">Task </a>
                     </li>
                     <li>
-                        <a href="<?php echo base_url();?>notification/main_notifier"> <i class="menu-icon fa fa-dashboard"></i>Notification </a>
+                        <a href="<?php echo base_url();?>project">Project </a>
+                    </li>
+                    <h3 class="menu-title"><span class="tweak" style="font-size: 20px;">A</span>ssign <span class="tweak" style="font-size: 20px;">T</span>o <span class="tweak" style="font-size: 20px;">Y</span>ou</h3>
+                    <li>
+                        <a href="<?php echo base_url();?>notification">Assigned Work </a>
                     </li>
                     <li>
-                        <a href="<?php echo base_url();?>wireframes"> <i class="menu-icon fa fa-dashboard"></i>Wireframes </a>
+                        <a href="<?php echo base_url();?>notification/main_notifier">Notification </a>
                     </li>
                     <li>
-                        <a href="<?php echo base_url();?>mockups"> <i class="menu-icon fa fa-dashboard"></i>Mockups </a>
+                        <a href="<?php echo base_url();?>wireframes">Wireframes </a>
                     </li>
                     <li>
-                        <a href="<?php echo base_url();?>prototypes"> <i class="menu-icon fa fa-dashboard"></i>Prototype </a>
+                        <a href="<?php echo base_url();?>mockups">Mockups </a>
+                    </li>
+                    <li>
+                        <a href="<?php echo base_url();?>prototypes">Prototype </a>
                     </li>
                     <!-- <li class="menu-item-has-children dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-laptop"></i>Components</a>

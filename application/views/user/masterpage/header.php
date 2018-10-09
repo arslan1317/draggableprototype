@@ -11,6 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <title>Automated Prototyping</title>
 
     <!-- Bootstrap -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700%7CVarela+Round" rel="stylesheet">
     <link href="<?php echo base_url(); ?>assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="<?php echo base_url(); ?>assets/css/style.css" rel="stylesheet">
 

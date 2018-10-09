@@ -11,11 +11,11 @@
 
         <?php $this->view('masterpage/nav.php'); ?>
 
-        <div class="breadcrumbs">
+        <div class="breadcrumbs mt-10">
             <div class="col-sm-4">
                 <div class="page-header float-left">
                     <div class="page-title">
-                        <h1>Project</h1>
+                        <h1><span class="tweak">P</span>roject</h1>
                     </div>
                 </div>
             </div>
@@ -44,13 +44,13 @@
                 <div class="col-md-12">
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="projectName">Project Name</label>
+                            <label for="projectName" class="normal-bold">Project Name</label>
                             <input type="text" class="form-control" id="projectName" name="projectName">
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="projectType">Project Type</label>
+                            <label for="projectType" class="normal-bold">Project Type</label>
                             <select class="form-control" id="projectType" name="projectType">
                                 <option value="">--Select--</option>
                                 <option value="Music">Music</option>
@@ -61,19 +61,19 @@
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="projectStart">Project Start</label>
+                            <label for="projectStart" class="normal-bold">Project Start</label>
                             <input type="text" class="form-control" id="projectStart" name="projectStart">
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="projectEnd">Project End</label>
+                            <label for="projectEnd" class="normal-bold">Project End</label>
                             <input type="text" class="form-control" id="projectEnd" name="projectEnd">
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="projectDetails">Project Details</label>
+                            <label for="projectDetails" class="normal-bold">Project Details</label>
                             <textarea class="form-control" rows="1" id="projectDetails" name="projectDetails"></textarea>
                         </div>
                     </div>
@@ -90,7 +90,7 @@
             <div class="col-sm-4">
                 <div class="page-header float-left">
                     <div class="page-title">
-                        <h1>Project Details</h1>
+                        <h1><span class="tweak">P</span>roject <span class="tweak">D</span>etails</h1>
                     </div>
                 </div>
             </div>

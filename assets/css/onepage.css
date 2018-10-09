@@ -1305,6 +1305,9 @@ div#one-page-error {
     border: 2px solid #a94442;
 }
 
+.height-220px{height: 220px !important;}
+.height-420px{height: 420px !important;}
+
 @-webkit-keyframes preload {
 	0% {
 	   -webkit-transform:scale(0);

@@ -835,7 +835,6 @@ aside.left-panel {
   transition: width 0.3s ease; }
 
 .navbar {
-  background: #272c33;
   border-radius: 0;
   border: none;
   display: block;
@@ -970,11 +969,6 @@ aside.left-panel {
           max-height: 1000px;
           opacity: 1;
           position: static !important; }
-
-.navbar .navbar-nav > .active > a,
-.navbar .navbar-nav > .active > a:focus,
-.navbar .navbar-nav > .active > a:hover {
-  color: #d7d9e3 !important; }
 
 .navbar-nav li span.count {
   background: #a9d86e;
