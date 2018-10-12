@@ -78,7 +78,7 @@
                     <div class="user-area dropdown float-right">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span id="showUserName">Hi <?php echo $this->session->userdata('u_fname'); echo " " . $this->session->userdata('u_lname'); ?></span>
-                            <img 
+                            <img id="hideShowDropDown"
                             <?php
                                 if(!empty($this->session->userdata('path'))){
                                     echo 'src="'. $this->session->userdata('path') .'"';
@@ -86,7 +86,7 @@
                                     echo 'src="http://www.homeworkhelp.novelguide.com/sites/default/files/pictures/default/default_user_image.jpg"';
                                 }
                             ?>
-                            class="user-avatar rounded-circle" >
+                            class="user-avatar rounded-circle hideShowDropDown">
                             <!-- <img class="user-avatar rounded-circle" src="<?php echo base_url(); ?>assets/automated/img/admin.jpg" alt="User Avatar"> -->
                         </a>
 

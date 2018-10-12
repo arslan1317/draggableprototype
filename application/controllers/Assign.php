@@ -26,13 +26,11 @@ class Assign extends CI_Controller {
     }
 
 	public function index($data = NULL){
-		if(isset($_SESSION['u_id'])){
-			$data['assign_work'] = $this->Assign_model->get_assign_work();
-			$data['project_name'] = $this->Assign_model->get_project();
-			$this->load->view('assign_view', $data);
-        }else{
-            redirect('Login/index');
-        }
+            if(isset($_SESSION['u_id'])){
+		$this->load->view('assign_view');
+            }else{
+                redirect('Login/index');
+            }
 	}
 
 	public function get_user_data(){
@@ -48,40 +46,52 @@ class Assign extends CI_Controller {
 	}
 
 	public function add_assign(){
-		$this->form_validation->set_rules('user-email','User Email', 'trim|required');
-        $this->form_validation->set_rules('projectName','Project Name', 'trim|required');
-        $this->form_validation->set_rules('taskType','Task Type', 'trim|required');
-        $this->form_validation->set_rules('assignStart','Assign Date', 'trim|required');
-        $this->form_validation->set_rules('assignEnd', 'Assign End', 'trim|required');
-        $this->form_validation->set_rules('assignDetail', 'Assign Detail', 'trim|required');
-        if($this->form_validation->run() == false){
-        	$data['error'] = validation_errors();
-        	$this->index($data);
-        }else{
-        	if($this->Assign_model->check_project_task($this->input->post('projectName'), $this->input->post('taskType'))){
-	        	$assign = array(
-	        			'u_id' => $this->input->post('user-email-id'),
-	        			'p_id' => $this->input->post('projectName'),
-	        			't_id' => $this->input->post('taskType'),
-	        			'a_start' => $this->input->post('assignStart'),
-	        			'a_end' => $this->input->post('assignEnd'),
-	        			'a_by' => $this->session->userdata('u_id'),
-	        			'a_detail' => $this->input->post('assignDetail'),
-	        	);
-	        	if($this->Assign_model->add_assign($assign)){
-	        		$data['success'] = '<p>Assign Has Been Done</p>';
-	        		$this->index($data);
-	        	}else{
-	        		$data['error'] = '<p>Error, Please Contact You Administrator</p>';
-	        		$this->index($data);
-	        	}
-        	}else{
-        		$data['error'] = "<p>This Project And Task Has Already Assigned</p>";
-        		$this->index($data);
-        	}
-        }
+                $this->form_validation->set_rules('userEmailId','User Email', 'trim|required');
+                $this->form_validation->set_rules('projectName','Project Name', 'trim|required');
+                $this->form_validation->set_rules('taskType','Task Type', 'trim|required');
+                $this->form_validation->set_rules('projectStart','Assign Date', 'trim|required');
+                $this->form_validation->set_rules('projectEnd', 'Assign End', 'trim|required');
+                $this->form_validation->set_rules('assignDetail', 'Assign Detail', 'trim|required');
+                if($this->form_validation->run() == false){
+                    $data['message'] = validation_errors();
+                    $data['code'] = 1;
+                    echo json_encode($data);
+                }else{
+                    if($this->Assign_model->check_project_task($this->input->post('projectName'), $this->input->post('taskType'))){
+                        $assign = array(
+                            'u_id' => $this->input->post('userEmailId'),
+                            'p_id' => $this->input->post('projectName'),
+                            't_id' => $this->input->post('taskType'),
+                            'a_start' => $this->input->post('projectStart'),
+                            'a_end' => $this->input->post('projectEnd'),
+                            'a_by' => $this->session->userdata('u_id'),
+                            'a_detail' => $this->input->post('assignDetail'),
+                        );
+                        if($this->Assign_model->add_assign($assign)){
+                            $data['message'] = '<p>Assign Has Been Done</p>';
+                            $data['code'] = 2;
+                            echo json_encode($data);
+                        }else{
+                            $data['message'] = '<p>Error, Please Contact You Administrator</p>';
+                            $data['code'] = 3;
+                            echo json_encode($data);
+                        }
+                    }else{
+                        $data['message'] = '<p>Error, Please Contact You Administrator</p>';
+                        $data['code'] = 4;
+                        echo json_encode($data);
+                    }
+                }
 	}
-
+        
+        public function get_project_name_having_task(){
+            $data = $this->Assign_model->get_project_having_task();
+            echo json_encode($data);
+        }
+        public function get_all_task(){
+            $data['assign_work'] = $this->Assign_model->get_assign_work();
+            echo json_encode($data);
+        }
 	public function accept_notification($id){
 		$data = $this->Assign_model->accept_notification($id);
 		echo json_encode($data);

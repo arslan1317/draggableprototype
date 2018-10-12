@@ -1,7 +1,24 @@
 // $.noConflict();
 
 jQuery(document).ready(function($) {
-
+    $(document).click(function(e){
+        var targetId = $(e.target).attr('id');
+        console.log(targetId);
+        if((targetId == 'hideShowDropDown') || (targetId == 'showUserName')){
+            $('.user-menu').fadeIn();
+        }else{
+            $('.user-menu').fadeOut();
+        }
+    });
+    var bodyId = $('body').attr('id');
+    if(bodyId == "project-page"){
+        loadAllProjectsFromDatabase();
+    }else if(bodyId == 'task-page'){
+        loadAllTasksFromDatabase();
+    }else if(bodyId == 'assign-page'){
+        getProjectNameHavingTask();
+        getAllAssignWithDatabase();
+    }
 	"use strict";
 
 	[].slice.call( document.querySelectorAll( 'select.cs-select' ) ).forEach( function(el) {
@@ -208,7 +225,238 @@ jQuery(document).ready(function($) {
 			return false;
 		}
 	});
+        
+    //add project
+    $('#addProject').click(function(){
+       showPreloader();
+       var projectName = $('#projectName').val();
+       var projectType = $('#projectType').val();
+       var projectStart = $('#projectStart').val();
+       var projectEnd = $('#projectEnd').val();
+       var supervisor = $('#user-email-id').val();
+       var projectDetails = $('#projectDetails').val();
+       $.ajax({
+        url:baseURL+'project/add_project',
+        method: 'post',
+        type: 'post',
+        data: {projectName: projectName, projectType:projectType, projectStart:projectStart, projectEnd:projectEnd, supervisor:supervisor, projectDetails:projectDetails},
+        dataType: 'json',
+        success: function(response){
+            console.log(response);
+            if(response.code == 1){
+                //validation error
+                errorBox(response.message);
+            }else if(response.code == 2){
+                //successfully add
+                successBox(response.message);
+                emptyAllProjectFields();
+                loadAllProjectsFromDatabase();
+            }else{
+                //error in inserting
+                console.log('else');
+            }
+            hidePreloader();
+        }
+       });
+    });
+    
+    //add task
+    $('#addTask').click(function(){
+       showPreloader();
+       var projectName = $('#projectName').val();
+       var TaskType = $('#taskType').val();
+       var projectStart = $('#projectStart').val();
+       var projectEnd = $('#projectEnd').val();
+       var taskDetail = $('#taskDetail').val();
+       $.ajax({
+        url:baseURL+'task/add_task',
+        method: 'post',
+        type: 'post',
+        data: {projectName: projectName, TaskType:TaskType, projectStart:projectStart, projectEnd:projectEnd, taskDetail:taskDetail},
+        dataType: 'json',
+        success: function(response){
+            if(response.code == 1){
+                //validation error
+                errorBox(response.message);
+            }else if(response.code == 2){
+                //successfully add
+                successBox(response.message);
+                emptyAllTaskFields();
+                loadAllTasksFromDatabase();
+            }else{
+                //error in inserting
+                console.log('else');
+            }
+            hidePreloader();
+        }
+       });
+    });
+    
+    //add Assign
+    $('#addAssign').click(function(){
+       showPreloader();
+       var userEmailId = $('#user-email-id').val();
+       var projectName = $('#projectName').val();
+       var taskType = $('#taskType').val();
+       var projectStart = $('#projectStart').val();
+       var projectEnd = $('#projectEnd').val();
+       var assignDetail = $('#assignDetail').val();
+       $.ajax({
+        url:baseURL+'assign/add_assign',
+        method: 'post',
+        type: 'post',
+        data: {userEmailId: userEmailId, projectName:projectName, taskType:taskType, projectStart:projectStart, projectEnd:projectEnd, assignDetail:assignDetail},
+        dataType: 'json',
+        success: function(response){
+            console.log(response);
+            if(response.code == 1){
+                //validation error
+                errorBox(response.message);
+            }else if(response.code == 2){
+                //successfully add
+                successBox(response.message);
+            }else{
+                //error in inserting
+                console.log('else');
+            }
+            hidePreloader();
+        }
+       });
+    });
 });
+
+function errorBox(error){
+    $('#error-box').fadeIn();
+    $('#error-box').addClass('alert-danger');
+    $('#error-box').append(error);
+    setTimeout(fadeOutError, 3000);
+}
+
+function fadeOutError(){
+    $('#error-box').fadeOut();
+    $('#error-box').removeClass('alert-danger');
+    $('#error-box').html('');
+}
+
+function successBox(success){
+    $('#error-box').fadeIn();
+    $('#error-box').addClass('alert-success');
+    $('#error-box').append(success);
+    setTimeout(fadeOutSuccess, 3000);
+}
+
+function fadeOutSuccess(){
+    $('#error-box').fadeOut();
+    $('#error-box').removeClass('alert-success');
+    $('#error-box').html('');
+}
+
+function emptyAllProjectFields(){
+    $('#projectName').val('');
+    $('#projectType').val('');
+    $('#projectStart').val('');
+    $('#projectEnd').val('');
+    $('#user-email-id').val('');
+    $('#projectDetails').val('');
+    $('#user-email').val('');
+}
+
+function emptyAllTaskFields(){
+    $('#projectName').val('');
+    $('#taskType').val('');
+    $('#projectStart').val('');
+    $('#projectEnd').val('');
+    $('#taskDetail').val('');
+}
+function loadAllProjectsFromDatabase(){
+    $.ajax({
+        url:baseURL+'project/get_all_project',
+        dataType: 'json',
+        success: function(response){
+            for(var i = 0; i < response.length; i++){
+                $('#project-details-table-tbody').append('<tr><td>' + (i+1) +'</td><td>' + response[i]['p_id'] + '</td><td>'+response[i]['p_name']+'</td><td>'+response[i]['p_type']+'</td><td>'+response[i]['p_start']+'</td><td>'+response[i]['p_end']+'</td><td>'+response[i]['u_email']+'</td><td><span onclick="getProjectById('+response[i]['p_id']+')" class="tweak">View</span> | <span onclick="deleteProjectById('+response[i]['p_id']+')" class="tweak">Delete</span></td</tr>');
+            }
+            hidePreloader();
+        }
+    });
+}
+
+function loadAllTasksFromDatabase(){
+    $('#projectName').val('');
+    $('#task-details-table-tbody').html('');
+    $.ajax({
+        url:baseURL+'task/get_all_task',
+        dataType: 'json',
+        success: function(response){
+            console.log(response);
+            for(var i = 0; i < response['project_name'].length; i++){
+                $('#projectName').append('<option value="'+response['project_name'][i].p_id+'">'+response['project_name'][i].p_name+'</option>')
+            }
+            for(var i = 0; i < response['task_data'].length; i++){
+                var taskType = response['task_data'][i]['t_type'];
+                var taskName = '';
+                if(taskType == 1){
+                    taskName = 'Wireframe';
+                }else if(taskType == 2){
+                    taskName = 'Mockup';
+                }else{
+                    taskName = 'Prototype';
+                }
+                $('#task-details-table-tbody').append('<tr><td>' + (i+1) +'</td><td>' + response['task_data'][i]['t_id'] + '</td><td>'+response['task_data'][i]['p_name']+'</td><td>'+taskName+'</td><td>'+response['task_data'][i]['t_start']+'</td><td>'+response['task_data'][i]['t_end']+'</td><td><span onclick="getProjectById('+response['task_data'][i]['t_id']+')" class="tweak">View</span> | <span onclick="deleteProjectById('+response['task_data'][i]['t_id']+')" class="tweak">Delete</span></td</tr>');
+            }
+            hidePreloader();
+        }
+    });
+}
+
+function getProjectNameHavingTask(){
+    $('#projectName').val('');
+    $.ajax({
+        url:baseURL+'assign/get_project_name_having_task',
+        dataType: 'json',
+        success: function(response){
+            for(var i = 0; i < response.length; i++){
+                $('#projectName').append('<option value="'+response[i].p_id+'">'+response[i].p_name+'</option>')
+            }
+        }
+    });
+}
+
+function getAllAssignWithDatabase(){
+    $('#assign-details-table-tbody').html('');
+    $.ajax({
+        url:baseURL+'assign/get_all_task',
+        dataType: 'json',
+        success: function(response){
+            for(var i = 0; i < response['assign_work'].length; i++){
+                var taskType = response['assign_work'][i]['t_type'];
+                var status = response['assign_work'][i]['a_status'];
+                var taskName = '';
+                var statusName = '';
+                if(taskType == 1){
+                    taskName = 'Wireframe';
+                }else if(taskType == 2){
+                    taskName = 'Mockup';
+                }else{
+                    taskName = 'Prototype';
+                }
+                if(status == 0){
+                    statusName = "Pending";
+                }else if(status == 1){
+                    statusName = "Accepted";
+                }else{
+                    statusName = "Rejected"
+                }
+                $('#assign-details-table-tbody').append('<tr><td>' + (i+1) +'</td><td>' + response['assign_work'][i]['u_email'] + '</td><td>'+response['assign_work'][i]['p_name']+'</td><td>'+taskName+'</td><td>'+response['assign_work'][i]['a_start']+'</td><td>'+response['assign_work'][i]['a_end']+'</td><td>'+statusName+'</td><td><span onclick="getProjectById('+response['assign_work'][i]['t_id']+')" class="tweak">View</span> | <span onclick="deleteProjectById('+response['assign_work'][i]['t_id']+')" class="tweak">Delete</span></td</tr>');
+            }
+            hidePreloader();
+            hidePreloader();
+        }
+    });
+}
+function getProjectById(id){
+    
+}
 	function printUserEmail(e, id){
 		$('#user-email-id').attr('value', id);
 		$('#user-email').val(e.getElementsByTagName("p")[0].innerHTML);
@@ -294,6 +542,7 @@ jQuery(document).ready(function($) {
 			type: 'post',
      		dataType: 'json',
 			success: function(response){
+                            console.log(response);
 				if(response.length > 0){
 					var seen = 0;
 					$('#dropdown-notification p.red').text("You Have " + response.length + " Notification");
@@ -429,7 +678,6 @@ jQuery(document).ready(function($) {
      				$('#message-count').text('0');
      				$('#message-dropdown-notification p.red').text("You Have No Notification");
      			}
-     			console.log(response);
      		}
 		});
 	}

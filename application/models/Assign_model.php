@@ -87,5 +87,15 @@ class Assign_model extends CI_Model{
         $this->db->update('assigns');
         return true;
     }
+    
+    public function get_project_having_task(){
+        $this->db->select('*');
+        $this->db->from('projects');
+        $this->db->join('tasks', 'projects.p_id = tasks.p_id');
+        $this->db->where('projects.u_id', $this->session->userdata('u_id'));
+        $this->db->group_by('projects.u_id'); 
+        $query = $this->db->get();
+        return $query->result();
+    }
 }
 ?>

@@ -1,5 +1,5 @@
 <?php $this->view('masterpage/header.php'); ?>
-<body>
+<body id="assign-page">
 <?php $this->view('masterpage/aside.php'); ?>
         <!-- Left Panel -->
 
@@ -11,40 +11,30 @@
 
         <?php $this->view('masterpage/nav.php'); ?>
 
-        <div class="breadcrumbs">
-            <div class="col-sm-4">
+        <div class="breadcrumbs mt-10">
+            <div class="col-sm-4 blue-border-left">
                 <div class="page-header float-left">
                     <div class="page-title">
-                        <h1>Assign To User</h1>
+                        <h1><span class="tweak">A</span>ssign <span class="tweak">T</span>o <span class="tweak">U</span>ser</h1>
                     </div>
                 </div>
             </div>
             <div class="col-sm-8">
                 <div class="float-right">
-                    <?php
-                        if(!empty($error)){
-                            echo'<div class="alert alert-danger text-center login-alert required-error">
-                                    <p>'. $error .'</p>
-                                </div>';
-                        }
-                    ?>
-                    <?php
-                        if(!empty($success)){
-                            echo'<div class="alert alert-success text-center login-alert required-error">
-                                    <p>'. $success .'</p>
-                                </div>';
-                        }
-                    ?>
+                    <div class="alert text-center mt-1 mb-1" style="display: none" id="error-box">
+                        
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="content mt-3">
-            <?php echo form_open_multipart('assign/add_assign');?>
+            <div class="upper-form-box">
+                <!--assign/add_assign-->
                 <div class="col-md-12">
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="user-email">User Email</label>
+                            <label for="user-email" class="normal-bold">User Email</label>
                             <input type="text" class="form-control" id="user-email" name="user-email">
                             <input type="hidden" name="user-email-id" id="user-email-id">
                             <div class="user-email-show" id="user-email-show" style="display: none;">
@@ -54,20 +44,15 @@
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="projectName">Project Name</label>
+                            <label for="projectName" class="normal-bold">Project Name</label>
                              <select class="form-control" id="projectName" name="projectName">
                                 <option value="">--Select--</option>
-                                <?php if(!empty($project_name)): ?>
-                                    <?php foreach($project_name as $item){?>
-                                        <option value="<?php echo $item->p_id; ?>"><?php echo $item->p_name; ?></option>
-                                    <?php }?>
-                                <?php endif; ?>
                               </select>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="taskType">Task</label>
+                            <label for="taskType" class="normal-bold">Task</label>
                             <select class="form-control" id="taskType" name="taskType">
                                 <option value="">--Select--</option>
                             </select>
@@ -75,35 +60,35 @@
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="assignStart">Assign Date Start</label>
+                            <label for="assignStart" class="normal-bold">Assign Date Start</label>
                             <input type="text" class="form-control" id="projectStart" name="assignStart">
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="assignEnd">Assign Date End</label>
+                            <label for="assignEnd" class="normal-bold">Assign Date End</label>
                             <input type="text" class="form-control" id="projectEnd" name="assignEnd">
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="assignDetail">Assign Details</label>
+                            <label for="assignDetail" class="normal-bold">Assign Details</label>
                             <textarea class="form-control" rows="1" id="assignDetail" name="assignDetail"></textarea>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <input type="submit" class="form-control btn-custom" id="addAssign" value="Add">
+                            <input type="submit" class="form-control btn-custom" id="addAssign" value="Add" name="add-assign">
                         </div>
                     </div>
                 </div>
-            </form>
+            </div>
         </div> <!-- .content -->
         <div class="breadcrumbs details-view">
-            <div class="col-sm-4">
+            <div class="col-sm-4 blue-border-left">
                 <div class="page-header float-left">
                     <div class="page-title">
-                        <h1>Assign Details</h1>
+                        <h1><span class="tweak">A</span>ssign <span class="tweak">D</span>etails</h1>
                     </div>
                 </div>
             </div>
@@ -123,45 +108,8 @@
                             <th>ACTION</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <?php if(!empty($assign_work)): ?>
-                            <?php $i = 0; ?>
-                            <?php foreach($assign_work as $item){?>
-                                <tr>
-                                    <td><?php echo ($i+1); ?></td>
-                                    <td><?php echo $item->u_email; ?></td>
-                                    <td><?php echo $item->p_name; ?></td>
-                                    <td>
-                                        <?php 
-                                            if($item->t_type == 1){
-                                                echo "Wireframe";
-                                            }else if($item->t_type == 2){
-                                                echo "Mockup";
-                                            }else{
-                                                echo "Prototype";
-                                            }
-                                        ?>        
-                                    </td>
-                                    <td><?php echo $item->a_start; ?></td>
-                                    <td><?php echo $item->a_end; ?></td>
-                                    <td>
-                                        <?php 
-                                            if($item->a_status == 0){
-                                                echo "Pending";
-                                            }else{
-                                                echo "Prototype";
-                                            }
-                                        ?>    
-                                    </td>
-                                    <td><span>View</span> | <span>Delete</span></td>
-                                </tr>
-                                <?php $i++; ?>
-                            <?php }?>
-                            <?php else: ?>
-                                <tr>
-                                    <td colspan="8"><hr><h3>NO ASSIGN WORK FOUND<h3><hr></td>
-                                </tr>
-                        <?php endif; ?>
+                    <tbody id="assign-details-table-tbody">
+                        
                     </tbody>
                 </table>
             </div>

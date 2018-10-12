@@ -17,7 +17,9 @@ class Project_model extends CI_Model{
     public function get_all_project(){
         $this->db->select("*"); 
         $this->db->from('projects');
-        $this->db->where('u_id', $this->session->userdata('u_id'));
+        $this->db->join('users', 'users.u_id = projects.s_id');
+        $this->db->where('projects.u_id', $this->session->userdata('u_id'));
+        $this->db->where('users.status', 1);
         $query = $this->db->get();
         return $query->result();
     }

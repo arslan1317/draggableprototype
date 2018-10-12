@@ -25,40 +25,47 @@ class Task extends CI_Controller {
         $this->load->model('Task_model');
     }
 
-    public function index($data = NULL){
-		if(isset($_SESSION['u_id'])){
-			$data['task_data'] = $this->Task_model->get_all_task();
-			$data['project_name'] = $this->Task_model->get_project();
-			$this->load->view('task_view', $data);
-        }else{
-            redirect('Login/index');
-        }
+        public function index($data = NULL){
+            if(isset($_SESSION['u_id'])){
+		$this->load->view('task_view');
+            }else{
+                redirect('Login/index');
+            }
 	}
 
 	public function add_task(){
-		$this->form_validation->set_rules('projectName','Project Name', 'trim|required');
-        $this->form_validation->set_rules('taskType','Task Type', 'trim|required');
-        $this->form_validation->set_rules('taskStart','Task Start', 'trim|required');
-        $this->form_validation->set_rules('taskEnd','Task End', 'trim|required');
-        $this->form_validation->set_rules('taskDetail', 'Task Details', 'trim|required');
-        if($this->form_validation->run() == false){
-        	$data['error'] = validation_errors();
-        	$this->index($data);
-        }else{
-        	$task = array(
-        			't_type' => $this->input->post('taskType'),
-        			't_start' => $this->input->post('taskStart'),
-        			't_end' => $this->input->post('taskEnd'),
-        			't_detail' => $this->input->post('taskDetail'),
-        			'p_id' => $this->input->post('projectName'),
-        	);
-        	if($this->Task_model->add_task($task)){
-        		$data['success'] = '<p>Task Has Been Added</p>';
-        		$this->index($data);
-        	}else{
-        		$data['error'] = '<p>Error, Please Contact You Administrator</p>';
-        		$this->index($data);
-        	}
-        }
+                $this->form_validation->set_rules('projectName','Project Name', 'trim|required');
+                $this->form_validation->set_rules('TaskType','Task Type', 'trim|required');
+                $this->form_validation->set_rules('projectStart','Task Start', 'trim|required');
+                $this->form_validation->set_rules('projectEnd','Task End', 'trim|required');
+                $this->form_validation->set_rules('taskDetail', 'Task Details', 'trim|required');
+                if($this->form_validation->run() == false){
+                    $data['message'] = validation_errors();
+                    $data['code'] = 1;
+                    echo json_encode($data);
+                }else{
+                    $task = array(
+                        't_type' => $this->input->post('TaskType'),
+                        't_start' => $this->input->post('projectStart'),
+                        't_end' => $this->input->post('projectEnd'),
+                        't_detail' => $this->input->post('taskDetail'),
+                        'p_id' => $this->input->post('projectName'),
+                    );
+                    if($this->Task_model->add_task($task)){
+                        $data['message'] = '<p>Project Has Been Added</p>';
+                        $data['code'] = 2;
+                        echo json_encode($data);
+                    }else{
+                        $data['error'] = '<p>Error, Please Contact You Administrator</p>';
+                        $data['code'] = 3;
+                        echo json_encode($data);
+                    }
+                }
 	}
+        
+        public function get_all_task(){
+            $data['task_data'] = $this->Task_model->get_all_task();
+            $data['project_name'] = $this->Task_model->get_project();
+            echo json_encode($data);
+        }
 }
