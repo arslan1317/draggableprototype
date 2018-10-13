@@ -19,6 +19,51 @@ jQuery(document).ready(function($) {
         getProjectNameHavingTask();
         getAllAssignWithDatabase();
     }
+    // Written by Arslan
+    $('#updateName').click(function(){
+      var firstName = $('#f-name').val();
+      var lastName = $('#l-name').val();
+      $.ajax({
+        url:baseURL+'setting/changeName',
+        method: 'post',
+        type: 'post',
+          data: {firstName: firstName, lastName: lastName},
+          dataType: 'json',
+        success: function(response){
+          console.log(response);
+          if(response['code'] == 1){
+            errorBox(response['message']);
+          }else if(response['code'] == 2){
+            successBox(response['message']);
+          }
+         }
+        }); 
+      
+    });
+
+    $('#updatePassword').click(function(){
+      var currpass = $('#current-pass').val();
+      var newpass = $('#new-password').val();
+      var confpass = $('#con-password').val();
+      $.ajax({
+        url:baseURL+'setting/changePassword',
+        method: 'post',
+        type: 'post',
+          data: {currpass: currpass, newpass: newpass, confpass:confpass},
+          dataType: 'json',
+        success: function(response){
+          console.log(response);
+          if(response['code'] == 1){
+            errorBox(response['message']);
+          }else if(response['code'] == 2){
+            successBox(response['message']);
+            emptyChangePassword();
+          }else if(response['code'] == 3){
+            errorBox(response['message']);
+          }
+         }
+        });
+    });
 	"use strict";
 
 	[].slice.call( document.querySelectorAll( 'select.cs-select' ) ).forEach( function(el) {
@@ -368,6 +413,13 @@ function emptyAllTaskFields(){
     $('#projectEnd').val('');
     $('#taskDetail').val('');
 }
+
+function emptyChangePassword(){
+  $('#current-pass').val('');
+  $('#new-password').val('');
+  $('#confirm-password').val('');
+}
+
 function loadAllProjectsFromDatabase(){
     $.ajax({
         url:baseURL+'project/get_all_project',

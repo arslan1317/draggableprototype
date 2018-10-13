@@ -85,24 +85,49 @@ class Setting extends CI_Controller {
 	// }
 
 	public function changeName(){
-		$this->form_validation->set_rules('f-name','First Name', 'trim|required');
-        $this->form_validation->set_rules('l-name','Last Name', 'trim|required');
+		$this->form_validation->set_rules('firstName','First Name', 'trim|required');
+        $this->form_validation->set_rules('lastName','Last Name', 'trim|required');
         if ($this->form_validation->run() == FALSE)
         {
-        	$data['changeName'] = validation_errors();
-        	$this->index($data);
-			// $this->load->view('setting_view', $data);
+        	$data['message'] = validation_errors();
+        	$data['code'] = 1;
+        	echo json_encode($data);
 		}
 		else
 		{
-			$first_name = $this->input->post('f-name');
-			$last_name = $this->input->post('l-name');
+			$first_name = $this->input->post('firstName');
+			$last_name = $this->input->post('lastName');
 			$this->User_model->updateName($first_name, $last_name);
-			$data['changeName'] = 'Successfully Updated';
-			$this->load->view('setting_view', $data);
+			$data['message'] = 'Successfully Updated';
+			$data['code'] = 2;
+			echo json_encode($data);
+			// $this->load->view('setting_view', $data);
 		}
 	}
+	// Done By Arslan
 	public function changePassword(){
+		$this->form_validation->set_rules('currpass', 'Current password', 'trim|required');
+		$this->form_validation->set_rules('newpass', 'New password', 'trim|required');
+		$this->form_validation->set_rules('confpass', 'Confirm password', 'trim|required|matches[newpass]');
 
+		if($this->form_validation->run() == FALSE){
+			$data['message'] = validation_errors();
+			$data['code'] = 1;
+			echo json_encode($data);
+		}
+		else{
+			$old_password = $this->input->post('currpass');
+			$new_password = $this->input->post('newpass');
+			$result = $this->User_model->updatePass($old_password, $new_password);
+			if($result == 1){
+				$data['message'] = 'Successfully Updated';
+				$data['code'] = 2;
+				echo json_encode($data);
+			}else{
+				$data['message'] = 'Invalid Password';
+				$data['code'] = 3;
+				echo json_encode($data);
+			}
+		}
 	}
 }

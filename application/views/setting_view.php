@@ -34,7 +34,8 @@
                         </div>
                         <div class="col-sm-8">
                             <div class="float-right">
-                                <div class="alert alert-danger text-center error-alert" style="display: none">
+                                <div class="alert text-center mt-1 mb-1" style="display: none" id="error-box">
+                                    
                                 </div>
                             </div>
                         </div>
@@ -80,20 +81,15 @@
                         </div>
                         <div class="col-sm-8">
                             <div class="float-right">
-                                <?php 
-                                    if(!empty($changeName)){
-                                        echo '<div class="alert alert-danger text-center login-alert required-error">'. $changeName . '</div>';
-                                       
-                                    }
-                                ?>
-                                </div>
+                               
+                            </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-md-12">
-                    <?php echo form_open('setting/changeName'); ?>
+                   <!-- <?php echo form_open('setting/changeName'); ?> -->
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label for="f-name">First Name</label>
@@ -117,7 +113,7 @@
                                 <input type="submit" class="form-control btn-custom" id="updateName" value="Update">
                             </div>
                         </div>
-                    </form>
+                  <!--  </form> -->
                 </div>
             </div>
 
@@ -133,9 +129,7 @@
                         </div>
                         <div class="col-sm-8">
                             <div class="float-right">
-                                <div class="alert alert-danger text-center login-alert required-error">
-                                    <p>All Fields are Required</p>
-                                </div>
+                                
                             </div>
                         </div>
                     </div>
@@ -162,7 +156,7 @@
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <input type="button" class="form-control btn-custom" id="updateName" value="Update">
+                            <input type="button" class="form-control btn-custom" id="updatePassword" value="Update">
                         </div>
                     </div>
                 </div>

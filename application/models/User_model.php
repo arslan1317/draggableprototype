@@ -114,6 +114,24 @@ class User_model extends CI_Model{
         $this->session->set_userdata('u_fname', $first_name);
         $this->session->set_userdata('u_lname', $last_name);
     }
+    // Done by Mirza
+        function updatePass($old_password, $new_password){
+        $id = $this->session->userdata('u_id');
+        $this->db->select('*');
+        $this->db->from('users');
+        $this->db->where('u_pass', md5($old_password));
+        $this->db->where('u_id', $id);
+        $query = $this->db->get();
+        if($query->num_rows() > 0){
+            $this->db->set('u_pass', md5($new_password));
+            $this->db->where('u_id', $id);
+            $this->db->update('users');
+            return true;
+        }else{
+            return false;
+        }
+
+    }
 
     public function get_detail_project_notification(){
         $this->db->select('*');
