@@ -97,5 +97,17 @@ class Assign_model extends CI_Model{
         $query = $this->db->get();
         return $query->result();
     }
+    
+    public function get_assign_by_id($id){
+        $this->db->select('*')
+                ->from('assigns')
+                ->join('users', 'users.u_id = assigns.u_id')
+                ->join('projects', 'projects.p_id = assigns.p_id')
+                ->join('tasks', 'tasks.t_id =assigns.t_id')
+                ->where('assigns.a_by', $this->session->userdata('u_id'))
+                ->where('assigns.a_id', $id);
+        $query = $this->db->get();
+        return $query->result();
+    }
 }
 ?>

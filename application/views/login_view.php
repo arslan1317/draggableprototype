@@ -11,7 +11,7 @@
 					<h1 class="logo-caption"><span class="tweak">L</span>ogin</h1>
 					<br>
 				</div><!-- /.logo -->
-				<div class="alert alert-danger text-center login-alert text-bold" style="display: none" id="loginErrorCustom"></div>
+				<div class="alert alert-danger text-center login-alert text-bold mb-1" style="display: none" id="loginErrorCustom"></div>
 				<?php if(!empty($this->session->flashdata('verify'))){
 						echo $this->session->flashdata('verify');
 					} 
@@ -19,7 +19,7 @@
 				
 				<div class="controls">
 					<input type="text" id="user-name" name="user-name" placeholder="Username" class="form-control login-btn-padding mb-1" />
-					<input type="text" id="user-password" name="user-password" placeholder="Password" class="form-control login-btn-padding mb-1" />
+                                        <div class="password-box"><input type="password" id="user-password" name="user-password" placeholder="Password" class="form-control login-btn-padding mb-1" /><span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password upper-eye"></span></i></div>
 					<input type="submit" id="btnLogIn" class="btn btn-default btn-block btn-custom main-btn width-48per" value="Login">
 					<input type="button" id="btnSignUp" class="btn btn-default btn-custom main-btn width-48per pull-right" value="Register?" onclick="location.href='<?php echo base_url()?>register';">
 				</div><!-- /.controls -->

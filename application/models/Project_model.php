@@ -23,6 +23,16 @@ class Project_model extends CI_Model{
         $query = $this->db->get();
         return $query->result();
     }
-
+    
+    public function get_project_by_id($id){
+        $this->db->select("*"); 
+        $this->db->from('projects');
+        $this->db->join('users', 'users.u_id = projects.s_id');
+        $this->db->where('projects.u_id', $this->session->userdata('u_id'));
+        $this->db->where('users.status', 1);
+        $this->db->where('projects.p_id', $id);
+        $query = $this->db->get();
+        return $query->result();
+    }
 }
 ?>

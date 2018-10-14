@@ -1,9 +1,10 @@
 // $.noConflict();
-
+var GLOBALREQUEST;
 jQuery(document).ready(function($) {
+    GLOBALREQUEST = new Array();
     $(document).click(function(e){
         var targetId = $(e.target).attr('id');
-        console.log(targetId);
+        
         if((targetId == 'hideShowDropDown') || (targetId == 'showUserName')){
             $('.user-menu').fadeIn();
         }else{
@@ -30,7 +31,7 @@ jQuery(document).ready(function($) {
           data: {firstName: firstName, lastName: lastName},
           dataType: 'json',
         success: function(response){
-          console.log(response);
+         
           if(response['code'] == 1){
             errorBox(response['message']);
           }else if(response['code'] == 2){
@@ -52,7 +53,7 @@ jQuery(document).ready(function($) {
           data: {currpass: currpass, newpass: newpass, confpass:confpass},
           dataType: 'json',
         success: function(response){
-          console.log(response);
+         
           if(response['code'] == 1){
             errorBox(response['message']);
           }else if(response['code'] == 2){
@@ -64,6 +65,16 @@ jQuery(document).ready(function($) {
          }
         });
     });
+    
+  $(".toggle-password").click(function() {
+  $(this).toggleClass("fa-eye fa-eye-slash");
+  var input = $('#user-password');
+  if (input.attr("type") == "password") {
+    input.attr("type", "text");
+  } else {
+    input.attr("type", "password");
+  }
+});
 	"use strict";
 
 	[].slice.call( document.querySelectorAll( 'select.cs-select' ) ).forEach( function(el) {
@@ -75,6 +86,7 @@ jQuery(document).ready(function($) {
 	checkNotificationOfProjectAssign();
 	checkAcceptOrDeclineOfUser();
 	// checkSeenOfProjectAssign();
+        checkSupervisorAssignProject(); //project supervisor assigned
 
 	$('#btnLogIn').click(function(){
     showPreloader();
@@ -89,7 +101,7 @@ jQuery(document).ready(function($) {
      data: {email: email, password:password},
      dataType: 'json',
      success: function(response){
-      console.log(response);
+     
       if(response.code == 1){//validation error
         $('#loginErrorCustom').fadeIn('slow');
         $('#loginErrorCustom').append(response.message);
@@ -120,7 +132,7 @@ jQuery(document).ready(function($) {
      }
    });
   });
-
+  
 	$('#btnRegister').click(function(){
     showPreloader();
     $('#signUpError').html("");
@@ -137,7 +149,7 @@ jQuery(document).ready(function($) {
      data: {firstName: firstName, lastName:lastName, email:email, pass:pass, conPass:conPass},
      dataType: 'json',
      success: function(response){
-      console.log(response);
+      
       if(response.code == 1){//validation error
        $('#signUpError').fadeIn('slow');
        $('#signUpError').append(response.message);
@@ -229,7 +241,7 @@ jQuery(document).ready(function($) {
 							}
 							$('#user-email-show').append('<div class="main-user-email clearfix" onclick="printUserEmail(this, '+ response[i]['u_id'] +')"><img src="'+ srcImage +'" class="user-avatar email-image"><span>'+ response[i]['u_fname'] +' '+ response[i]['u_lname']+'</span><p>'+ response[i]['u_email'] + '</p></div>');
 						}
-						console.log(response);
+						
 					}
      			}
    			});	
@@ -244,7 +256,7 @@ jQuery(document).ready(function($) {
      		data: {value: value},
      		dataType: 'json',
 			success: function(response){
-				console.log(response);
+				
 				if(response.length > 0){
 					for(var i = 0; i < response.length; i++){	
 						var taskChecker = response[i]['t_type'];
@@ -287,7 +299,7 @@ jQuery(document).ready(function($) {
         data: {projectName: projectName, projectType:projectType, projectStart:projectStart, projectEnd:projectEnd, supervisor:supervisor, projectDetails:projectDetails},
         dataType: 'json',
         success: function(response){
-            console.log(response);
+          
             if(response.code == 1){
                 //validation error
                 errorBox(response.message);
@@ -368,6 +380,7 @@ jQuery(document).ready(function($) {
         }
        });
     });
+
 });
 
 function errorBox(error){
@@ -419,15 +432,35 @@ function emptyChangePassword(){
   $('#new-password').val('');
   $('#confirm-password').val('');
 }
+function checkSupervisorAssignProject(){
+   $.ajax({
+        url:baseURL+'supervisor/check_supervisor_assign',
+        dataType: 'json',
+        success: function(response){
+          if(response.length > 0){
+            for(var i = 0; i < response.length; i++){
+              GLOBALREQUEST.push({'project_id' : response[i]['p_id'], 'project_name' : response[i]['p_name'], 'first_name' : response[i]['u_fname'], 'last_name' : response[i]['u_lname'], 'time_span' : response[i]['timespan']});
+            }
+          }
+            console.log(GLOBALREQUEST);
+            hidePreloader();
+        }
+    });
+}
 
 function loadAllProjectsFromDatabase(){
+  $('#project-details-table-tbody').html('');
     $.ajax({
         url:baseURL+'project/get_all_project',
         dataType: 'json',
         success: function(response){
+          if(response.length > 0){
             for(var i = 0; i < response.length; i++){
-                $('#project-details-table-tbody').append('<tr><td>' + (i+1) +'</td><td>' + response[i]['p_id'] + '</td><td>'+response[i]['p_name']+'</td><td>'+response[i]['p_type']+'</td><td>'+response[i]['p_start']+'</td><td>'+response[i]['p_end']+'</td><td>'+response[i]['u_email']+'</td><td><span onclick="getProjectById('+response[i]['p_id']+')" class="tweak">View</span> | <span onclick="deleteProjectById('+response[i]['p_id']+')" class="tweak">Delete</span></td</tr>');
+                $('#project-details-table-tbody').append('<tr><td>' + (i+1) +'</td><td>' + response[i]['p_id'] + '</td><td>'+response[i]['p_name']+'</td><td>'+response[i]['p_type']+'</td><td>'+response[i]['p_start']+'</td><td>'+response[i]['p_end']+'</td><td>'+response[i]['u_email']+'</td><td><span onclick="getProjectById('+response[i]['p_id']+')" class="tweak pointer">View</span> | <span onclick="deleteProjectById('+response[i]['p_id']+')" class="tweak pointer">Delete</span></td</tr>');
             }
+          }else{
+              $('#project-details-table-tbody').append('<tr><td><h3 class="mt-1 mb-1"><span class="tweak">N</span>o <span class="tweak">R</span>ecord <span class="tweak">F</span>ound</h3></td</tr>');
+          }
             hidePreloader();
         }
     });
@@ -440,21 +473,25 @@ function loadAllTasksFromDatabase(){
         url:baseURL+'task/get_all_task',
         dataType: 'json',
         success: function(response){
-            console.log(response);
+            
             for(var i = 0; i < response['project_name'].length; i++){
                 $('#projectName').append('<option value="'+response['project_name'][i].p_id+'">'+response['project_name'][i].p_name+'</option>')
             }
-            for(var i = 0; i < response['task_data'].length; i++){
-                var taskType = response['task_data'][i]['t_type'];
-                var taskName = '';
-                if(taskType == 1){
-                    taskName = 'Wireframe';
-                }else if(taskType == 2){
-                    taskName = 'Mockup';
-                }else{
-                    taskName = 'Prototype';
-                }
-                $('#task-details-table-tbody').append('<tr><td>' + (i+1) +'</td><td>' + response['task_data'][i]['t_id'] + '</td><td>'+response['task_data'][i]['p_name']+'</td><td>'+taskName+'</td><td>'+response['task_data'][i]['t_start']+'</td><td>'+response['task_data'][i]['t_end']+'</td><td><span onclick="getProjectById('+response['task_data'][i]['t_id']+')" class="tweak">View</span> | <span onclick="deleteProjectById('+response['task_data'][i]['t_id']+')" class="tweak">Delete</span></td</tr>');
+            if(response['task_data'].length > 0){
+              for(var i = 0; i < response['task_data'].length; i++){
+                  var taskType = response['task_data'][i]['t_type'];
+                  var taskName = '';
+                  if(taskType == 1){
+                      taskName = 'Wireframe';
+                  }else if(taskType == 2){
+                      taskName = 'Mockup';
+                  }else{
+                      taskName = 'Prototype';
+                  }
+                  $('#task-details-table-tbody').append('<tr><td>' + (i+1) +'</td><td>' + response['task_data'][i]['t_id'] + '</td><td>'+response['task_data'][i]['p_name']+'</td><td>'+taskName+'</td><td>'+response['task_data'][i]['t_start']+'</td><td>'+response['task_data'][i]['t_end']+'</td><td><span onclick="getTaskById('+response['task_data'][i]['t_id']+')" class="tweak">View</span> | <span onclick="deleteProjectById('+response['task_data'][i]['t_id']+')" class="tweak">Delete</span></td</tr>');
+              }
+            }else{
+                $('#task-details-table-tbody').append('<tr><td><h3>No Record Found</h3></td></tr>');
             }
             hidePreloader();
         }
@@ -480,35 +517,89 @@ function getAllAssignWithDatabase(){
         url:baseURL+'assign/get_all_task',
         dataType: 'json',
         success: function(response){
-            for(var i = 0; i < response['assign_work'].length; i++){
-                var taskType = response['assign_work'][i]['t_type'];
-                var status = response['assign_work'][i]['a_status'];
-                var taskName = '';
-                var statusName = '';
-                if(taskType == 1){
-                    taskName = 'Wireframe';
-                }else if(taskType == 2){
-                    taskName = 'Mockup';
-                }else{
-                    taskName = 'Prototype';
+            if(response['assign_work'].length > 0){
+                for(var i = 0; i < response['assign_work'].length; i++){
+                    var taskType = response['assign_work'][i]['t_type'];
+                    var status = response['assign_work'][i]['a_status'];
+                    var taskName = '';
+                    var statusName = '';
+                    if(taskType == 1){
+                        taskName = 'Wireframe';
+                    }else if(taskType == 2){
+                        taskName = 'Mockup';
+                    }else{
+                        taskName = 'Prototype';
+                    }
+                    if(status == 0){
+                        statusName = "Pending";
+                    }else if(status == 1){
+                        statusName = "Accepted";
+                    }else{
+                        statusName = "Rejected"
+                    }
+                    $('#assign-details-table-tbody').append('<tr><td>' + (i+1) +'</td><td>' + response['assign_work'][i]['u_email'] + '</td><td>'+response['assign_work'][i]['p_name']+'</td><td>'+taskName+'</td><td>'+response['assign_work'][i]['a_start']+'</td><td>'+response['assign_work'][i]['a_end']+'</td><td>'+statusName+'</td><td><span onclick="getAssignById('+response['assign_work'][i]['a_id']+')" class="tweak">View</span> | <span onclick="deleteProjectById('+response['assign_work'][i]['t_id']+')" class="tweak">Delete</span></td</tr>');
                 }
-                if(status == 0){
-                    statusName = "Pending";
-                }else if(status == 1){
-                    statusName = "Accepted";
-                }else{
-                    statusName = "Rejected"
-                }
-                $('#assign-details-table-tbody').append('<tr><td>' + (i+1) +'</td><td>' + response['assign_work'][i]['u_email'] + '</td><td>'+response['assign_work'][i]['p_name']+'</td><td>'+taskName+'</td><td>'+response['assign_work'][i]['a_start']+'</td><td>'+response['assign_work'][i]['a_end']+'</td><td>'+statusName+'</td><td><span onclick="getProjectById('+response['assign_work'][i]['t_id']+')" class="tweak">View</span> | <span onclick="deleteProjectById('+response['assign_work'][i]['t_id']+')" class="tweak">Delete</span></td</tr>');
+            }else{
+                $('#assign-details-table-tbody').append('<tr><td>No Record Found</td</tr>');
             }
-            hidePreloader();
             hidePreloader();
         }
     });
 }
 function getProjectById(id){
+    $.ajax({
+        url:baseURL+'project/get_project_by_id',
+        data: {id:id},
+        method: 'post',
+        type: 'post',
+        dataType: 'json',
+        success: function(response){
+            $('#projectNameEdit').val(response[0]['p_name']);
+            $('#projectTypeEdit').val(response[0]['p_type']);
+            $('#projectStartEdit').val(response[0]['p_start']);
+            $('#projectEndEdit').val(response[0]['p_end']);
+            $('#user-emailEdit').val(response[0]['u_email']);
+            $('#user-email-idEdit').val(response[0]['u_id']);
+            $('#projectDetailsEdit').val(response[0]['p_detail']);
+            $("#pupop").fadeIn("slow");
+        }
+    });
+}
+
+function updateEmp(){
     
 }
+function getTaskById(id){
+    $.ajax({
+        url:baseURL+'task/get_task_by_id',
+        data: {id:id},
+        method: 'post',
+        type: 'post',
+        dataType: 'json',
+        success: function(response){
+            console.log(response);
+        }
+    });
+}
+
+function getAssignById(id){
+    $.ajax({
+        url:baseURL+'assign/get_assign_by_id',
+        data: {id:id},
+        method: 'post',
+        type: 'post',
+        dataType: 'json',
+        success: function(response){
+            console.log(response);
+        }
+    });
+}
+
+function closePupop(){
+    $("#pupop").fadeOut();
+    $('#pupop input[type="text"], #pupop select, #pupop textarea').val('');
+}
+
 	function printUserEmail(e, id){
 		$('#user-email-id').attr('value', id);
 		$('#user-email').val(e.getElementsByTagName("p")[0].innerHTML);
@@ -594,7 +685,7 @@ function getProjectById(id){
 			type: 'post',
      		dataType: 'json',
 			success: function(response){
-                            console.log(response);
+                           console.log(response);
 				if(response.length > 0){
 					var seen = 0;
 					$('#dropdown-notification p.red').text("You Have " + response.length + " Notification");
@@ -750,7 +841,7 @@ function getProjectById(id){
 				}else{
 					alert("false");
 				}
-				console.log(response);
+				
 			}
 		});
 		if(refresh == 1){
@@ -770,7 +861,7 @@ function getProjectById(id){
 				}else{
 					alert("false");
 				}
-				console.log(response);
+				
 			}
 		});
 		if(refresh == 1){
@@ -787,7 +878,7 @@ function getProjectById(id){
 					if(response == true){
 						checkAcceptOrDeclineOfUser();
 					}
-					console.log(response);
+					
 				}
 			});
   	});

@@ -101,4 +101,10 @@ class Assign extends CI_Controller {
 		$data = $this->Assign_model->decline_notification($id);	
 		echo json_encode($data);
 	}
+        
+        public function get_assign_by_id(){
+            $id = $this->input->post('id');
+            $data = $this->Assign_model->get_assign_by_id($id);
+            echo json_encode($data);
+        }
 }

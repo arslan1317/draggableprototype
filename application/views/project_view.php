@@ -79,7 +79,7 @@
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <input type="submit" class="form-control btn-custom" id="addProject" value="Add" name="add-project">
+                            <input type="submit" class="form-control btn-custom main-btn form-btn" id="addProject" value="Add" name="add-project">
                         </div>
                     </div>
                 </div>
@@ -100,14 +100,14 @@
                 <table id="project-details-table" class="table table-condensed table-striped">
                     <thead>
                         <tr>
-                            <th>No.</th>
-                            <th>ID</th>
-                            <th>NAME</th>
-                            <th>TYPE</th>
-                            <th>START</th>
-                            <th>END</th>
-                            <th>Supervisor</th>
-                            <th>ACTION</th>
+                            <td>No.</td>
+                            <td>Id</td>
+                            <td>Name</td>
+                            <td>Type</td>
+                            <td>Start</td>
+                            <td>End</td>
+                            <td>Supervisor</td>
+                            <td>Action</td>
                         </tr>
                     </thead>
                     <tbody id="project-details-table-tbody">
@@ -118,4 +118,65 @@
         </div>
     </div><!-- /#right-panel -->
     <!-- Right Panel -->
+    <!-- view Popup (By Waleed)-->
+    <div class="col-12 pupopBg overflow-yscroll" id="pupop" style="display: none;">
+        <div class="col-lg-offset-4 col-lg-4 col-md-offset-3 col-md-6 col-sm-offset-2 col-sm-8 col-11 boxes pupopInnerBox pb-4" style="margin-top:30px; margin-bottom:30px;">
+<div class="col-12 pt-3 overflow-hidden p-0 mt-2 mb-2">
+<h3 class="pull-left col-11 blue-border-left pt-2 pb-2">Project Details</h3>
+<p class="pull-right pointer closePopopIcon tweak mr-4" onclick="closePupop()">X</p>
+<div class="clearfix"></div>
+<div id="empeupdate" class="alert-danger" style="display:none;">Please fill-in all the mandatory fields.</div>
+</div>
+<div class="col-12 pb-3">
+
+<div class="form-group col-12 p-0"> 
+    <label for="projectNameEdit" class="colorGreen">Project Name</label>
+    <input type="text" class="form-control icon-edit pupopBgPosition borderpuopInput" id="projectNameEdit" aria-describedby="" placeholder=" ">
+  </div>
+   <div class="form-group col-12 p-0">
+    <label for="projectTypeEdit" class="colorGreen">Project Type</label>
+    <select class="icon-arrowPop form-control borderpuopInput marginicon" id="projectTypeEdit">
+        <option>-Select-</option>
+        <option value="Music">Music</option>
+        <option value="Travel">Travel</option>
+        <option value="Pick &amp; Drop">Pick &amp; Drop</option>
+    </select>                                
+  </div>
+
+    <div class="form-group col-12 p-0">
+                            <label for="projectStartEdit" class="colorGreen">Project Start</label>
+                            <input type="text" class="form-control icon-edit pupopBgPosition borderpuopInput" id="projectStartEdit" name="projectStartEdit">
+   </div>
+
+     <div class="form-group col-12 p-0">
+                            <label for="projectEndEdit" class="colorGreen">Project End</label>
+                            <input type="text" class="form-control icon-edit pupopBgPosition borderpuopInput" id="projectEndEdit" name="projectEndEdit">
+    </div>
+<div class="form-group col-12 p-0">
+                            <label for="user-emailEdit" class="colorGreen">Supervisor</label>
+                            <input type="text" class="form-control icon-edit pupopBgPosition borderpuopInput" id="user-emailEdit">
+                            <input type="hidden" name="supervisor" id="user-email-idEdit">
+                            <div class="user-email-show" id="user-email-show" style="display: none;">
+                                
+                            </div>
+ 
+  </div>
+
+   <div class="form-group col-12 p-0"> 
+    <label for="projectDetailsEdit" class="colorGreen">Project Details</label>
+    <textarea type="text" class="form-control icon-edit2 borderpuopInput height-70px" id="projectDetailsEdit" style="padding-right:50px !important;"></textarea>
+  </div>
+  
+  
+   
+ 
+  <div class="form-group col-12 p-0 m-auto">
+      <input type="button" class="btn bg-green col-8 main-btn mt-1" value="UPDATE" onclick="updateEmp()">
+  </div>
+      
+</div>
+</div>
+</div>
+ <!-- View_popup finished (by Waleed) -->
+
 <?php $this->view('masterpage/footer.php'); ?>

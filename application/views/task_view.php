@@ -91,13 +91,13 @@
                 <table id="task-details-table" class="table table-condensed table-striped">
                     <thead>
                         <tr>
-                            <th>No.</th>
-                            <th>ID</th>
-                            <th>NAME</th>
-                            <th>TYPE</th>
-                            <th>START</th>
-                            <th>END</th>
-                            <th>ACTION</th>
+                            <td>No.</td>
+                            <td>Id</td>
+                            <td>Name</td>
+                            <td>Type</td>
+                            <td>Start</td>
+                            <td>End</td>
+                            <td>Action</td>
                         </tr>
                     </thead>
                     <tbody id="task-details-table-tbody">

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 12, 2018 at 11:22 PM
+-- Generation Time: Oct 15, 2018 at 12:23 AM
 -- Server version: 10.1.36-MariaDB
 -- PHP Version: 7.2.10
 
@@ -47,7 +47,7 @@ CREATE TABLE `assigns` (
 --
 
 INSERT INTO `assigns` (`a_id`, `u_id`, `p_id`, `t_id`, `a_start`, `a_end`, `a_detail`, `a_by`, `seen`, `a_status`, `a_accept`) VALUES
-(2, 27, 16, 1, '10/19/2018', '11/30/2018', 'Assign you the wireframe of uber', 120, 0, 0, 0);
+(2, 27, 16, 4, '10/19/2018', '11/30/2018', 'Assign you the wireframe of uber', 120, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -63,15 +63,20 @@ CREATE TABLE `projects` (
   `p_end` varchar(20) NOT NULL,
   `p_detail` text NOT NULL,
   `u_id` int(11) NOT NULL,
-  `s_id` int(11) NOT NULL
+  `s_id` int(11) NOT NULL,
+  `s_status` int(1) NOT NULL DEFAULT '0',
+  `timespan` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `projects`
 --
 
-INSERT INTO `projects` (`p_id`, `p_name`, `p_type`, `p_start`, `p_end`, `p_detail`, `u_id`, `s_id`) VALUES
-(16, 'Uber', 'Pick & Drop', '10/01/2018', '11/30/2018', 'Make friendly Application', 120, 27);
+INSERT INTO `projects` (`p_id`, `p_name`, `p_type`, `p_start`, `p_end`, `p_detail`, `u_id`, `s_id`, `s_status`, `timespan`) VALUES
+(16, 'Uber', 'Pick & Drop', '10/01/2018', '11/30/2018', 'Make friendly Application', 120, 27, 0, NULL),
+(17, 'Whatever', 'Travel', '10/15/2018', '11/12/2018', 'Explore the nature of the world', 120, 27, 0, NULL),
+(18, 'draggable', 'Travel', '10/16/2018', '11/22/2018', 'lollllllllll', 120, 27, 0, NULL),
+(19, 'Checking Purpose', 'Music', '10/10/2018', '11/22/2018', 'cheking purpose details', 120, 27, 0, '2018-10-14 14:43:10');
 
 -- --------------------------------------------------------
 
@@ -120,7 +125,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`u_id`, `u_fname`, `u_lname`, `u_email`, `u_pass`, `status`, `path`) VALUES
 (27, 'daniyal', 'hussain', 'daniyalbutt785@gmail.com', '4e075844d2e00e4c800c8c62716bed8c', 1, NULL),
-(120, 'daniyal', 'admin', 'admin', '21232f297a57a5a743894a0e4a801fc3', 1, NULL);
+(120, 'admin', 'admin', 'admin', '21232f297a57a5a743894a0e4a801fc3', 1, NULL);
 
 --
 -- Indexes for dumped tables
@@ -164,7 +169,7 @@ ALTER TABLE `assigns`
 -- AUTO_INCREMENT for table `projects`
 --
 ALTER TABLE `projects`
-  MODIFY `p_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `p_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `tasks`

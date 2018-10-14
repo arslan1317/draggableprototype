@@ -46,6 +46,7 @@ class Project extends CI_Controller {
                     $data['code'] = 1;
                     echo json_encode($data);
                 }else{
+                    $now = date('Y-m-d H:i:s');
                     $project = array(
                         'p_name' => $this->input->post('projectName'),
                         'p_type' => $this->input->post('projectType'),
@@ -54,6 +55,7 @@ class Project extends CI_Controller {
                         'p_detail' => $this->input->post('projectDetails'),
                         'u_id' => $this->session->userdata('u_id'),
                         's_id' => $this->input->post('supervisor'),
+                        'timespan' => $now,
                     );
                     if($this->Project_model->add_project($project)){
                         $data['message'] = '<p>Project Has Been Added</p>';
@@ -70,6 +72,12 @@ class Project extends CI_Controller {
         
         public function get_all_project(){
             $data = $this->Project_model->get_all_project();
+            echo json_encode($data);
+        }
+        
+        public function get_project_by_id(){
+            $id = $this->input->post('id');
+            $data = $this->Project_model->get_project_by_id($id);
             echo json_encode($data);
         }
 }

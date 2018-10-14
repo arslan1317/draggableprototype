@@ -68,4 +68,10 @@ class Task extends CI_Controller {
             $data['project_name'] = $this->Task_model->get_project();
             echo json_encode($data);
         }
+        
+        public function get_task_by_id(){
+            $id = $this->input->post('id');
+            $data = $this->Task_model->get_task_by_id($id);
+            echo json_encode($data);
+        }
 }

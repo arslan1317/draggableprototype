@@ -138,9 +138,8 @@ class User_model extends CI_Model{
         $this->db->from('assigns');
         $this->db->join('users', 'users.u_id = assigns.a_by');
         $this->db->join('projects', 'projects.p_id = assigns.p_id');
-        $this->db->join('tasks', 'tasks.p_id = projects.p_id');
+        $this->db->join('tasks', 'tasks.t_id = assigns.t_id');
         $this->db->where('assigns.u_id', $this->session->userdata('u_id'));
-        $this->db->order_by("assigns.a_id", "dsc");
         $query = $this->db->get();
         return $query->result();
     }
