@@ -78,7 +78,7 @@
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <input type="submit" class="form-control btn-custom" id="addAssign" value="Add" name="add-assign">
+                            <input type="submit" class="btn-custom main-btn form-btn" id="addAssign" value="Add" name="add-assign">
                         </div>
                     </div>
                 </div>

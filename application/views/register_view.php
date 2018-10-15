@@ -16,13 +16,13 @@
 				</div>
 
 				<div class="controls">
-                                        <input type="text" id="first-name" name="first-name" placeholder="First Name" class="form-control login-btn-padding mb-1" />
+                    <input type="text" id="first-name" name="first-name" placeholder="First Name" class="form-control login-btn-padding mb-1" />
 					<input type="text" id="last-name" name="last-name" placeholder="Last Name" class="form-control login-btn-padding mb-1" />
 					<input type="text" id="email-name" name="email-name" placeholder="Email" class="form-control login-btn-padding mb-1" />
-					<input type="text" id="password" name="password" placeholder="Password" class="form-control login-btn-padding mb-1" />
-					<input type="text" id="confirm-password" name="confirm-password" placeholder="Confirm Password" class="form-control login-btn-padding mb-1" />
-					<input type="submit" id="btnRegister" class="btn btn-default btn-block btn-custom main-btn width-48per" value="Register">
-					<input type="button" id="btnSignUp" class="btn btn-default btn-custom main-btn width-48per pull-right" value="Back" onclick="location.href='<?php echo base_url()?>login';">
+					<div class="password-box"><input type="password" id="password" name="password" placeholder="Password" class="form-control login-btn-padding mb-1 show-password" /><span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password upper-eye"></span></div>
+					<div class="password-box"><input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm Password" class="form-control login-btn-padding mb-1 show-password" /><span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password upper-eye"></span></div>
+					<input type="submit" id="btnRegister" class="main-btn width-48per" value="Register">
+					<input type="button" id="btnSignUp" class="main-btn width-48per pull-right" value="Back" onclick="location.href='<?php echo base_url()?>login';">
 				</div><!-- /.controls -->
 			</div><!-- /#login-box -->
 	</div><!-- /.container -->

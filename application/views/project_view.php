@@ -79,7 +79,7 @@
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <input type="submit" class="form-control btn-custom main-btn form-btn" id="addProject" value="Add" name="add-project">
+                            <input type="submit" class="col-12 btn-custom main-btn form-btn" id="addProject" value="Add" name="add-project">
                         </div>
                     </div>
                 </div>
@@ -156,7 +156,7 @@
                             <label for="user-emailEdit" class="colorGreen">Supervisor</label>
                             <input type="text" class="form-control icon-edit pupopBgPosition borderpuopInput" id="user-emailEdit">
                             <input type="hidden" name="supervisor" id="user-email-idEdit">
-                            <div class="user-email-show" id="user-email-show" style="display: none;">
+                            <div class="user-email-show-edit col-12" id="user-email-show-edit" style="border-bottom: 1px solid grey; display: none">
                                 
                             </div>
  

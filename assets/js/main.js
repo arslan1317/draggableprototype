@@ -14,11 +14,44 @@ jQuery(document).ready(function($) {
     var bodyId = $('body').attr('id');
     if(bodyId == "project-page"){
         loadAllProjectsFromDatabase();
+        initDatapickerOnProjectDateField();
+        editDatapickerOnProjectDateField();
     }else if(bodyId == 'task-page'){
         loadAllTasksFromDatabase();
+        initDatapickerOnProjectDateField();
     }else if(bodyId == 'assign-page'){
         getProjectNameHavingTask();
         getAllAssignWithDatabase();
+        initDatapickerOnProjectDateField();
+    }
+    function initDatapickerOnProjectDateField(){
+      $("#projectStart").datepicker({
+          numberOfMonths: 2,
+          onSelect: function(selected) {
+            $("#projectEnd").datepicker("option","minDate", selected)
+          }
+      });
+      $("#projectEnd").datepicker({ 
+          numberOfMonths: 2,
+          onSelect: function(selected) {
+             $("#projectStart").datepicker("option","maxDate", selected)
+          }
+      });
+    }
+
+    function editDatapickerOnProjectDateField(){
+      $("#projectStartEdit").datepicker({
+          numberOfMonths: 2,
+          onSelect: function(selected) {
+            $("#projectEndEdit").datepicker("option","minDate", selected)
+          }
+      });
+      $("#projectEndEdit").datepicker({ 
+          numberOfMonths: 2,
+          onSelect: function(selected) {
+             $("#projectStartEdit").datepicker("option","maxDate", selected)
+          }
+      });
     }
     // Written by Arslan
     $('#updateName').click(function(){
@@ -68,10 +101,10 @@ jQuery(document).ready(function($) {
     
   $(".toggle-password").click(function() {
   $(this).toggleClass("fa-eye fa-eye-slash");
-  var input = $('#user-password');
+  var input = $(this).parent().find('.show-password');
   if (input.attr("type") == "password") {
     input.attr("type", "text");
-  } else {
+  }else {
     input.attr("type", "password");
   }
 });
@@ -204,25 +237,10 @@ jQuery(document).ready(function($) {
 		$('.login-alert').fadeOut('slow');
     	$('.login-alert').html("");
 	}
-	var bodyID = $('body').attr('id');
-	if(bodyID == "projectPage"){
-	}
-    $("#projectStart").datepicker({
-        numberOfMonths: 2,
-        onSelect: function(selected) {
-          $("#projectEnd").datepicker("option","minDate", selected)
-        }
-    });
-    $("#projectEnd").datepicker({ 
-        numberOfMonths: 2,
-        onSelect: function(selected) {
-           $("#projectStart").datepicker("option","maxDate", selected)
-        }
-    });
     $("#user-email").keyup(function() {
-    	var value = $('#user-email').val();
-    	$('#user-email-show').hide();
-    	$('#user-email-show').text("");
+      $('#user-email-show').hide();
+    	$('#user-email-show').html("");
+      var value = $('#user-email').val();
     	if(value != ""){
     		$.ajax({
 				url:baseURL+'assign/get_user_data',
@@ -232,48 +250,84 @@ jQuery(document).ready(function($) {
      			dataType: 'json',
 				success: function(response){
 					if(response.length > 0){
-						$('#user-email-show').show();
+						$('#user-email-show').slideDown('fast');
 						for(var i = 0; i < response.length; i++){
 							if(response[i]['path'] == null){
 								var srcImage = 'http://www.homeworkhelp.novelguide.com/sites/default/files/pictures/default/default_user_image.jpg';
 							}else{
 								var srcImage = response[i]['path'];
 							}
-							$('#user-email-show').append('<div class="main-user-email clearfix" onclick="printUserEmail(this, '+ response[i]['u_id'] +')"><img src="'+ srcImage +'" class="user-avatar email-image"><span>'+ response[i]['u_fname'] +' '+ response[i]['u_lname']+'</span><p>'+ response[i]['u_email'] + '</p></div>');
+							$('#user-email-show').append('<div class="main-user-email clearfix" onclick="printUserEmail(this, '+ response[i]['u_id'] +')"><img src="'+ srcImage +'" class="user-avatar email-image"><span>'+ response[i]['u_fname'] +' '+ response[i]['u_lname']+'</span></div>');
 						}
 						
-					}
+					 }else{
+              $('#user-email-show').hide('fast');
+           }
      			}
    			});	
     	}
 	});
+
+     $("#user-emailEdit").keyup(function() {
+      $('#user-email-show-edit').hide();
+      $('#user-email-show-edit').html("");
+      var value = $('#user-emailEdit').val();
+      if(value != ""){
+        $.ajax({
+        url:baseURL+'assign/get_user_data',
+        method: 'post',
+        type: 'post',
+          data: {value: value},
+          dataType: 'json',
+        success: function(response){
+          if(response.length > 0){
+            $('#user-email-show-edit').slideDown('fast');
+            for(var i = 0; i < response.length; i++){
+              if(response[i]['path'] == null){
+                var srcImage = 'http://www.homeworkhelp.novelguide.com/sites/default/files/pictures/default/default_user_image.jpg';
+              }else{
+                var srcImage = response[i]['path'];
+              }
+              $('#user-email-show-edit').append('<div class="main-user-email clearfix col-12 no-border-bottom width-60per" onclick="printUserEmail(this, '+ response[i]['u_id'] +')"><img src="'+ srcImage +'" class="user-avatar email-image"><span>'+ response[i]['u_fname'] +' '+ response[i]['u_lname']+'</span></div>');
+            }
+            
+          }
+          }
+        }); 
+      }
+  });
+
 	$("#projectName").change(function() {
     	var value = $('#projectName').val();
-    	$.ajax({
-			url:baseURL+'assign/get_task_type',
-			method: 'post',
-			type: 'post',
-     		data: {value: value},
-     		dataType: 'json',
-			success: function(response){
-				
-				if(response.length > 0){
-					for(var i = 0; i < response.length; i++){	
-						var taskChecker = response[i]['t_type'];
-						if(taskChecker == 1){
-							taskChecker = "Wireframe"
-						}else if(taskChecker == 2){
-							taskChecker = "Mockup"	
-						}else{
-							taskChecker = "Prototype"
-						}
-						$('#taskType').append('<option value="'+ response[i]['t_type'] +'">'+ taskChecker +'</option>');
-					}
-				}else{
-					$('#taskType').val("");
-				}
-			}
-   		});	
+      if(value != ''){
+      	$.ajax({
+  			url:baseURL+'assign/get_task_type',
+  			method: 'post',
+  			type: 'post',
+       		data: {value: value},
+       		dataType: 'json',
+  			success: function(response){
+  				
+  				if(response.length > 0){
+  					for(var i = 0; i < response.length; i++){	
+  						var taskChecker = response[i]['t_type'];
+  						if(taskChecker == 1){
+  							taskChecker = "Wireframe"
+  						}else if(taskChecker == 2){
+  							taskChecker = "Mockup"	
+  						}else{
+  							taskChecker = "Prototype"
+  						}
+  						$('#taskType').append('<option value="'+ response[i]['t_type'] +'">'+ taskChecker +'</option>');
+  					}
+  				}else{
+  					$('#taskType').html("<option value=''>--Select--</option>");
+  				}
+  			}
+     		});	
+      }else{
+        $('#taskType').html("<option value=''>--Select--</option>");
+      }
 	});
 	//Disable enter key inorder to submit form
 	$("input").keypress(function (evt) {

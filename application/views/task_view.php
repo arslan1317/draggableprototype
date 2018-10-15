@@ -71,7 +71,7 @@
                     </div>
                     <div class="col-md-3 col-md-offset-3">
                         <div class="form-group">
-                            <input type="submit" class="form-control btn-custom" id="addTask" value="Add" name="add-task">
+                            <input type="submit" class="main-btn form-btn col-12" id="addTask" value="Add" name="add-task">
                         </div>
                     </div>
                 </div>
