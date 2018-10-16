@@ -34,5 +34,17 @@ class Project_model extends CI_Model{
         $query = $this->db->get();
         return $query->result();
     }
+    
+    public function update_project_by_id($projectid, $projectname, $projectstype, $pojectstart, $projectend, $projectsupervisor, $projectdetails){
+        $this->db->set('p_name', $projectname);
+        $this->db->set('p_type', $projectstype);
+        $this->db->set('p_start', $pojectstart);
+        $this->db->set('p_end', $projectend);
+        $this->db->set('p_detail', $projectdetails);
+        $this->db->set('s_id', $projectsupervisor);
+        $this->db->where('p_id', $projectid);
+        $this->db->update('projects');
+        return $this->db->affected_rows();
+    }
 }
 ?>

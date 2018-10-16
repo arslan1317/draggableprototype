@@ -95,7 +95,7 @@
         </div>
         <div class="content mt-3">
             <div class="col-md-12">
-                <table id="task-details-table" class="table table-condensed table-striped">
+                <table id="assign-details-table" class="table table-condensed table-striped">
                     <thead>
                         <tr>
                             <th>No.</th>
@@ -115,6 +115,71 @@
             </div>
         </div>
     </div><!-- /#right-panel -->
+<!-- view Popup (By Waleed)-->
+    <div class="col-12 pupopBg overflow-yscroll" id="pupop" style="display:none;">
+        <div class="col-lg-offset-4 col-lg-4 col-md-offset-3 col-md-6 col-sm-offset-2 col-sm-8 col-11 boxes pupopInnerBox pb-4" style="margin-top:30px; margin-bottom:30px;">
+<div class="col-12 pt-3 overflow-hidden p-0 mt-2 mb-2">
+<h3 class="pull-left col-11 blue-border-left pt-2 pb-2">Assign Details</h3>
+<p class="pull-right pointer closePopopIcon tweak mr-4" onclick="closePupop()">X</p>
+<div class="clearfix"></div>
+<div id="empeupdate" class="alert-danger" style="display:none;">Please fill-in all the mandatory fields.</div>
+</div>
+<div class="col-12 pb-3">
+
+    <div class="form-group col-12 p-0">
+                            <label for="user-emailEdit" class="colorGreen">User Email</label>
+                            <input type="text" class="form-control icon-edit pupopBgPosition borderpuopInput" id="user-emailEdit">
+                            <input type="hidden" name="supervisor" id="user-email-idEdit">
+                            <div class="user-email-show-edit col-12" id="user-email-show-edit" style="border-bottom: 1px solid grey; display: none">
+                                
+                            </div>
+ 
+  </div>
+
+<div class="form-group col-12 p-0"> 
+    <label for="projectNameEdit" class="colorGreen">Project Name</label>
+    <select class="icon-arrowPop form-control borderpuopInput marginicon" id="projectNameEdit">
+        <option>-Select-</option>
+    </select>  
+  </div>
+   <div class="form-group col-12 p-0">
+    <label for="taskTypeEdit" class="colorGreen">Task </label>
+    <select class="icon-arrowPop form-control borderpuopInput marginicon" id="taskTypeEdit">
+                             <option value="">--Select--</option>
+                                <option value="1">Wireframe</option>
+                                <option value="2">Mockup</option>
+                                <option value="3">Prototype</option>
+    </select>                                
+  </div>
+
+    <div class="form-group col-12 p-0">
+                            <label for="assignStartEdit" class="colorGreen">Task Date Start </label>
+                            <input type="text" class="form-control icon-edit pupopBgPosition borderpuopInput" id="assignStartEdit" name="assignStartEdit">
+   </div>
+
+     <div class="form-group col-12 p-0">
+                            <label for="assignEndEdit" class="colorGreen">Task Date End </label>
+                            <input type="text" class="form-control icon-edit pupopBgPosition borderpuopInput" id="assignEndEdit" name="assignEndEdit">
+    </div>
+ 
+  
+
+   <div class="form-group col-12 p-0"> 
+    <label for="assignDetailsEdit" class="colorGreen">Assign Details</label>
+    <textarea type="text" class="form-control icon-edit2 borderpuopInput height-70px" id="assignDetailsEdit" style="padding-right:50px !important;"></textarea>
+  </div>
+  
+  
+   
+ 
+  <div class="form-group col-12 p-0 m-auto">
+      <input type="button" class="btn bg-green col-8 main-btn mt-1" value="UPDATE" onclick="updateEmp()">
+  </div>
+      
+</div>
+</div>
+</div>
+ <!-- View_popup finished (by Waleed) -->
 
     <!-- Right Panel -->
 <?php $this->view('masterpage/footer.php'); ?>

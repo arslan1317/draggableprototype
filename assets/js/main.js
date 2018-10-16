@@ -329,6 +329,7 @@ jQuery(document).ready(function($) {
         $('#taskType').html("<option value=''>--Select--</option>");
       }
 	});
+        
 	//Disable enter key inorder to submit form
 	$("input").keypress(function (evt) {
 		var keycode = evt.charCode || evt.keyCode;
@@ -434,7 +435,24 @@ jQuery(document).ready(function($) {
         }
        });
     });
-
+    
+    $('.dropdown-toggle').click(function(){
+        $('#dropdown-notification').slideUp();
+        $('#dropdown-notification').slideDown();
+    });
+    
+    //enter on login field login click
+    $("#user-name, #user-password").on("keydown", function(e) { 
+        if(e.keyCode == 13)
+            $("#btnLogIn").click(); 
+    });
+    
+    //for register enter inputs
+    $("#first-name, #last-name, #email-name, #password, #confirm-password").on("keydown", function(e) { 
+        if(e.keyCode == 13)
+            $("#btnRegister").click();
+    });
+    
 });
 
 function errorBox(error){
@@ -492,11 +510,9 @@ function checkSupervisorAssignProject(){
         dataType: 'json',
         success: function(response){
           if(response.length > 0){
-            for(var i = 0; i < response.length; i++){
-              GLOBALREQUEST.push({'project_id' : response[i]['p_id'], 'project_name' : response[i]['p_name'], 'first_name' : response[i]['u_fname'], 'last_name' : response[i]['u_lname'], 'time_span' : response[i]['timespan']});
-            }
+            $('.supervisor-count').text(response.length);
+            
           }
-            console.log(GLOBALREQUEST);
             hidePreloader();
         }
     });
@@ -516,12 +532,17 @@ function loadAllProjectsFromDatabase(){
               $('#project-details-table-tbody').append('<tr><td><h3 class="mt-1 mb-1"><span class="tweak">N</span>o <span class="tweak">R</span>ecord <span class="tweak">F</span>ound</h3></td</tr>');
           }
             hidePreloader();
+            $('#project-details-table').dataTable({
+                "bLengthChange": false,
+                "destroy": true,
+            });
         }
     });
 }
 
 function loadAllTasksFromDatabase(){
     $('#projectName').val('');
+    $('#projectNameEdit').val('');
     $('#task-details-table-tbody').html('');
     $.ajax({
         url:baseURL+'task/get_all_task',
@@ -530,6 +551,7 @@ function loadAllTasksFromDatabase(){
             
             for(var i = 0; i < response['project_name'].length; i++){
                 $('#projectName').append('<option value="'+response['project_name'][i].p_id+'">'+response['project_name'][i].p_name+'</option>')
+                $('#projectNameEdit').append('<option value="'+response['project_name'][i].p_id+'">'+response['project_name'][i].p_name+'</option>')
             }
             if(response['task_data'].length > 0){
               for(var i = 0; i < response['task_data'].length; i++){
@@ -542,24 +564,30 @@ function loadAllTasksFromDatabase(){
                   }else{
                       taskName = 'Prototype';
                   }
-                  $('#task-details-table-tbody').append('<tr><td>' + (i+1) +'</td><td>' + response['task_data'][i]['t_id'] + '</td><td>'+response['task_data'][i]['p_name']+'</td><td>'+taskName+'</td><td>'+response['task_data'][i]['t_start']+'</td><td>'+response['task_data'][i]['t_end']+'</td><td><span onclick="getTaskById('+response['task_data'][i]['t_id']+')" class="tweak">View</span> | <span onclick="deleteProjectById('+response['task_data'][i]['t_id']+')" class="tweak">Delete</span></td</tr>');
+                  $('#task-details-table-tbody').append('<tr><td>' + (i+1) +'</td><td>' + response['task_data'][i]['t_id'] + '</td><td>'+response['task_data'][i]['p_name']+'</td><td>'+taskName+'</td><td>'+response['task_data'][i]['t_start']+'</td><td>'+response['task_data'][i]['t_end']+'</td><td><span onclick="getTaskById('+response['task_data'][i]['t_id']+')" class="tweak pointer">View</span> | <span onclick="deleteProjectById('+response['task_data'][i]['t_id']+')" class="tweak pointer">Delete</span></td</tr>');
               }
             }else{
                 $('#task-details-table-tbody').append('<tr><td><h3>No Record Found</h3></td></tr>');
             }
             hidePreloader();
+            $('#task-details-table').dataTable({
+                "bLengthChange": false,
+                "destroy": true,
+            });
         }
     });
 }
 
 function getProjectNameHavingTask(){
     $('#projectName').val('');
+    $('#projectNameEdit').val('');
     $.ajax({
         url:baseURL+'assign/get_project_name_having_task',
         dataType: 'json',
         success: function(response){
             for(var i = 0; i < response.length; i++){
                 $('#projectName').append('<option value="'+response[i].p_id+'">'+response[i].p_name+'</option>')
+                $('#projectNameEdit').append('<option value="'+response[i].p_id+'">'+response[i].p_name+'</option>')
             }
         }
     });
@@ -591,12 +619,16 @@ function getAllAssignWithDatabase(){
                     }else{
                         statusName = "Rejected"
                     }
-                    $('#assign-details-table-tbody').append('<tr><td>' + (i+1) +'</td><td>' + response['assign_work'][i]['u_email'] + '</td><td>'+response['assign_work'][i]['p_name']+'</td><td>'+taskName+'</td><td>'+response['assign_work'][i]['a_start']+'</td><td>'+response['assign_work'][i]['a_end']+'</td><td>'+statusName+'</td><td><span onclick="getAssignById('+response['assign_work'][i]['a_id']+')" class="tweak">View</span> | <span onclick="deleteProjectById('+response['assign_work'][i]['t_id']+')" class="tweak">Delete</span></td</tr>');
+                    $('#assign-details-table-tbody').append('<tr><td>' + (i+1) +'</td><td>' + response['assign_work'][i]['u_email'] + '</td><td>'+response['assign_work'][i]['p_name']+'</td><td>'+taskName+'</td><td>'+response['assign_work'][i]['a_start']+'</td><td>'+response['assign_work'][i]['a_end']+'</td><td>'+statusName+'</td><td><span onclick="getAssignById('+response['assign_work'][i]['a_id']+')" class="tweak pointer">View</span> | <span onclick="deleteProjectById('+response['assign_work'][i]['t_id']+')" class="tweak pointer">Delete</span></td</tr>');
                 }
             }else{
                 $('#assign-details-table-tbody').append('<tr><td>No Record Found</td</tr>');
             }
             hidePreloader();
+            $('#assign-details-table').dataTable({
+                "bLengthChange": false,
+                "destroy": true,
+            });
         }
     });
 }
@@ -608,6 +640,7 @@ function getProjectById(id){
         type: 'post',
         dataType: 'json',
         success: function(response){
+            $('#projectid').val(response[0]['p_id']);
             $('#projectNameEdit').val(response[0]['p_name']);
             $('#projectTypeEdit').val(response[0]['p_type']);
             $('#projectStartEdit').val(response[0]['p_start']);
@@ -620,9 +653,63 @@ function getProjectById(id){
     });
 }
 
-function updateEmp(){
-    
+function updateProjectById(){
+  $('#popup_error').html('');
+  var project_id = $('#projectid').val();
+  var project_name = $('#projectNameEdit').val();
+  var project_type = $('#projectTypeEdit').val();
+  var project_start = $('#projectStartEdit').val();
+  var project_end = $('#projectEndEdit').val();
+  var project_supervisor = $('#user-email-idEdit').val();
+  var project_details = $('#projectDetailsEdit').val();
+  var supervisor_name = $('#user-emailEdit').val();
+  //alert(project_details);
+  if((project_name == "") || (project_type == "") || (project_start == "") || (project_end == "") || (supervisor_name == "") || (project_details == "")){
+      var message = "Please fill-in all the mandatory fields.";
+      popupDangerError(message);
+  }else{
+      $.ajax({
+        url:baseURL+'project/update_project_by_id',
+        data: {project_id:project_id, project_name:project_name, project_type:project_type, project_start: project_start, project_end: project_end, project_supervisor: project_supervisor, project_details:project_details },
+        method: 'post',
+        type: 'post',
+        dataType: 'json',
+        success: function(response){
+            console.log(response);
+            var message = "Successfully Updated";
+            popupSuccessBox(message);
+            loadAllProjectsFromDatabase();
+        }
+    });
+  }
 }
+
+function popupSuccessBox(message){
+    $('#popup_error').fadeIn();
+    $('#popup_error').addClass('alert-success');
+    $('#popup_error').append(message)
+    setTimeout(popupSuccessFadeOut, 3000);
+    setTimeout(closePupop, 3000);   
+}
+
+function popupDangerError(message){
+    $('#popup_error').fadeIn();
+    $('#popup_error').addClass('alert-danger');
+    $('#popup_error').append(message)
+    setTimeout(popupDangerErrorFadeOut, 3000);
+}
+
+function popupDangerErrorFadeOut(){
+    $('#popup_error').fadeOut();
+    $('#popup_error').removeClass('alert-danger');
+}
+
+function popupSuccessFadeOut(){
+    $('#popup_error').fadeOut();
+    $('#popup_error').removeClass('alert-success');
+
+}
+
 function getTaskById(id){
     $.ajax({
         url:baseURL+'task/get_task_by_id',
@@ -632,6 +719,12 @@ function getTaskById(id){
         dataType: 'json',
         success: function(response){
             console.log(response);
+            $('#projectNameEdit').val(response[0]['p_id']);
+            $('#taskTypeEdit').val(response[0]['t_type']);
+            $('#taskStartEdit').val(response[0]['t_start']);
+            $('#taskEndEdit').val(response[0]['t_end']);
+            $('#taskDetailsEdit').val(response[0]['t_detail']);
+            $("#pupop").fadeIn("slow");
         }
     });
 }
@@ -645,6 +738,13 @@ function getAssignById(id){
         dataType: 'json',
         success: function(response){
             console.log(response);
+            $('#user-emailEdit').val(response[0]['u_email']);
+            $('#projectNameEdit').val(response[0]['p_id']);
+            $('#taskTypeEdit').val(response[0]['t_type']);
+            $('#assignStartEdit').val(response[0]['a_start']);
+            $('#assignEndEdit').val(response[0]['a_end']);
+            $('#assignDetailsEdit').val(response[0]['a_detail']);
+            $("#pupop").fadeIn("slow");
         }
     });
 }

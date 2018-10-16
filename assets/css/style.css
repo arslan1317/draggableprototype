@@ -822,7 +822,10 @@ header .form-inline {
     border: none;
     border-radius: 0;
     box-shadow: none;
-    top: 49px !important; }
+    top: 62px !important; 
+    left: -188% !important;
+    border-top: 2px solid blue !important;
+  }
     .header-left .dropdown .dropdown-menu p {
       font-size: 15px;
       margin: 0;
@@ -1004,3 +1007,5 @@ h1, h2, h3, h4, h5, h6{font-family: 'Varela Round', sans-serif !important;font-w
 .overflow-yscroll {overflow-y: scroll;}
 .no-border-bottom{border-bottom: 1px solid transparent !important}
 .width-60per{width: 60%;}
+div#project-details-table_filter label, #task-details-table_filter label, #assign-details-table_filter label{font-weight: normal; width: 300px;}
+div#project-details-table_filter label input, #task-details-table_filter label input, #assign-details-table_filter label input{font-size: 14px !important;width: 70%;padding-left: 15px;}

@@ -16,6 +16,7 @@ class Supervisor_model extends CI_Model{
         $this->db->from('projects');
         $this->db->join('users', 'users.u_id = projects.u_id');
         $this->db->where('projects.s_id', $this->session->userdata('u_id'));
+        $this->db->order_by('projects.p_id', "desc");
         $query = $this->db->get();
         return $query->result();
     }

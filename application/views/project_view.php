@@ -122,10 +122,11 @@
     <div class="col-12 pupopBg overflow-yscroll" id="pupop" style="display: none;">
         <div class="col-lg-offset-4 col-lg-4 col-md-offset-3 col-md-6 col-sm-offset-2 col-sm-8 col-11 boxes pupopInnerBox pb-4" style="margin-top:30px; margin-bottom:30px;">
 <div class="col-12 pt-3 overflow-hidden p-0 mt-2 mb-2">
+<input type="hidden" id="projectid">
 <h3 class="pull-left col-11 blue-border-left pt-2 pb-2">Project Details</h3>
 <p class="pull-right pointer closePopopIcon tweak mr-4" onclick="closePupop()">X</p>
 <div class="clearfix"></div>
-<div id="empeupdate" class="alert-danger" style="display:none;">Please fill-in all the mandatory fields.</div>
+<div id="popup_error" class="alert mb-0 mt-2" style="display:none;"></div>
 </div>
 <div class="col-12 pb-3">
 
@@ -171,7 +172,7 @@
    
  
   <div class="form-group col-12 p-0 m-auto">
-      <input type="button" class="btn bg-green col-8 main-btn mt-1" value="UPDATE" onclick="updateEmp()">
+      <input type="button" class="btn bg-green col-8 main-btn mt-1" value="UPDATE" onclick="updateProjectById()">
   </div>
       
 </div>
