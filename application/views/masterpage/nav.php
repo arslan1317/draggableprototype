@@ -4,39 +4,41 @@
 
                 <div class="col-sm-6">
                     <!-- <a id="menuToggle" class="menutoggle pull-left"><i class="fa fa fa-tasks"></i></a> -->
-                    <div class="header-left">
+                    <div class="header-left mt-1">
                         <!-- SUPERVISOR NOTIFICATION -->
-                         <div class="dropdown for-supervisor mr-3">
-                          <button class="btn btn-secondary dropdown-toggle" type="button" id="notification" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                              <i class="fa fa-user" style="font-size: 25px"></i>
-                              <span class="count supervisor-count">0</span>
-                          </button>
-                        </div> 
-
-                        <div class="dropdown for-message mr-2">
-                          <button class="btn btn-secondary dropdown-toggle" type="button" id="message" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fa fa-tasks" style="font-size: 25px"></i>
-                            <!-- <i class="fa fa-bell"></i> -->
-                            <span class="count" id="count">1</span>
-                          </button>
-                          <div class="dropdown-menu custom-border-top dropdown-toggle-menu" aria-labelledby="message" id="dropdown-notification">
-                            <p class="red">You Have 1 Notification</p>
-                            <div id="main-notifier" class="main-notifier"><div class="notify" style="background-color:#eee">														<a class="dropdown-item media" href="http://localhost:8080/draggableprototype/user/get_single_notification/2">															<span class="photo media-left">																<img src="http://www.homeworkhelp.novelguide.com/sites/default/files/pictures/default/default_user_image.jpg">															</span>															<span class="message media-body">																<span class="name float-left">admin admin (admin)															</span>															<p>Assign You the Wireframe of Uber</p>															</span>														</a>													</div></div>
-                            <div class="see-more">
-                                <div class="text-center">
-                                    <a href="http://localhost:8080/draggableprototype/notification">See All
-                                    </a>
-                                </div>
+                        <div class="main-supervisor-box">
+                            <div class="dropdown for-supervisor mr-3">
+                             <button class="btn btn-secondary dropdown-toggle" type="button" id="notification">
+                                 <i class="fa fa-user open-dropdown-box" style="font-size: 25px"></i>
+                                 <span class="count supervisor-count">0</span>
+                             </button>
+                           </div>
+                            <div class="dropdown-boxes" style="display:none" id="supervisor-box">
                             </div>
-                          </div>
                         </div>
-                        
-                        <div class="dropdown for-notifier-message">
-                              <button class="btn btn-secondary dropdown-toggle" type="button" id="message-notifier" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fa fa-bell" style="font-size: 25px"></i>
-                                <span class="count" id="message-count">0</span>
-                              </button>
+                        <!-- ASSING -->
+                        <div class="main-supervisor-box">
+                            <div class="dropdown for-supervisor mr-3">
+                             <button class="btn btn-secondary dropdown-toggle" type="button" id="notification">
+                                 <i class="fa fa-plus open-dropdown-box" style="font-size: 25px"></i>
+                                 <span class="count assign-count">0</span>
+                             </button>
+                           </div>
+                            <div class="dropdown-boxes" style="display:none" id="assign-box">
                             </div>
+                        </div>
+                        <!-- NOTIFICATION -->
+                        <div class="main-supervisor-box">
+                            <div class="dropdown for-supervisor mr-3">
+                             <button class="btn btn-secondary dropdown-toggle" type="button" id="notification">
+                                 <i class="fa fa-bell open-dropdown-box" style="font-size: 25px"></i>
+                                 <span class="count notification-count">0</span>
+                             </button>
+                           </div>
+                            <div class="dropdown-boxes" style="display:none" id="notification-box">
+                                <p>Notification</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

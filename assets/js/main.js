@@ -1,8 +1,23 @@
 // $.noConflict();
 var GLOBALREQUEST;
 jQuery(document).ready(function($) {
+    //Notication VIew
     GLOBALREQUEST = new Array();
+    
+    $('.open-dropdown-box').click(function(e){
+        var openDropBox = $(e.target).parent().parent().siblings()
+        $(openDropBox).fadeToggle('fast', 'linear', function () {
+            return false;
+//                if ($(openDropBox).is(':hidden')) {
+//                    alert("hidden");
+//                }else{
+//                    alert("else");
+//                }
+            });
+    });
+    
     $(document).click(function(e){
+        $('.dropdown-boxes').fadeOut();
         var targetId = $(e.target).attr('id');
         
         if((targetId == 'hideShowDropDown') || (targetId == 'showUserName')){
@@ -11,6 +26,11 @@ jQuery(document).ready(function($) {
             $('.user-menu').fadeOut();
         }
     });
+    
+    $('.open-dropdown-box, .dropdown-boxes').click(function () {
+            return false;       // DO NOTHING WHEN CONTAINER IS CLICKED.
+        });
+
     var bodyId = $('body').attr('id');
     if(bodyId == "project-page"){
         loadAllProjectsFromDatabase();
@@ -18,12 +38,14 @@ jQuery(document).ready(function($) {
         editDatapickerOnProjectDateField();
     }else if(bodyId == 'task-page'){
         loadAllTasksFromDatabase();
-        initDatapickerOnProjectDateField();
+        initDatapickerOnTaskDateField();
+        editDatapickerOnTaskDateField();
     }else if(bodyId == 'assign-page'){
         getProjectNameHavingTask();
         getAllAssignWithDatabase();
         initDatapickerOnProjectDateField();
     }
+    
     function initDatapickerOnProjectDateField(){
       $("#projectStart").datepicker({
           numberOfMonths: 2,
@@ -35,6 +57,21 @@ jQuery(document).ready(function($) {
           numberOfMonths: 2,
           onSelect: function(selected) {
              $("#projectStart").datepicker("option","maxDate", selected)
+          }
+      });
+    }
+    
+    function initDatapickerOnTaskDateField(){
+      $("#taskStart").datepicker({
+          numberOfMonths: 2,
+          onSelect: function(selected) {
+            $("#taskEnd").datepicker("option","minDate", selected)
+          }
+      });
+      $("#taskEnd").datepicker({ 
+          numberOfMonths: 2,
+          onSelect: function(selected) {
+             $("#taskStart").datepicker("option","maxDate", selected)
           }
       });
     }
@@ -53,6 +90,22 @@ jQuery(document).ready(function($) {
           }
       });
     }
+    
+    function editDatapickerOnTaskDateField(){
+      $("#taskStartEdit").datepicker({
+          numberOfMonths: 2,
+          onSelect: function(selected) {
+            $("#taskEndEdit").datepicker("option","minDate", selected)
+          }
+      });
+      $("#taskEndEdit").datepicker({ 
+          numberOfMonths: 2,
+          onSelect: function(selected) {
+             $("#taskStartEdit").datepicker("option","maxDate", selected)
+          }
+      });
+    }
+    
     // Written by Arslan
     $('#updateName').click(function(){
       var firstName = $('#f-name').val();
@@ -120,6 +173,7 @@ jQuery(document).ready(function($) {
 	checkAcceptOrDeclineOfUser();
 	// checkSeenOfProjectAssign();
         checkSupervisorAssignProject(); //project supervisor assigned
+        checkAssignProject();
 
 	$('#btnLogIn').click(function(){
     showPreloader();
@@ -257,7 +311,7 @@ jQuery(document).ready(function($) {
 							}else{
 								var srcImage = response[i]['path'];
 							}
-							$('#user-email-show').append('<div class="main-user-email clearfix" onclick="printUserEmail(this, '+ response[i]['u_id'] +')"><img src="'+ srcImage +'" class="user-avatar email-image"><span>'+ response[i]['u_fname'] +' '+ response[i]['u_lname']+'</span></div>');
+							$('#user-email-show').append('<div class="main-user-email clearfix" onclick="printUserEmail(this, '+ response[i]['u_id'] +')"><img src="'+ srcImage +'" class="user-avatar email-image"><span>'+ response[i]['u_fname'] +' '+ response[i]['u_lname']+'</span><p>'+response[i]['u_email']+'</p></div>');
 						}
 						
 					 }else{
@@ -299,6 +353,8 @@ jQuery(document).ready(function($) {
 
 	$("#projectName").change(function() {
     	var value = $('#projectName').val();
+        $('#taskType').html('<option value="">--Select--</option>');
+        
       if(value != ''){
       	$.ajax({
   			url:baseURL+'assign/get_task_type',
@@ -375,10 +431,10 @@ jQuery(document).ready(function($) {
     //add task
     $('#addTask').click(function(){
        showPreloader();
-       var projectName = $('#projectName').val();
+       var projectName = $('#projectNameTask').val();
        var TaskType = $('#taskType').val();
-       var projectStart = $('#projectStart').val();
-       var projectEnd = $('#projectEnd').val();
+       var projectStart = $('#taskStart').val();
+       var projectEnd = $('#taskEnd').val();
        var taskDetail = $('#taskDetail').val();
        $.ajax({
         url:baseURL+'task/add_task',
@@ -432,6 +488,7 @@ jQuery(document).ready(function($) {
                 console.log('else');
             }
             hidePreloader();
+            getAllAssignWithDatabase();
         }
        });
     });
@@ -454,6 +511,27 @@ jQuery(document).ready(function($) {
     });
     
 });
+
+function dataTableProjectInit(){
+  $('#project-details-table').dataTable({
+    "bLengthChange": false,
+    "destroy": true,
+  });
+}
+
+function dataTableTaskInit(){
+  $('#task-details-table').dataTable({
+    "bLengthChange": false,
+    "destroy": true,
+  });
+}
+
+function dataTableAssignInit(){
+  $('#assign-details-table').dataTable({
+    "bLengthChange": false,
+    "destroy": true,
+  });
+}
 
 function errorBox(error){
     $('#error-box').fadeIn();
@@ -504,14 +582,43 @@ function emptyChangePassword(){
   $('#new-password').val('');
   $('#confirm-password').val('');
 }
+
 function checkSupervisorAssignProject(){
    $.ajax({
         url:baseURL+'supervisor/check_supervisor_assign',
         dataType: 'json',
         success: function(response){
+            console.log(response);
           if(response.length > 0){
             $('.supervisor-count').text(response.length);
-            
+            for(var i = 0; i < response.length; i++){
+                $('#supervisor-box').append('<div class="supervisor-inner-box col-12 text-center pb-4 pt-4"><u>'+response[i]['u_fname'] + ' ' + response[i]['u_lname'] + '</u> Supervise the Project <u>'+response[i]['p_name']+'</u><p class="mb-0 mt-1"><button onclick="acceptSupervisor('+response[i]['p_id']+')">Accept</button> <button onclick="rejectSupervisor('+response[i]['p_id']+')">Reject</button></p></div>');
+            }
+          }
+            hidePreloader();
+        }
+    });
+}
+
+function checkAssignProject(){
+   $.ajax({
+        url:baseURL+'assign/check_assign_project',
+        dataType: 'json',
+        success: function(response){
+            console.log(response);
+          if(response.length > 0){
+            $('.assign-count').text(response.length);
+            for(var i = 0; i < response.length; i++){
+                var taskType = '';
+                if(response[i]['t_type'] == 1){
+                    taskType = 'Wireframe';
+                }else if(response[i]['t_type'] == 2){
+                    taskType = 'Mockup';
+                }else{
+                    taskType = 'Prototype';
+                }
+                $('#assign-box').append('<div class="supervisor-inner-box col-12 text-center pb-4 pt-4"><u>'+response[i]['u_fname'] + ' ' + response[i]['u_lname'] + '</u> assign you the <u>'+ taskType +'</u> of Project <u>'+response[i]['p_name']+'</u><p class="mb-0 mt-1"><button onclick="acceptSupervisor('+response[i]['p_id']+')">Accept</button> <button onclick="rejectSupervisor('+response[i]['p_id']+')">Reject</button></p></div>');
+            }
           }
             hidePreloader();
         }
@@ -519,41 +626,40 @@ function checkSupervisorAssignProject(){
 }
 
 function loadAllProjectsFromDatabase(){
-  $('#project-details-table-tbody').html('');
     $.ajax({
         url:baseURL+'project/get_all_project',
         dataType: 'json',
         success: function(response){
           if(response.length > 0){
+            $("#project-details-table").dataTable().fnDestroy();
+            $('#project-details-table-tbody').html('');
             for(var i = 0; i < response.length; i++){
                 $('#project-details-table-tbody').append('<tr><td>' + (i+1) +'</td><td>' + response[i]['p_id'] + '</td><td>'+response[i]['p_name']+'</td><td>'+response[i]['p_type']+'</td><td>'+response[i]['p_start']+'</td><td>'+response[i]['p_end']+'</td><td>'+response[i]['u_email']+'</td><td><span onclick="getProjectById('+response[i]['p_id']+')" class="tweak pointer">View</span> | <span onclick="deleteProjectById('+response[i]['p_id']+')" class="tweak pointer">Delete</span></td</tr>');
             }
           }else{
-              $('#project-details-table-tbody').append('<tr><td><h3 class="mt-1 mb-1"><span class="tweak">N</span>o <span class="tweak">R</span>ecord <span class="tweak">F</span>ound</h3></td</tr>');
+              $('#project-details-table-tbody').append('<tr><td colspan="8"><h3 class="mt-1 mb-1"><span class="tweak">N</span>o <span class="tweak">R</span>ecord <span class="tweak">F</span>ound</h3></td</tr>');
           }
             hidePreloader();
-            $('#project-details-table').dataTable({
-                "bLengthChange": false,
-                "destroy": true,
-            });
+            dataTableProjectInit();
         }
     });
 }
 
 function loadAllTasksFromDatabase(){
-    $('#projectName').val('');
+    $('#projectNameTask').val('');
     $('#projectNameEdit').val('');
-    $('#task-details-table-tbody').html('');
     $.ajax({
         url:baseURL+'task/get_all_task',
         dataType: 'json',
         success: function(response){
             
             for(var i = 0; i < response['project_name'].length; i++){
-                $('#projectName').append('<option value="'+response['project_name'][i].p_id+'">'+response['project_name'][i].p_name+'</option>')
+                $('#projectNameTask').append('<option value="'+response['project_name'][i].p_id+'">'+response['project_name'][i].p_name+'</option>')
                 $('#projectNameEdit').append('<option value="'+response['project_name'][i].p_id+'">'+response['project_name'][i].p_name+'</option>')
             }
             if(response['task_data'].length > 0){
+              $("#task-details-table").dataTable().fnDestroy();
+              $('#task-details-table-tbody').html('');
               for(var i = 0; i < response['task_data'].length; i++){
                   var taskType = response['task_data'][i]['t_type'];
                   var taskName = '';
@@ -567,13 +673,10 @@ function loadAllTasksFromDatabase(){
                   $('#task-details-table-tbody').append('<tr><td>' + (i+1) +'</td><td>' + response['task_data'][i]['t_id'] + '</td><td>'+response['task_data'][i]['p_name']+'</td><td>'+taskName+'</td><td>'+response['task_data'][i]['t_start']+'</td><td>'+response['task_data'][i]['t_end']+'</td><td><span onclick="getTaskById('+response['task_data'][i]['t_id']+')" class="tweak pointer">View</span> | <span onclick="deleteProjectById('+response['task_data'][i]['t_id']+')" class="tweak pointer">Delete</span></td</tr>');
               }
             }else{
-                $('#task-details-table-tbody').append('<tr><td><h3>No Record Found</h3></td></tr>');
+                $('#task-details-table-tbody').append('<tr><td colspan="8"><h3 class="mt-1 mb-1"><span class="tweak">N</span>o <span class="tweak">R</span>ecord <span class="tweak">F</span>ound</h3></td</tr>');
             }
             hidePreloader();
-            $('#task-details-table').dataTable({
-                "bLengthChange": false,
-                "destroy": true,
-            });
+            dataTableTaskInit();
         }
     });
 }
@@ -585,6 +688,7 @@ function getProjectNameHavingTask(){
         url:baseURL+'assign/get_project_name_having_task',
         dataType: 'json',
         success: function(response){
+            console.log(response);
             for(var i = 0; i < response.length; i++){
                 $('#projectName').append('<option value="'+response[i].p_id+'">'+response[i].p_name+'</option>')
                 $('#projectNameEdit').append('<option value="'+response[i].p_id+'">'+response[i].p_name+'</option>')
@@ -622,13 +726,10 @@ function getAllAssignWithDatabase(){
                     $('#assign-details-table-tbody').append('<tr><td>' + (i+1) +'</td><td>' + response['assign_work'][i]['u_email'] + '</td><td>'+response['assign_work'][i]['p_name']+'</td><td>'+taskName+'</td><td>'+response['assign_work'][i]['a_start']+'</td><td>'+response['assign_work'][i]['a_end']+'</td><td>'+statusName+'</td><td><span onclick="getAssignById('+response['assign_work'][i]['a_id']+')" class="tweak pointer">View</span> | <span onclick="deleteProjectById('+response['assign_work'][i]['t_id']+')" class="tweak pointer">Delete</span></td</tr>');
                 }
             }else{
-                $('#assign-details-table-tbody').append('<tr><td>No Record Found</td</tr>');
+                $('#assign-details-table-tbody').append('<tr><td colspan="8"><h3 class="mt-1 mb-1"><span class="tweak">N</span>o <span class="tweak">R</span>ecord <span class="tweak">F</span>ound</h3></td</tr>');
             }
             hidePreloader();
-            $('#assign-details-table').dataTable({
-                "bLengthChange": false,
-                "destroy": true,
-            });
+            dataTableAssignInit();
         }
     });
 }
@@ -679,6 +780,43 @@ function updateProjectById(){
             var message = "Successfully Updated";
             popupSuccessBox(message);
             loadAllProjectsFromDatabase();
+        }
+    });
+  }
+}
+
+function updateTaskById(){
+  $('#popup_error').html('');
+  var task_id = $('#taskid').val();
+  var task_project_name = $('#projectNameEdit').val();
+  var task_type = $('#taskTypeEdit').val();
+  var task_start = $('#taskStartEdit').val();
+  var task_end = $('#taskEndEdit').val();
+  // var project_supervisor = $('#user-email-idEdit').val();
+  var task_details = $('#taskDetailsEdit').val();
+  // var supervisor_name = $('#user-emailEdit').val();
+  //alert(project_details);
+  if((task_project_name == "") || (task_type == "") || (task_start == "") || (task_end == "") || (task_details == "")){
+      var message = "Please fill-in all the mandatory fields.";
+      popupDangerError(message);
+     
+  }else{
+
+      $.ajax({
+        url:baseURL+'task/update_task_by_id',
+        data: {task_id:task_id, task_project_name:task_project_name, task_type:task_type, task_start: task_start, task_end: task_end, task_details:task_details },
+        method: 'post',
+        type: 'post',
+        dataType: 'json',
+        success: function(response){
+            console.log(response);
+            
+            loadAllTasksFromDatabase();
+            // loadAllProjectsFromDatabase();
+            var message = "Successfully Updated";
+            popupSuccessBox(message);
+            
+          
         }
     });
   }
@@ -839,7 +977,6 @@ function closePupop(){
 			type: 'post',
      		dataType: 'json',
 			success: function(response){
-                           console.log(response);
 				if(response.length > 0){
 					var seen = 0;
 					$('#dropdown-notification p.red').text("You Have " + response.length + " Notification");

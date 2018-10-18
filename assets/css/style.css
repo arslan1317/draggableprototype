@@ -346,6 +346,10 @@ img.user-avatar.email-image {
 .main-user-email span{
   margin-left: 5px;
 }
+.header-left{
+    display: inline-flex;
+}
+
 .header-left .dropdown .dropdown-toggle .count{
     top: 0 !important;
     left: 27px !important;
@@ -945,7 +949,8 @@ header .form-inline {
     #language-select .dropdown-menu .dropdown-item {
       margin-right: 0;
       max-width: 25px;
-      padding: 0; }
+      padding: 0; 
+    }
       #language-select .dropdown-menu .dropdown-item:hover {
         background: #fff; }
       #language-select .dropdown-menu .dropdown-item .flag-icon {
@@ -990,6 +995,21 @@ h1, h2, h3, h4, h5, h6{font-family: 'Varela Round', sans-serif !important;font-w
     right: 0;
     top:16px;
 }
+.dropdown-boxes{
+    display: block;
+    position: absolute;
+    border-top: 2px solid blue;
+    width: 280px;
+    height: 280px;
+    top: 128%;
+    background-color: white;
+    overflow-y: scroll;
+    -webkit-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.5);
+    -moz-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.5);
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.5);
+    border-radius: 0px 0px 10px 10px;
+}
+.dropdown-boxes .supervisor-inner-box:last-child{border-bottom: 0px;}
 .content input, .content select, .content textarea, .pupopBg input, .pupopBg select{height: 40px !important;}
 .form-btn{margin-top: 30px;}
 .content label{font-size: 18px;}
@@ -1009,3 +1029,4 @@ h1, h2, h3, h4, h5, h6{font-family: 'Varela Round', sans-serif !important;font-w
 .width-60per{width: 60%;}
 div#project-details-table_filter label, #task-details-table_filter label, #assign-details-table_filter label{font-weight: normal; width: 300px;}
 div#project-details-table_filter label input, #task-details-table_filter label input, #assign-details-table_filter label input{font-size: 14px !important;width: 70%;padding-left: 15px;}
+.supervisor-inner-box{border-bottom: 1px solid grey;}

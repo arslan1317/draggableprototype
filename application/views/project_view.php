@@ -95,7 +95,7 @@
                 </div>
             </div>
         </div>
-        <div class="content mt-3">
+        <div class="content mt-3 mb-4">
             <div class="col-md-12">
                 <table id="project-details-table" class="table table-condensed table-striped">
                     <thead>

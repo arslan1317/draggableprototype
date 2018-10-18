@@ -107,4 +107,9 @@ class Assign extends CI_Controller {
             $data = $this->Assign_model->get_assign_by_id($id);
             echo json_encode($data);
         }
+        
+        public function check_assign_project(){
+            $data = $this->Assign_model->check_assign_project_model();
+            echo json_encode($data);
+        }
 }

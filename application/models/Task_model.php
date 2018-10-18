@@ -40,5 +40,15 @@ class Task_model extends CI_Model{
         $query = $this->db->get();
         return $query->result();
     }
+    public function update_task_by_id($taskid, $taskprojectname, $tasktype, $taskstart, $taskend, $taskdetails){
+        $this->db->set('p_id', $taskprojectname);
+        $this->db->set('t_type', $tasktype);
+        $this->db->set('t_start', $taskstart);
+        $this->db->set('t_end', $taskend);
+        $this->db->set('t_detail', $taskdetails);
+        $this->db->where('t_id', $taskid);
+        $this->db->update('tasks');
+        return $this->db->affected_rows();
+    }
 }
 ?>

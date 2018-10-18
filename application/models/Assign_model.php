@@ -93,7 +93,7 @@ class Assign_model extends CI_Model{
         $this->db->from('projects');
         $this->db->join('tasks', 'projects.p_id = tasks.p_id');
         $this->db->where('projects.u_id', $this->session->userdata('u_id'));
-        $this->db->group_by('projects.u_id'); 
+        $this->db->group_by('projects.p_id'); 
         $query = $this->db->get();
         return $query->result();
     }
@@ -106,6 +106,19 @@ class Assign_model extends CI_Model{
                 ->join('tasks', 'tasks.t_id =assigns.t_id')
                 ->where('assigns.a_by', $this->session->userdata('u_id'))
                 ->where('assigns.a_id', $id);
+        $query = $this->db->get();
+        return $query->result();
+    }
+    
+    public function check_assign_project_model(){
+        $id = $this->session->userdata('u_id');
+        $this->db->select('*');
+        $this->db->from('assigns');
+        $this->db->join('tasks', 'tasks.t_id = assigns.t_id');
+        $this->db->join('projects', 'projects.p_id = assigns.p_id');
+        $this->db->join('users', 'users.u_id = assigns.a_by');
+        $this->db->where('assigns.u_id', $this->session->userdata('u_id'));
+        $this->db->order_by('assigns.a_id', "desc");
         $query = $this->db->get();
         return $query->result();
     }

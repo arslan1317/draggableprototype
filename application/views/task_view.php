@@ -34,8 +34,8 @@
                 <div class="col-md-12">
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="projectName" class="normal-bold">Project Name</label>
-                            <select name="projectName" id="projectName" class="form-control">
+                            <label for="projectNameTask" class="normal-bold">Project Name</label>
+                            <select name="projectNameTask" id="projectNameTask" class="form-control">
                                 <option value="">--Select--</option>
                             </select>
                         </div>
@@ -54,13 +54,13 @@
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="taskStart" class="normal-bold">Task Start</label>
-                            <input type="text" class="form-control" id="projectStart" name="taskStart">
+                            <input type="text" class="form-control" id="taskStart" name="taskStart">
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="taskEnds" class="normal-bold">Task End</label>
-                            <input type="text" class="form-control" id="projectEnd" name="taskEnd">
+                            <input type="text" class="form-control" id="taskEnd" name="taskEnd">
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -86,7 +86,7 @@
                 </div>
             </div>
         </div>
-        <div class="content mt-3">
+        <div class="content mt-3 mb-4">
             <div class="col-md-12">
                 <table id="task-details-table" class="table table-condensed table-striped">
                     <thead>
@@ -114,7 +114,7 @@
 <h3 class="pull-left col-11 blue-border-left pt-2 pb-2">Task Details</h3>
 <p class="pull-right pointer closePopopIcon tweak mr-4" onclick="closePupop()">X</p>
 <div class="clearfix"></div>
-<div id="empeupdate" class="alert-danger" style="display:none;">Please fill-in all the mandatory fields.</div>
+<div id="popup_error" class="alert mb-0 mt-2" style="display:none;"></div>
 </div>
 <div class="col-12 pb-3">
 
