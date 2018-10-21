@@ -14,8 +14,7 @@
     <link rel="shortcut icon" href="favicon.ico">
 
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/normalize.css">
-    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/bootstrap.css">
-    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/font-awesome.min.css">
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/themify-icons.css">
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/cs-skin-elastic.css">

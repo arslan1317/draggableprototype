@@ -30,5 +30,21 @@ class Supervisor extends CI_Controller {
 		$data = $this->Supervisor_model->check_supervisor_assign_model();
 		echo json_encode($data);
 	}
-
+        
+        public function accept_supervisor(){
+            $id = $this->input->post('id');;
+            $data = $this->Supervisor_model->accept_supervisor($id);
+            echo json_encode($data);
+        }
+        
+        public function reject_supervisor(){
+            $id = $this->input->post('id');;
+            $data = $this->Supervisor_model->reject_supervisor($id);
+            echo json_encode($data);
+        }
+        
+        public function check_Accept_Or_Reject_Supervisor(){
+            $data = $this->Supervisor_model->check_Accept_Or_Reject_Supervisor();
+            echo json_encode($data);
+        }
 }

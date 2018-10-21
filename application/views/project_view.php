@@ -179,5 +179,26 @@
 </div>
 </div>
  <!-- View_popup finished (by Waleed) -->
+ 
+___________project_View________
+ <!--Delete_popup (waleed)-->
+
+ <div class="col-12 pupopBg" id="deleteBox" style="display: none;">
+<div class="col-lg-3 col-md-4 col-sm-6 col-11 boxes pupopInnerBox">
+<div class="col-12 pt-3 overflow-hidden">
+<p class="text-center font-familyUniversLT pt-3 pb-3">Are you sure you want to delete this record?</p>
+<input type="hidden" id="projectDeleteId">
+<div class="form-group col-6 pull-left">
+    <input type="button" class="btn bg-green col-12 cursor" id="changeActiveOrInactive" value="YES" onclick="inactiveProject()">
+  </div>
+  <div class="form-group col-6 pull-right">
+    <input type="button" class="btn bg-green col-12 cursor" value="NO" onclick="closeDelPupop()">
+  </div>
+</div>
+</div>
+</div>
+
+<!--Delete_popup-->
+
 
 <?php $this->view('masterpage/footer.php'); ?>

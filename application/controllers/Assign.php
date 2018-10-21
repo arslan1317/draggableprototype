@@ -112,4 +112,16 @@ class Assign extends CI_Controller {
             $data = $this->Assign_model->check_assign_project_model();
             echo json_encode($data);
         }
+        
+        public function accept_assign(){
+            $id = $this->input->post('id');;
+            $data = $this->Assign_model->accept_assign($id);
+            echo json_encode($data);
+        }
+        
+        public function reject_assign(){
+            $id = $this->input->post('id');;
+            $data = $this->Assign_model->reject_assign($id);
+            echo json_encode($data);
+        }
 }

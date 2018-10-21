@@ -1,5 +1,5 @@
 <?php $this->view('masterpage/header.php'); ?>
-<body>
+<body id="wireframe-page">
 <?php $this->view('masterpage/aside.php'); ?>
         <!-- Left Panel -->
 
@@ -9,7 +9,7 @@
 
     <div id="right-panel" class="right-panel">
         <?php $this->view('masterpage/nav.php'); ?>
-        <div class="breadcrumbs">
+        <div class="breadcrumbs mt-10">
             <div class="col-sm-2">
                 <div class="page-header float-left">
                     <div class="page-title">
@@ -51,7 +51,7 @@
         <div class="content mt-3">
             <div class="col-md-12">
                 <div class="row">
-                    <div class="col-md-2 col-md-offset-3">
+                    <div class="col-md-2 offset-md-3">
                         <div class="form-group">
                         <label for="projectID">Selected Activity</label>
                         <input type="text" placeholder="Splash Activity" readonly="" class="form-control">
@@ -80,6 +80,25 @@
             </div>
         </div> <!-- .content -->
     </div><!-- /#right-panel -->
-
+    <div class="open-wireframe-box" style="display:none">
+        <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#activity" style="width: 100%">Activity</button>
+        <div id="activity" class="collapse in show">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+          sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+          quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        </div>
+        <button type="button" class="btn btn-info mt-1" data-toggle="collapse" data-target="#components" style="width: 100%">Component</button>
+        <div id="components" class="collapse in show">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+          sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+          quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        </div>
+        <button type="button" class="btn btn-info mt-1" data-toggle="collapse" data-target="#property" style="width: 100%">Component</button>
+        <div id="property" class="collapse in show">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+          sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+          quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        </div>
+    </div>
     <!-- Right Panel -->
 <?php $this->view('masterpage/footer.php'); ?>

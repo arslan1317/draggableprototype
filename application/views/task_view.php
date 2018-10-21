@@ -34,8 +34,8 @@
                 <div class="col-md-12">
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="projectNameTask" class="normal-bold">Project Name</label>
-                            <select name="projectNameTask" id="projectNameTask" class="form-control">
+                            <label for="projectName" class="normal-bold">Project Name</label>
+                            <select name="projectName" id="projectNameTask" class="form-control">
                                 <option value="">--Select--</option>
                             </select>
                         </div>
@@ -54,13 +54,13 @@
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="taskStart" class="normal-bold">Task Start</label>
-                            <input type="text" class="form-control" id="taskStart" name="taskStart">
+                            <input type="text" class="form-control" id="projectStart" name="taskStart">
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="taskEnds" class="normal-bold">Task End</label>
-                            <input type="text" class="form-control" id="taskEnd" name="taskEnd">
+                            <input type="text" class="form-control" id="projectEnd" name="taskEnd">
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -111,6 +111,7 @@
     <div class="col-12 pupopBg overflow-yscroll" id="pupop" style="display:none;">
         <div class="col-lg-offset-4 col-lg-4 col-md-offset-3 col-md-6 col-sm-offset-2 col-sm-8 col-11 boxes pupopInnerBox pb-4" style="margin-top:30px; margin-bottom:30px;">
 <div class="col-12 pt-3 overflow-hidden p-0 mt-2 mb-2">
+<input type="hidden" id="taskid">
 <h3 class="pull-left col-11 blue-border-left pt-2 pb-2">Task Details</h3>
 <p class="pull-right pointer closePopopIcon tweak mr-4" onclick="closePupop()">X</p>
 <div class="clearfix"></div>
@@ -155,7 +156,7 @@
    
  
   <div class="form-group col-12 p-0 m-auto">
-      <input type="button" class="btn bg-green col-8 main-btn mt-1" value="UPDATE" onclick="updateEmp()">
+      <input type="button" class="btn bg-green col-8 main-btn mt-1" value="UPDATE" onclick="updateTaskById()">
   </div>
       
 </div>

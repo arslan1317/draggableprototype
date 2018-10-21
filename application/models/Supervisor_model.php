@@ -20,5 +20,31 @@ class Supervisor_model extends CI_Model{
         $query = $this->db->get();
         return $query->result();
     }
+    
+    public function accept_supervisor($id){
+        $this->db->set('s_status', 1);
+        $this->db->where('p_id', $id);
+        $this->db->update('projects');
+        return $this->db->affected_rows();
+    }
+    
+    public function reject_supervisor($id){
+        $this->db->set('s_status', 2);
+        $this->db->where('p_id', $id);
+        $this->db->update('projects');
+        return $this->db->affected_rows();
+    }
+    
+    public function check_Accept_Or_Reject_Supervisor(){
+        $id = $this->session->userdata('u_id');
+        $this->db->select('*');
+        $this->db->from('projects');
+        $this->db->join('users', 'users.u_id = projects.s_id');
+        $this->db->where('projects.u_id', $this->session->userdata('u_id'));
+        $this->db->where('projects.s_status !=', 0);
+//        $this->db->order_by('projects.p_id', "desc");
+        $query = $this->db->get();
+        return $query->result();
+    }
 }
 ?>

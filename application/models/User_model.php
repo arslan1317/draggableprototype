@@ -194,5 +194,13 @@ class User_model extends CI_Model{
         $this->db->update('assigns');
         return true;
     }
+    
+    public function seen_notification($id){
+        $this->db->set('u_seen', 1);
+        $this->db->where('p_id', $id);
+        $this->db->where('u_id', $this->session->userdata('u_id'));
+        $this->db->update('projects');
+        return true;
+    }
 }
 ?>

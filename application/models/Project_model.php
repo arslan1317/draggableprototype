@@ -46,5 +46,19 @@ class Project_model extends CI_Model{
         $this->db->update('projects');
         return $this->db->affected_rows();
     }
+    
+    public function active_project_by_id($id){
+        $this->db->set('p_active', 0);
+        $this->db->where('p_id', $id);
+        $this->db->update('projects');
+        return $this->db->affected_rows();
+    }
+
+    public function inactive_project_by_id($id){
+        $this->db->set('p_active', 1);
+        $this->db->where('p_id', $id);
+        $this->db->update('projects');
+        return $this->db->affected_rows();
+    }
 }
 ?>

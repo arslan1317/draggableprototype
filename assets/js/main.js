@@ -44,6 +44,8 @@ jQuery(document).ready(function($) {
         getProjectNameHavingTask();
         getAllAssignWithDatabase();
         initDatapickerOnProjectDateField();
+    }else if(bodyId == 'wireframe-page'){
+        allWireframesMethods();   
     }
     
     function initDatapickerOnProjectDateField(){
@@ -168,12 +170,14 @@ jQuery(document).ready(function($) {
 	} );
 
 	jQuery('.selectpicker').selectpicker;
-
+        
+        /*All Notification Stuff*/
 	checkNotificationOfProjectAssign();
 	checkAcceptOrDeclineOfUser();
 	// checkSeenOfProjectAssign();
         checkSupervisorAssignProject(); //project supervisor assigned
         checkAssignProject();
+        checkAcceptOrRejectSupervisor();
 
 	$('#btnLogIn').click(function(){
     showPreloader();
@@ -276,9 +280,7 @@ jQuery(document).ready(function($) {
 	});
 
 	$('#startWireframes').click(function(){
-		// $('body').addClass('open');
-		$('#wireframe-box').addClass('wireframe-toolbox wireframe-toolbox-expand');
-		$('#startWireframes').prop('disabled', true);
+            $('.open-wireframe-box').fadeIn('slow');	
 	});
 	
 	$(window).on('load', function() { // makes sure the whole site is loaded 
@@ -590,13 +592,53 @@ function checkSupervisorAssignProject(){
         success: function(response){
             console.log(response);
           if(response.length > 0){
-            $('.supervisor-count').text(response.length);
+            var status = 0;
             for(var i = 0; i < response.length; i++){
-                $('#supervisor-box').append('<div class="supervisor-inner-box col-12 text-center pb-4 pt-4"><u>'+response[i]['u_fname'] + ' ' + response[i]['u_lname'] + '</u> Supervise the Project <u>'+response[i]['p_name']+'</u><p class="mb-0 mt-1"><button onclick="acceptSupervisor('+response[i]['p_id']+')">Accept</button> <button onclick="rejectSupervisor('+response[i]['p_id']+')">Reject</button></p></div>');
+                var buttonTag = '';
+                if(response[i]['s_status'] == 0){
+                    status++;
+                    buttonTag = '<button onclick="acceptSupervisor('+response[i]['p_id']+')" class="btn main-btn notification-btn">Accept</button> <button onclick="rejectSupervisor('+response[i]['p_id']+')" class="btn main-btn notification-btn">Reject</button>';
+                }else if(response[i]['s_status'] == 1){
+                    buttonTag = '<button class="btn main-btn notification-btn" disabled>Accepted</button> <button onclick="rejectSupervisor('+response[i]['p_id']+')" class="btn main-btn notification-btn">Reject</button>';
+                }else{
+                    buttonTag = '<button onclick="acceptSupervisor('+response[i]['p_id']+')" class="btn main-btn notification-btn">Accept</button> <button class="btn main-btn notification-btn" disabled>Rejected</button>';
+                }
+                $('.supervisor-count').text(status);
+                $('#supervisor-box').append('<div class="supervisor-inner-box col-12 text-center pb-4 pt-4"><u>'+response[i]['u_fname'] + ' ' + response[i]['u_lname'] + '</u> Supervise the Project <u>'+response[i]['p_name']+'</u><p class="mb-0 mt-1">'+buttonTag+'</p></div>');
             }
           }
             hidePreloader();
         }
+    });
+}
+
+function acceptSupervisor(id){
+    $.ajax({
+       url:baseURL+'supervisor/accept_supervisor',
+       data: {id:id},
+       method: 'post',
+       type: 'post',
+       dataType: 'json',
+       success: function(response){
+           console.log(response);
+           $('#supervisor-box').html('');
+           checkSupervisorAssignProject();
+       }
+    });
+}
+
+function rejectSupervisor(id){
+    $.ajax({
+       url:baseURL+'supervisor/reject_supervisor',
+       data: {id:id},
+       method: 'post',
+       type: 'post',
+       dataType: 'json',
+       success: function(response){
+           console.log(response);
+           $('#supervisor-box').html('');
+           checkSupervisorAssignProject();
+       }
     });
 }
 
@@ -607,9 +649,10 @@ function checkAssignProject(){
         success: function(response){
             console.log(response);
           if(response.length > 0){
-            $('.assign-count').text(response.length);
+            var status = 0;
             for(var i = 0; i < response.length; i++){
                 var taskType = '';
+                var buttonTag;
                 if(response[i]['t_type'] == 1){
                     taskType = 'Wireframe';
                 }else if(response[i]['t_type'] == 2){
@@ -617,7 +660,16 @@ function checkAssignProject(){
                 }else{
                     taskType = 'Prototype';
                 }
-                $('#assign-box').append('<div class="supervisor-inner-box col-12 text-center pb-4 pt-4"><u>'+response[i]['u_fname'] + ' ' + response[i]['u_lname'] + '</u> assign you the <u>'+ taskType +'</u> of Project <u>'+response[i]['p_name']+'</u><p class="mb-0 mt-1"><button onclick="acceptSupervisor('+response[i]['p_id']+')">Accept</button> <button onclick="rejectSupervisor('+response[i]['p_id']+')">Reject</button></p></div>');
+                if(response[i]['a_accept'] == 0){
+                    status++;
+                    var buttonTag = '<button onclick="acceptAssign('+response[i]['a_id']+')" class="btn main-btn notification-btn">Accept</button> <button onclick="rejectAssign('+response[i]['a_id']+')" class="btn main-btn notification-btn">Reject</button>';
+                }else if(response[i]['a_accept'] == 1){
+                    var buttonTag = '<button class="btn main-btn notification-btn" disabled>Accepted</button> <button onclick="rejectAssign('+response[i]['a_id']+')" class="btn main-btn notification-btn">Reject</button>';
+                }else{
+                    var buttonTag = '<button onclick="acceptAssign('+response[i]['a_id']+')" class="btn main-btn notification-btn">Accept</button> <button class="btn main-btn notification-btn" disabled>Rejected</button>';
+                }
+                $('.assign-count').text(status);
+                $('#assign-box').append('<div class="supervisor-inner-box col-12 text-center pb-4 pt-4"><u>'+response[i]['u_fname'] + ' ' + response[i]['u_lname'] + '</u> assign you the <u>'+ taskType +'</u> of Project <u>'+response[i]['p_name']+'</u><p class="mb-0 mt-1">'+buttonTag+'</p></div>');
             }
           }
             hidePreloader();
@@ -625,6 +677,64 @@ function checkAssignProject(){
     });
 }
 
+function acceptAssign(id){
+    $.ajax({
+       url:baseURL+'assign/accept_assign',
+       data: {id:id},
+       method: 'post',
+       type: 'post',
+       dataType: 'json',
+       success: function(response){
+           console.log(response);
+           $('#assign-box').html('');
+           checkAssignProject();
+       }
+    });
+}
+
+function rejectAssign(id){
+    $.ajax({
+       url:baseURL+'assign/reject_assign',
+       data: {id:id},
+       method: 'post',
+       type: 'post',
+       dataType: 'json',
+       success: function(response){
+           console.log(response);
+           $('#assign-box').html('');
+           checkAssignProject();
+       }
+    });
+}
+
+function checkAcceptOrRejectSupervisor(){
+    $.ajax({
+        url:baseURL+'supervisor/check_Accept_Or_Reject_Supervisor',
+        dataType: 'json',
+        success: function(response){
+            var notSeen = 0;
+            for(var i = 0; i < response.length; i++){
+                var buttonTag = '';
+                var seenClass = '';
+                var status = '';
+                if(response[i]['u_seen'] == 0){
+                    notSeen++;
+                    seenClass = 'not-seen';
+                }else{
+                    seenClass = 'seen';
+                }
+                if(response[i]['s_status'] == 1){
+                    status = 'Accepted';
+                }else{
+                    status = 'Rejected';
+                }
+                $('#notification-box').append('<div class="supervisor-inner-box col-12 text-center pb-4 pt-4 notifiaction-hover pointer '+ seenClass +'" onclick="seenNotification('+response[i]['p_id']+')"><u>'+response[i]['u_fname'] + ' ' + response[i]['u_lname'] + '</u> <span class="tweak">'+status+'</span> the Supervising request of <u>'+response[i]['p_name']+'</u></div>');
+            }
+            $('.notification-count').text(notSeen);
+          console.log(response);
+        }
+    });
+}
 function loadAllProjectsFromDatabase(){
     $.ajax({
         url:baseURL+'project/get_all_project',
@@ -634,7 +744,13 @@ function loadAllProjectsFromDatabase(){
             $("#project-details-table").dataTable().fnDestroy();
             $('#project-details-table-tbody').html('');
             for(var i = 0; i < response.length; i++){
-                $('#project-details-table-tbody').append('<tr><td>' + (i+1) +'</td><td>' + response[i]['p_id'] + '</td><td>'+response[i]['p_name']+'</td><td>'+response[i]['p_type']+'</td><td>'+response[i]['p_start']+'</td><td>'+response[i]['p_end']+'</td><td>'+response[i]['u_email']+'</td><td><span onclick="getProjectById('+response[i]['p_id']+')" class="tweak pointer">View</span> | <span onclick="deleteProjectById('+response[i]['p_id']+')" class="tweak pointer">Delete</span></td</tr>');
+                if(response[i]['p_active'] == 0){
+                    //active
+                    $('#project-details-table-tbody').append('<tr><td>' + (i+1) +'</td><td>' + response[i]['p_id'] + '</td><td>'+response[i]['p_name']+'</td><td>'+response[i]['p_type']+'</td><td>'+response[i]['p_start']+'</td><td>'+response[i]['p_end']+'</td><td>'+response[i]['u_email']+'</td><td><span onclick="getProjectById('+response[i]['p_id']+')" class="tweak pointer">View</span> | <span onclick="inactiveProjectById('+response[i]['p_id']+')" class="tweak pointer">Inactive</span></td</tr>');
+                }else{
+                    //not active
+                    $('#project-details-table-tbody').append('<tr><td>' + (i+1) +'</td><td>' + response[i]['p_id'] + '</td><td>'+response[i]['p_name']+'</td><td>'+response[i]['p_type']+'</td><td>'+response[i]['p_start']+'</td><td>'+response[i]['p_end']+'</td><td>'+response[i]['u_email']+'</td><td><span onclick="getProjectById('+response[i]['p_id']+')" class="tweak pointer">View</span> | <span onclick="activeProjectById('+response[i]['p_id']+')" class="tweak pointer">Active</span></td</tr>');
+                }
             }
           }else{
               $('#project-details-table-tbody').append('<tr><td colspan="8"><h3 class="mt-1 mb-1"><span class="tweak">N</span>o <span class="tweak">R</span>ecord <span class="tweak">F</span>ound</h3></td</tr>');
@@ -645,6 +761,69 @@ function loadAllProjectsFromDatabase(){
     });
 }
 
+function seenNotification(id){
+    $.ajax({
+       url:baseURL+'user/seen_notification',
+       type: 'post',
+       method: 'post',
+       dataType: 'json',
+       data: {id: id},
+       success: function(success){
+           console.log(success);
+           $('#notification-box').html('');
+           checkAcceptOrRejectSupervisor();
+       }
+    });
+}
+
+function inactiveProjectById(id){
+    $("#deleteBox").fadeIn("slow");
+    $("#projectDeleteId").val(id);
+    $("#changeActiveOrInactive").attr("onclick","inactiveProject()");
+}
+
+function activeProjectById(id){
+    $("#deleteBox").fadeIn("slow");
+    $("#projectDeleteId").val(id);
+    $("#changeActiveOrInactive").attr("onclick","activeProject()");
+}
+
+function activeProject(){
+    var id = $("#projectDeleteId").val();
+    $.ajax({
+        url:baseURL+'project/active_project_by_id',
+        data: {id:id},
+        method: 'post',
+        type: 'post',
+        dataType: 'json',
+        success: function(response){
+            console.log(response);
+            $('#deleteBox').fadeOut('slow');
+            loadAllProjectsFromDatabase();
+        }
+    });
+}
+
+function inactiveProject(){
+    var id = $("#projectDeleteId").val();
+    $.ajax({
+        url:baseURL+'project/inactive_project_by_id',
+        data: {id:id},
+        method: 'post',
+        type: 'post',
+        dataType: 'json',
+        success: function(response){
+            console.log(response);
+            $('#deleteBox').fadeOut('slow');
+            loadAllProjectsFromDatabase();
+        }
+    });
+}
+
+function closeDelPupop(){
+    $('#deleteBox').fadeOut(); 
+}
+
 function loadAllTasksFromDatabase(){
     $('#projectNameTask').val('');
     $('#projectNameEdit').val('');
@@ -652,7 +831,6 @@ function loadAllTasksFromDatabase(){
         url:baseURL+'task/get_all_task',
         dataType: 'json',
         success: function(response){
-            
             for(var i = 0; i < response['project_name'].length; i++){
                 $('#projectNameTask').append('<option value="'+response['project_name'][i].p_id+'">'+response['project_name'][i].p_name+'</option>')
                 $('#projectNameEdit').append('<option value="'+response['project_name'][i].p_id+'">'+response['project_name'][i].p_name+'</option>')
@@ -857,6 +1035,7 @@ function getTaskById(id){
         dataType: 'json',
         success: function(response){
             console.log(response);
+            $('#taskid').val(response[0]['t_id']);
             $('#projectNameEdit').val(response[0]['p_id']);
             $('#taskTypeEdit').val(response[0]['t_type']);
             $('#taskStartEdit').val(response[0]['t_start']);
@@ -1208,3 +1387,16 @@ function closePupop(){
     $('#loginError').html("");
   }
 });
+
+function allWireframesMethods(){    
+    $.ajax({
+          url:baseURL+'wireframes/get_all_methods',
+          dataType: 'json',
+          success: function(response){
+            console.log(response);
+            for(var i = 0; i < response.length; i++){
+            $('#selectProject').append('<option value='+response[i]['p_id']+'>'+response[i]['p_name']+'</option>');
+          }
+        }
+    });
+}

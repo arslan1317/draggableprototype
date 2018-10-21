@@ -75,5 +75,11 @@ class User extends CI_Controller {
 		$data = $this->User_model->message_assign_by();
 		print_r($data);
 	}
+        
+        public function seen_notification(){
+            $id = $this->input->post('id');
+            $data = $this->User_model->seen_notification($id);
+            echo json_encode($data);
+        }
 
 }

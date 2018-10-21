@@ -22,13 +22,19 @@ class Wireframes extends CI_Controller {
         parent::__construct();
         $this->load->helper('form');
         $this->load->library('session');
-    }
+        $this->load->model('Wireframe_model');
+        }
 
 	function index(){
-		if(isset($_SESSION['u_id'])){
-			$this->load->view('wireframe_view');
-        }else{
-            redirect('Login/index');
-        }
+            if(isset($_SESSION['u_id'])){
+                $this->load->view('wireframe_view');
+            }else{
+                redirect('Login/index');
+            }
 	}
+    
+    function get_all_methods(){
+	$data = $this->Wireframe_model->get_all_methods();
+        echo json_encode($data);
+    }
 }

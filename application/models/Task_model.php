@@ -26,6 +26,7 @@ class Task_model extends CI_Model{
     public function get_project(){
         $this->db->select("*"); 
         $this->db->from('projects');
+        $this->db->where('projects.p_active', 0);
         $this->db->where('projects.u_id', $this->session->userdata('u_id'));
         $query = $this->db->get();
         return $query->result();

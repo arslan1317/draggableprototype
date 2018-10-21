@@ -36,7 +36,6 @@
                              </button>
                            </div>
                             <div class="dropdown-boxes" style="display:none" id="notification-box">
-                                <p>Notification</p>
                             </div>
                         </div>
                     </div>

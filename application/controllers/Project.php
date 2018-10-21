@@ -92,4 +92,16 @@ class Project extends CI_Controller {
             $data = $this->Project_model->update_project_by_id($projectid, $projectname, $projectstype, $projectstart, $projectend, $projectsupervisor, $projectdetails);
             echo json_encode($data);
         }
+        
+        public function active_project_by_id(){
+            $id = $this->input->post('id');
+            $data = $this->Project_model->active_project_by_id($id);
+            echo json_encode($data);
+        }
+
+        public function inactive_project_by_id(){
+            $id = $this->input->post('id');
+            $data = $this->Project_model->inactive_project_by_id($id);
+            echo json_encode($data);
+        }
 }

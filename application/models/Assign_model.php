@@ -92,6 +92,7 @@ class Assign_model extends CI_Model{
         $this->db->select('*');
         $this->db->from('projects');
         $this->db->join('tasks', 'projects.p_id = tasks.p_id');
+        $this->db->where('projects.p_active', 0);
         $this->db->where('projects.u_id', $this->session->userdata('u_id'));
         $this->db->group_by('projects.p_id'); 
         $query = $this->db->get();
@@ -121,6 +122,20 @@ class Assign_model extends CI_Model{
         $this->db->order_by('assigns.a_id', "desc");
         $query = $this->db->get();
         return $query->result();
+    }
+    
+    public function accept_assign($id){
+        $this->db->set('a_accept', 1);
+        $this->db->where('a_id', $id);
+        $this->db->update('assigns');
+        return $this->db->affected_rows();
+    }
+    
+    public function reject_assign($id){
+        $this->db->set('a_accept', 2);
+        $this->db->where('a_id', $id);
+        $this->db->update('assigns');
+        return $this->db->affected_rows();
     }
 }
 ?>

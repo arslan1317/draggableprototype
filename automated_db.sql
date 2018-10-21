@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 15, 2018 at 12:23 AM
+-- Generation Time: Oct 21, 2018 at 10:46 PM
 -- Server version: 10.1.36-MariaDB
 -- PHP Version: 7.2.10
 
@@ -39,15 +39,16 @@ CREATE TABLE `assigns` (
   `a_by` int(50) NOT NULL,
   `seen` int(1) NOT NULL DEFAULT '0',
   `a_status` int(1) NOT NULL DEFAULT '0',
-  `a_accept` int(1) NOT NULL DEFAULT '0'
+  `a_accept` int(1) NOT NULL DEFAULT '0',
+  `a_timespan` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `assigns`
 --
 
-INSERT INTO `assigns` (`a_id`, `u_id`, `p_id`, `t_id`, `a_start`, `a_end`, `a_detail`, `a_by`, `seen`, `a_status`, `a_accept`) VALUES
-(2, 27, 16, 4, '10/19/2018', '11/30/2018', 'Assign you the wireframe of uber', 120, 0, 0, 0);
+INSERT INTO `assigns` (`a_id`, `u_id`, `p_id`, `t_id`, `a_start`, `a_end`, `a_detail`, `a_by`, `seen`, `a_status`, `a_accept`, `a_timespan`) VALUES
+(2, 27, 16, 4, '10/19/2018', '11/30/2018', 'Assign you the wireframe of uber', 120, 0, 0, 1, '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -65,6 +66,8 @@ CREATE TABLE `projects` (
   `u_id` int(11) NOT NULL,
   `s_id` int(11) NOT NULL,
   `s_status` int(1) NOT NULL DEFAULT '0',
+  `u_seen` int(1) NOT NULL DEFAULT '0',
+  `p_active` int(1) NOT NULL DEFAULT '0',
   `timespan` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -72,11 +75,12 @@ CREATE TABLE `projects` (
 -- Dumping data for table `projects`
 --
 
-INSERT INTO `projects` (`p_id`, `p_name`, `p_type`, `p_start`, `p_end`, `p_detail`, `u_id`, `s_id`, `s_status`, `timespan`) VALUES
-(16, 'Uber', 'Pick & Drop', '10/01/2018', '11/30/2018', 'Make friendly Application', 120, 27, 0, NULL),
-(17, 'Whatever', 'Travel', '10/15/2018', '11/12/2018', 'Explore the nature of the world', 120, 27, 0, NULL),
-(18, 'draggable', 'Travel', '10/16/2018', '11/22/2018', 'lollllllllll', 120, 27, 0, NULL),
-(19, 'Checking Purpose', 'Music', '10/10/2018', '11/22/2018', 'cheking purpose details', 120, 27, 0, '2018-10-14 14:43:10');
+INSERT INTO `projects` (`p_id`, `p_name`, `p_type`, `p_start`, `p_end`, `p_detail`, `u_id`, `s_id`, `s_status`, `u_seen`, `p_active`, `timespan`) VALUES
+(16, 'Uber', 'Pick & Drop', '10/01/2018', '11/30/2018', 'Make friendly Application', 120, 27, 0, 0, 0, NULL),
+(17, 'Whatever', 'Travel', '10/15/2018', '11/12/2018', 'Explore the nature of the world', 120, 27, 1, 1, 1, NULL),
+(18, 'draggable', 'Travel', '10/16/2018', '11/22/2018', 'lollllllllll', 120, 27, 0, 0, 1, NULL),
+(19, 'Checking Purpose', 'Music', '10/10/2018', '11/22/2018', 'cheking purpose details', 120, 27, 2, 1, 1, '2018-10-14 14:43:10'),
+(20, 'Daniyal Project Testing', 'Travel', '10/25/2018', '11/24/2018', 'Daniyal Project Add Testing', 120, 27, 1, 1, 0, '2018-10-18 22:07:35');
 
 -- --------------------------------------------------------
 
@@ -101,7 +105,10 @@ INSERT INTO `tasks` (`t_id`, `t_type`, `t_start`, `t_end`, `t_detail`, `p_id`) V
 (1, '1', '06/03/2018', '07/31/2018', 'design all the screen register, sign in and dashboard', 1),
 (2, '1', '10/18/2018', '11/12/2018', 'Make wireframe as your suggested', 4),
 (4, '1', '10/12/2018', '11/21/2018', 'making uber wireframes', 16),
-(5, '2', '10/19/2018', '11/14/2018', 'Make Mockup of Uber', 16);
+(5, '2', '10/19/2018', '11/14/2018', 'Make Mockup of Uber', 16),
+(6, '1', '10/20/2018', '11/21/2018', 'Wireframe is added on behalf of daniyal project testing', 20),
+(7, '2', '10/25/2018', '11/19/2018', 'Mockup Task', 20),
+(8, '3', '11/28/2018', '12/31/2018', 'Prototype Daniyal Project Testing Testing', 20);
 
 -- --------------------------------------------------------
 
@@ -169,13 +176,13 @@ ALTER TABLE `assigns`
 -- AUTO_INCREMENT for table `projects`
 --
 ALTER TABLE `projects`
-  MODIFY `p_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `p_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `tasks`
 --
 ALTER TABLE `tasks`
-  MODIFY `t_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `t_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `users`
