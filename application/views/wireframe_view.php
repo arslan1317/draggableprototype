@@ -48,7 +48,7 @@
             </div>
         </div>
 
-        <div class="content mt-3">
+        <div class="content mt-3 mb-5">
             <div class="col-md-12">
                 <div class="row">
                     <div class="col-md-2 offset-md-3">
@@ -57,7 +57,7 @@
                         <input type="text" placeholder="Splash Activity" readonly="" class="form-control">
                     </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="wireframe-mobile">
                                 <div class="mobile-top"></div>
                                 <div class="mobile-inner"></div>
@@ -83,21 +83,48 @@
     <div class="open-wireframe-box" style="display:none">
         <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#activity" style="width: 100%">Activity</button>
         <div id="activity" class="collapse in show">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-          sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-          quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+          <div class="input-group mb-1 mt-1 p-2 pl-3 pr-3">
+            <input type="text" class="form-control" placeholder="Activity" aria-label="Recipient's username" aria-describedby="basic-addon2">
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary main-btn mt-0 frame-open-padding" type="button"><i class="fas fa-plus"></i></button>
+            </div>
+          </div>
         </div>
         <button type="button" class="btn btn-info mt-1" data-toggle="collapse" data-target="#components" style="width: 100%">Component</button>
-        <div id="components" class="collapse in show">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-          sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-          quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        <div id="components" class="collapse in show mb-1 mt-1 p-2 pl-3 pr-3">
+            <ul>
+                <li><p id="labelDrop" class="border-on-icon"><i class="fas fa-font"> Label</i></p></li>
+                <li><p id="inputDrop" class="border-on-icon"><i class="far fa-square"> Input</i></p></li>
+                <li><p id="buttonDrop" class="border-on-icon"><i class="fas fa-square-full"> Button</i></p></li>
+            </ul>
+
         </div>
-        <button type="button" class="btn btn-info mt-1" data-toggle="collapse" data-target="#property" style="width: 100%">Component</button>
+        <button type="button" class="btn btn-info mt-1" data-toggle="collapse" data-target="#property" style="width: 100%">Properties</button>
         <div id="property" class="collapse in show">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-          sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-          quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            <div class="form-group row">
+                <label for="inputID" class="col-form-label">ID</label>
+                <div class="left-input">
+                    <input type="text" class="form-control" id="inputID" placeholder="ID">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputText" class="col-form-label">Text</label>
+                <div class="left-input">
+                    <input type="text" class="form-control" id="inputText" placeholder="Text">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputWidth" class="col-form-label">Width</label>
+                <div class="left-input">
+                    <input type="text" class="form-control" id="inputWidth" placeholder="Width">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputHeight" class="col-form-label">Height</label>
+                <div class="left-input">
+                    <input type="text" class="form-control" id="inputHeight" placeholder="Height">
+                </div>
+            </div>
         </div>
     </div>
     <!-- Right Panel -->

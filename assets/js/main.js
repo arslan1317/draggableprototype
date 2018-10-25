@@ -48,6 +48,118 @@ jQuery(document).ready(function($) {
         allWireframesMethods();   
     }
     
+//    $( "#labelDrop" ).draggable();
+//    $( ".mobile-inner" ).droppable({
+//      drop: function( event, ui ) {
+//        $( this )
+//          .addClass( "ui-state-highlight" );
+////          .find( "p" )
+////            .html( "Dropped!" );
+//      }
+//    });
+//    $( "#labelDrop" ).draggable();
+    
+    $( "#labelDrop, #inputDrop, #buttonDrop").draggable({
+        revert: 'invalid',
+        cursor: 'move',
+        appendTo: "body",
+        helper: 'clone',
+        zIndex: 9999999
+      });
+      var dropLabel = 0;
+      var dropInput = 0;
+      var dropButton = 0;
+      
+      $( ".mobile-inner").droppable({
+          hoverClass: "drop-hover",
+      drop: function( event, ui ) {
+          var draggable = ui.draggable;
+          var getID = draggable.prop("id");
+          var dragged = draggable.clone(); 
+          var newPosY = ui.offset.top - $(this).offset().top;
+          var newPosX = ui.offset.left - $(this).offset().left;
+          $(dragged).css({'margin-bottom': '0px', 'position': 'absolute', 'top': newPosY, 'left' : newPosX}).appendTo('.mobile-inner');
+          if(getID == 'labelDrop'){
+              dropLabel++;
+              $(dragged).html('Text');
+              var newDropId = 'text_view_' + dropLabel;
+              addSomeAttributes(dragged, newDropId);
+          }else if(getID == 'inputDrop'){
+              dropInput++;
+              $(dragged).css({'padding': '0px', 'border':'0px'});
+              $(dragged).html('<input type="text" style="width:inherit">');
+              var newDropId = 'edit_text_' + dropInput;
+              addSomeAttributes(dragged, newDropId);
+          }else if(getID == 'buttonDrop'){
+              
+          }
+           dragged.resizable();
+//          console.log($(event).position());
+//          console.log("left " + ui.offset.left + " - " + $(this).offset().left);
+//          console.log("Top " + ui.offset.top + " - " + $(this).offset().top);
+//          var newPosX = 0;
+//          var newPosY = 0;
+//          console.log($(this).offset().left);
+//          console.log($(this).offset().top);
+//          newPosX = ui.offset.left - $(this).offset().left;
+//          newPosY = ui.offset.top - $(this).offset().top;
+//          console.log(ui);
+//          var pos = ui.draggable.offset();
+//          dPos = $(this).offset();
+//          var positionTop = pos.top - dPos.top;
+//          console.log(pos);
+//          console.log(dPos);
+//          console.log(positionTop);
+//          console.log(ui.draggable.context);
+//          draggedElement = $(ui.draggable);
+//          dropZone = $(event.target);
+//          console.log(draggedElement)
+//          console.log(dropZone);
+//          var offset = $(ui.helper).offset();
+//          xPos = offset.left;
+//          yPos = offset.top;
+//          console.log(xPos);
+//          console.log(yPos);
+//          $(ui.draggable).clone().css('top','relative').appendTo('.mobile-inner');
+//          console.log(event);
+//          console.log(ui);
+//          console.log(ui.draggable.prop("id"));
+      }
+    });
+    
+    function addSomeAttributes(component, id){
+        $(component).attr('id', id);
+        var id = $(component).attr('id');
+        console.log(component);
+        fillTheProperties(id);
+    }
+    
+    function fillTheProperties(id){
+        $('#inputID').val(id);
+    }
+//    $("#labelDrop").draggable({
+//        appendTo: 'body', // Append to the body.
+//        zIndex: 9999999,
+//        containment: $('document'),
+//        helper: 'clone'
+//    });
+    
+//    $("#labelDrop").droppable({
+//        accept: '.mobile-inner',
+//        drop: function(event, ui) {
+//            $(this).append($("ui.draggable").clone());
+////            $("#container .product").addClass("item");
+////            $(".item").removeClass("ui-draggable product");
+////            $(".item").draggable({
+////                containment: 'parent',
+////                grid: [150,150]
+////            });
+//        }
+//    });
+//    $(".mobile-inner").draggable({
+//        helper: 'clone'
+//    });
+    
     function initDatapickerOnProjectDateField(){
       $("#projectStart").datepicker({
           numberOfMonths: 2,

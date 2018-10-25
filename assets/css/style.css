@@ -208,14 +208,17 @@ span#showUserName {
   color: black !important;
 }
 .wireframe-mobile {
+    width: 90%;
     border: 2px solid black;
-    height: 500px;
+    height: 600px;
     border-radius: 30px;
+    margin: 0 auto;
 }
 .mobile-inner {
+    position: relative;
     width: 84%;
     border: 1px solid black;
-    height: 380px;
+    height: 477px;
     margin: 0 auto;
 }
 .mobile-bottom {
@@ -1029,9 +1032,36 @@ div#project-details-table_filter label input, #task-details-table_filter label i
     overflow-y: scroll;
     position: absolute;
     width: 20%;
-    background-color: red;
+    border: 1px solid grey;
     z-index: 9999999;
     left: 20%;
     bottom: 10%;
     top: 22%;
+}
+.frame-open-padding{
+    padding: 5px 20px 1px;
+}
+#components ul li{
+    list-style: none;
+    display: inline-block;
+}
+.border-on-icon{
+    margin-bottom: 0px;
+    padding: 2px 8px;
+    border: 1px solid grey;
+}
+#property{
+    padding: 10px 15px;
+    margin: 10px 15px;
+}
+.col-form-label{
+    float: left;
+    width: 30%;
+}
+.left-input {
+    float: right;
+    width: 60%;
+}
+#property .form-group{
+    margin-bottom: 0px !important;
 }
