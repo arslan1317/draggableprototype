@@ -41,8 +41,7 @@
             </div>
             <div class="col-sm-5">
                 <div class="float-right">
-                    <div class="alert alert-danger text-center login-alert required-error">
-                        <p>Splash Activity Saved</p>
+                    <div class="alert alert-danger text-center login-alert required-error" id="error-box" style="display:none">
                     </div>
                 </div>
             </div>
@@ -67,9 +66,7 @@
                     <div class="col-md-3">
                         <div class="save-activity text-center">
                             <h2 class="activityHead">Activities</h2>
-                            <ul>
-                                <li>Splash Activity</li>
-                                <li>Main Activity</li>
+                            <ul id="activity-name-show">
                             </ul>
                         </div>
                         <div class="save-button mt-">
@@ -86,7 +83,7 @@
           <div class="input-group mb-1 mt-1 p-2 pl-3 pr-3">
             <input type="text" class="form-control" placeholder="Activity" aria-label="Recipient's username" aria-describedby="basic-addon2">
             <div class="input-group-append">
-              <button class="btn btn-outline-secondary main-btn mt-0 frame-open-padding" type="button"><i class="fas fa-plus"></i></button>
+                <button class="btn btn-outline-secondary main-btn mt-0 frame-open-padding" id="addactivity" type="button"><i class="fas fa-plus"></i></button>
             </div>
           </div>
         </div>

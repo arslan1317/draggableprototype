@@ -3,6 +3,11 @@ var GLOBALREQUEST;
 jQuery(document).ready(function($) {
     //Notication VIew
     GLOBALREQUEST = new Array();
+    $(document).on('keydown', function(e){
+        if((e.keyCode == 46) || (e.keyCode == 8)) {
+            $('.item.selected').remove();
+        }
+    });
     
     $('.open-dropdown-box').click(function(e){
         var openDropBox = $(e.target).parent().parent().siblings()
@@ -15,7 +20,7 @@ jQuery(document).ready(function($) {
 //                }
             });
     });
-    
+
     $(document).click(function(e){
         $('.dropdown-boxes').fadeOut();
         var targetId = $(e.target).attr('id');
@@ -48,17 +53,6 @@ jQuery(document).ready(function($) {
         allWireframesMethods();   
     }
     
-//    $( "#labelDrop" ).draggable();
-//    $( ".mobile-inner" ).droppable({
-//      drop: function( event, ui ) {
-//        $( this )
-//          .addClass( "ui-state-highlight" );
-////          .find( "p" )
-////            .html( "Dropped!" );
-//      }
-//    });
-//    $( "#labelDrop" ).draggable();
-    
     $( "#labelDrop, #inputDrop, #buttonDrop").draggable({
         revert: 'invalid',
         cursor: 'move',
@@ -71,11 +65,19 @@ jQuery(document).ready(function($) {
       var dropButton = 0;
       
       $( ".mobile-inner").droppable({
+          accept: '#labelDrop, #inputDrop, #buttonDrop',
           hoverClass: "drop-hover",
       drop: function( event, ui ) {
           var draggable = ui.draggable;
           var getID = draggable.prop("id");
-          var dragged = draggable.clone(); 
+          var dragged = draggable.clone();
+          $('.item').removeClass('selected');
+          $(dragged).addClass('item selected');
+          $(dragged).removeClass("ui-draggable");
+           $(ui.helper).remove();
+          $(dragged).draggable({
+                 containment: 'parent'
+            });
           var newPosY = ui.offset.top - $(this).offset().top;
           var newPosX = ui.offset.left - $(this).offset().left;
           $(dragged).css({'margin-bottom': '0px', 'position': 'absolute', 'top': newPosY, 'left' : newPosX}).appendTo('.mobile-inner');
@@ -86,14 +88,35 @@ jQuery(document).ready(function($) {
               addSomeAttributes(dragged, newDropId);
           }else if(getID == 'inputDrop'){
               dropInput++;
-              $(dragged).css({'padding': '0px', 'border':'0px'});
-              $(dragged).html('<input type="text" style="width:inherit">');
+              $(dragged).css({'padding': '4px', 'border':'0px', width:'10%', height:'8%'});
+              $(dragged).html('');
+              $(dragged).append('<input type="text" style="width:-webkit-fill-available;height:100% !important" disabled="true">');
               var newDropId = 'edit_text_' + dropInput;
               addSomeAttributes(dragged, newDropId);
           }else if(getID == 'buttonDrop'){
               
           }
-           dragged.resizable();
+
+            // dragged.draggable();
+
+            // $(".item").remove(draggable);
+            // $( ".item").draggable();
+            dragged.resizable();
+//          $('.item').click(function(){
+//            $('.item').removeClass('selected');
+//            $(this).addClass('selected');
+//          });
+            
+            $(".item" ).mousedown(function() {
+               $('.item').removeClass('selected');
+               $(this).addClass('selected');
+               var id = $(this).attr('id');
+               addSomeAttributes(this, id);
+            });
+            
+           // console.log(dragged);
+
+
 //          console.log($(event).position());
 //          console.log("left " + ui.offset.left + " - " + $(this).offset().left);
 //          console.log("Top " + ui.offset.top + " - " + $(this).offset().top);
@@ -127,10 +150,58 @@ jQuery(document).ready(function($) {
       }
     });
     
+    $('#startWireframes').click(function(){
+    var selectedProject = $('#selectProject').val();
+    if(selectedProject == 0){
+      errorBox('<p>Please Select Project Name</p>');
+    }else{
+      $('.open-wireframe-box').fadeIn('slow');
+    }
+	});
+	
+  $('#selectProject').change(function(){
+    var selectedProject = $('#selectProject').val();
+    if(selectedProject != 0){
+      $.ajax({
+        method: 'post',
+        type: 'post',
+        url: baseURL+'activity/get_activity_name_by_project',
+        data: {selectedProject : selectedProject},
+        dataType: 'json',
+        success: function(response){
+            console.log(response);
+            if(response == ''){
+              $('#activity-name-show').html('');
+            }else{
+              $('#activity-name-show').html('');
+              for(var i = 0; i < response.length; i++){
+                $('#activity-name-show').append('<li>'+response[i]['act_name']+'</li>');
+              }
+            }
+        }
+    });
+    }
+  });
+
+$('#addactivity').click(function(){
+      var activityname = $('#activity_name').val();
+      var projectid = $('#selectProject').val();
+      $.ajax({
+        url:baseURL+'activity/insert_activity',
+        method: 'post',
+        type: 'post',
+          data: {activityname: activityname, projectid: projectid},
+          dataType: 'json',
+        success: function(response){
+         
+          console.log(response);
+         }
+        });
+    });
+    
     function addSomeAttributes(component, id){
         $(component).attr('id', id);
         var id = $(component).attr('id');
-        console.log(component);
         fillTheProperties(id);
     }
     
@@ -203,6 +274,11 @@ jQuery(document).ready(function($) {
              $("#projectStartEdit").datepicker("option","maxDate", selected)
           }
       });
+    }
+    
+    function emptyPropertyAttributeWireframe(){
+        $('#property input').val('');
+        $('.item').removeClass('selected');
     }
     
     function editDatapickerOnTaskDateField(){
@@ -389,10 +465,6 @@ jQuery(document).ready(function($) {
 		event.preventDefault();
 		event.stopPropagation();
 		$('.search-trigger').parent('.header-left').removeClass('open');
-	});
-
-	$('#startWireframes').click(function(){
-            $('.open-wireframe-box').fadeIn('slow');	
 	});
 	
 	$(window).on('load', function() { // makes sure the whole site is loaded 
