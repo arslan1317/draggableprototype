@@ -75,13 +75,14 @@
                     </div>
                 </div>
             </div>
+            <footer>Footer</footer>
         </div> <!-- .content -->
     </div><!-- /#right-panel -->
     <div class="open-wireframe-box" style="display:none">
         <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#activity" style="width: 100%">Activity</button>
         <div id="activity" class="collapse in show">
           <div class="input-group mb-1 mt-1 p-2 pl-3 pr-3">
-            <input type="text" class="form-control" placeholder="Activity" aria-label="Recipient's username" aria-describedby="basic-addon2">
+            <input type="text" id="activity_name" class="form-control" placeholder="Activity" aria-label="Recipient's username" aria-describedby="basic-addon2">
             <div class="input-group-append">
                 <button class="btn btn-outline-secondary main-btn mt-0 frame-open-padding" id="addactivity" type="button"><i class="fas fa-plus"></i></button>
             </div>
@@ -90,9 +91,12 @@
         <button type="button" class="btn btn-info mt-1" data-toggle="collapse" data-target="#components" style="width: 100%">Component</button>
         <div id="components" class="collapse in show mb-1 mt-1 p-2 pl-3 pr-3">
             <ul>
-                <li><p id="labelDrop" class="border-on-icon"><i class="fas fa-font"> Label</i></p></li>
-                <li><p id="inputDrop" class="border-on-icon"><i class="far fa-square"> Input</i></p></li>
-                <li><p id="buttonDrop" class="border-on-icon"><i class="fas fa-square-full"> Button</i></p></li>
+                <li><p id="labelDrop" class="border-on-icon"><i class="fas fa-font"><br><span>Label</span></i></p></li>
+                <li><p id="inputDrop" class="border-on-icon"><i class="far fa-square"><br><span>Input</span></i></p></li>
+                <li><p id="buttonDrop" class="border-on-icon"><i class="fas fa-square-full"><br><span>Button</span></i></p></li>
+                <li><p id="imageDrop" class="border-on-icon"><i class="far fa-image"><br><span>Image</span></i></p></li>
+                <li><p id="radioDrop" class="border-on-icon"><i class="far fa-circle"><br><span>Radio</span></i></p></li>
+                <li><p id="checkboxDrop" class="border-on-icon"><i class="far fa-check-square"><br><span>Checkbox</span></i></p></li>
             </ul>
 
         </div>

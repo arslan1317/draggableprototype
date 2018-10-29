@@ -41,17 +41,8 @@ class Activity extends CI_Controller {
                         'done_by_id' => $this->session->userdata('u_id')
                     );
         $data = $this->Activity_model->insert_activity($activity);
-        // if($data){
-        //     $data['data'] = $this->get_all(0);
-        //     $data['status'] = 0;
-        //     echo json_encode($data,);
-        // }
+        echo json_encode($data);
     }
-
-    // public function get_all(){
-    //         $data = $this->Activity_model->get_all_Activity();
-    //         echo json_encode($data);
-    // }
 
     public function get_activity_name_by_project(){
         $id = $this->input->post('selectedProject');

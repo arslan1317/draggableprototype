@@ -53,7 +53,7 @@ jQuery(document).ready(function($) {
         allWireframesMethods();   
     }
     
-    $( "#labelDrop, #inputDrop, #buttonDrop").draggable({
+    $( "#labelDrop, #inputDrop, #buttonDrop, #imageDrop, #radioDrop, #checkboxDrop").draggable({
         revert: 'invalid',
         cursor: 'move',
         appendTo: "body",
@@ -63,9 +63,11 @@ jQuery(document).ready(function($) {
       var dropLabel = 0;
       var dropInput = 0;
       var dropButton = 0;
-      
+      var dropImage = 0;
+      var dropRadio = 0;
+      var dropCheckbox = 0;
       $( ".mobile-inner").droppable({
-          accept: '#labelDrop, #inputDrop, #buttonDrop',
+          accept: '#labelDrop, #inputDrop, #buttonDrop, #imageDrop, #radioDrop, #checkboxDrop',
           hoverClass: "drop-hover",
       drop: function( event, ui ) {
           var draggable = ui.draggable;
@@ -90,18 +92,46 @@ jQuery(document).ready(function($) {
               dropInput++;
               $(dragged).css({'padding': '4px', 'border':'0px', width:'10%', height:'8%'});
               $(dragged).html('');
-              $(dragged).append('<input type="text" style="width:-webkit-fill-available;height:100% !important" disabled="true">');
+              $(dragged).append('<input type="text" style="width:-webkit-fill-available;height:100% !important">');
               var newDropId = 'edit_text_' + dropInput;
               addSomeAttributes(dragged, newDropId);
           }else if(getID == 'buttonDrop'){
-              
+              dropButton++;
+              $(dragged).css({'padding': '4px', 'border':'0px', width:'20%', height:'8%'});
+              $(dragged).html('');
+              $(dragged).append('<input type="button" style="width:-webkit-fill-available;height:100% !important" value="Button">');
+              var newDropId = 'Button_' + dropButton;
+              addSomeAttributes(dragged, newDropId);
+          }else if(getID == 'imageDrop'){
+              dropImage++;
+              (dragged).css({'padding': '4px', 'border':'0px', width:'20%', height:'8%'});
+              $(dragged).html('');
+              $(dragged).append('<img src="https://cdn.pixabay.com/photo/2012/04/10/23/56/cross-27168_1280.png" style="width:-webkit-fill-available;height:100% !important">');
+              var newDropId = 'image_' + dropImage;
+              addSomeAttributes(dragged, newDropId);
+          }else if(getID == 'radioDrop'){
+              dropRadio++;
+              (dragged).css({'padding': '4px', 'border':'0px', width:'10%', height:'8%'});
+              $(dragged).html('');
+              $(dragged).append('<input type="radio" style="width:-webkit-fill-available;height:100% !important">');
+              var newDropId = 'radio_' + dropRadio;
+              addSomeAttributes(dragged, newDropId);
+          }else if(getID == 'checkboxDrop'){
+              dropCheckbox++;
+              (dragged).css({'padding': '4px', 'border':'0px', width:'10%', height:'8%'});
+              $(dragged).html('');
+              $(dragged).append('<input type="checkbox" style="width:-webkit-fill-available;height:100% !important">');
+              var newDropId = 'checkbox_' + dropCheckbox;
+              addSomeAttributes(dragged, newDropId);
           }
 
             // dragged.draggable();
 
             // $(".item").remove(draggable);
             // $( ".item").draggable();
-            dragged.resizable();
+            $(dragged).resizable({
+                containment: 'parent'
+            });
 //          $('.item').click(function(){
 //            $('.item').removeClass('selected');
 //            $(this).addClass('selected');
@@ -162,7 +192,42 @@ jQuery(document).ready(function($) {
   $('#selectProject').change(function(){
     var selectedProject = $('#selectProject').val();
     if(selectedProject != 0){
+      getAllActivities(selectedProject);
+    }
+  });
+
+$('#addactivity').click(function(){
+      var activityname = $('#activity_name').val();
+      var projectid = $('#selectProject').val();
       $.ajax({
+        url:baseURL+'activity/insert_activity',
+        method: 'post',
+        type: 'post',
+        dataType: 'json',
+          data: {activityname: activityname, projectid: projectid},
+          dataType: 'json',
+        success: function(response){
+            if(response){
+                var selectedProject = $('#selectProject').val();
+                getAllActivities(selectedProject);
+                $('#activity_name').val('');
+            }
+         }
+        });
+    });
+    
+    function addSomeAttributes(component, id){
+        $(component).attr('id', id);
+        var id = $(component).attr('id');
+        fillTheProperties(id);
+    }
+    
+    function fillTheProperties(id){
+        $('#inputID').val(id);
+    }
+    
+    function getAllActivities(selectedProject){
+        $.ajax({
         method: 'post',
         type: 'post',
         url: baseURL+'activity/get_activity_name_by_project',
@@ -180,33 +245,6 @@ jQuery(document).ready(function($) {
             }
         }
     });
-    }
-  });
-
-$('#addactivity').click(function(){
-      var activityname = $('#activity_name').val();
-      var projectid = $('#selectProject').val();
-      $.ajax({
-        url:baseURL+'activity/insert_activity',
-        method: 'post',
-        type: 'post',
-          data: {activityname: activityname, projectid: projectid},
-          dataType: 'json',
-        success: function(response){
-         
-          console.log(response);
-         }
-        });
-    });
-    
-    function addSomeAttributes(component, id){
-        $(component).attr('id', id);
-        var id = $(component).attr('id');
-        fillTheProperties(id);
-    }
-    
-    function fillTheProperties(id){
-        $('#inputID').val(id);
     }
 //    $("#labelDrop").draggable({
 //        appendTo: 'body', // Append to the body.

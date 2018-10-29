@@ -1044,6 +1044,13 @@ div#project-details-table_filter label input, #task-details-table_filter label i
 #components ul li{
     list-style: none;
     display: inline-block;
+    margin: 3px 0px;
+    width: 80px;
+    text-align: center;
+    display: inline-block;
+}
+#components ul li i span{
+    font-weight: 600 !important;
 }
 .border-on-icon{
     margin-bottom: 0px;
@@ -1069,4 +1076,11 @@ div#project-details-table_filter label input, #task-details-table_filter label i
     -webkit-box-shadow: 0px 0px 5px 0px rgba(17,0,255,1);
     -moz-box-shadow: 0px 0px 5px 0px rgba(17,0,255,1);
     box-shadow: 0px 0px 5px 0px rgba(17,0,255,1);
+}
+footer{
+    position: absolute;
+    bottom: 0px;
+    background-color: red;
+    left: 0;
+    right: 0;
 }
