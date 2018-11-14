@@ -281,8 +281,7 @@ span#showUserName {
 }
 .save-button{
     margin: 0 auto;
-  margin-top: 30%;
-    width: 60%;
+    margin-top: 30%;
 }
 .mockups-error{
   margin:10px 0px !important;
@@ -1083,4 +1082,35 @@ footer{
     background-color: red;
     left: 0;
     right: 0;
+}
+.wire-btn{
+     padding: 4px 40px !important;
+}
+.wire-btn-box{
+    margin:10px 0px 0px;
+}
+#activity-name-show li.active{
+    background-color: #6195FF;
+    color: white;
+}
+.mobile-inner p.selected{
+    -webkit-box-shadow: 0px 0px 5px 0px rgba(17,0,255,1);
+    -moz-box-shadow: 0px 0px 5px 0px rgba(17,0,255,1);
+    box-shadow: 0px 0px 5px 0px rgba(17,0,255,1);
+}
+.all-data-box {
+    background-color: white;
+    padding: 5% 6%;
+    border: 2px solid black;
+    height: 218px;
+    margin-bottom: 10%;
+}
+.all-data-box p {
+    color: black;
+    padding: 0;
+    margin: 4px 0px;
+    font-size: 16px;
+}
+.all-data-box span {
+    font-size: 18px;
 }

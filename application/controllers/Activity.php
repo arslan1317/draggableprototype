@@ -49,4 +49,17 @@ class Activity extends CI_Controller {
         $data = $this->Activity_model->get_activity_name_by_project($id);
         echo json_encode($data);
     }
+    
+    public function insert_wireframe_code(){
+        $id = $this->input->post('activityId');
+        $code = $this->input->post('getWireframeCode');
+        $data = $this->Activity_model->insert_wireframe_code($id, $code);
+        echo json_encode($data);
+    }
+    
+    public function get_html_of_activity(){
+        $id = $this->input->post('getActivityId');
+        $data = $this->Activity_model->get_html_of_activity($id);
+        echo json_encode($data);
+    }
 }

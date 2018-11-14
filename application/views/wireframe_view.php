@@ -33,8 +33,8 @@
             <div class="col-sm-2">
                 <div class="page-header">
                     <div class="page-title">
-                        <ol class="breadcrumb text-right">
-                            <button class="btn btn-custom wire-btn" id="startWireframes">Start</button>
+                        <ol class="text-right wire-btn-box">
+                            <button class="btn wire-btn main-btn" id="startWireframes">Start</button>
                         </ol>
                     </div>
                 </div>
@@ -53,7 +53,8 @@
                     <div class="col-md-2 offset-md-3">
                         <div class="form-group">
                         <label for="projectID">Selected Activity</label>
-                        <input type="text" placeholder="Splash Activity" readonly="" class="form-control">
+                        <input type="text" readonly="" class="form-control" id="selected-activity">
+                        <input type="hidden" id="selected-activity-id">
                     </div>
                     </div>
                     <div class="col-md-4">
@@ -70,7 +71,7 @@
                             </ul>
                         </div>
                         <div class="save-button mt-">
-                            <button class="btn btn-custom">Save</button>
+                            <button class="btn wire-btn main-btn" id="save-wireframe">Save</button>
                         </div>
                     </div>
                 </div>

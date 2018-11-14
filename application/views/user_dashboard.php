@@ -9,116 +9,63 @@
 
     <div id="right-panel" class="right-panel">
         <?php $this->view('masterpage/nav.php'); ?>
-        <div class="breadcrumbs">
-            <div class="col-sm-4">
+        <div class="breadcrumbs mt-10">
+            <div class="col-sm-4 blue-border-left">
                 <div class="page-header float-left">
                     <div class="page-title">
-                        <h1>Dashboard</h1>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-8">
-                <div class="page-header float-right">
-                    <div class="page-title">
-                        <ol class="breadcrumb text-right">
-                            <li class="active">Dashboard</li>
-                        </ol>
+                        <h1><span class="tweak">D</span>ashboard</h1>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div class="content">
-            <div class="col-md-12">
-                    <div class="breadcrumbs sub-breadcrumbs dashboard-breadcrumbs">
-                        <div class="col-md-12">
-                            <div class="page-header float-left">
-                                <div class="page-title">
-                                    <h3>Provided By You</h3>
-                                </div>
+        
+            <div class="col-md-12 content mt-4">
+                <?php foreach ($all_data as $data) { ?>
+                    <div class="col-md-4">
+                        <div class="all-data-box">
+                            <div class="product-name">
+                                <p><span class="tweak">N</span>ame: <?php echo $data->p_name; ?></p>
+                                <p><span class="tweak">T</span>ype: <?php echo $data->p_type; ?></p>
+                            </div>
+                            <div class="supervisor-name">
+                                <p><span class="tweak">S</span>upervisor Name: <?php echo $data->u_fname . ' ' . $data->u_lname; ?>
+                                    <?php 
+                                        if($data->s_status == 0){
+                                            echo '<i class="far fa-eye-slash text-primary"></i>';
+                                        }else if($data->s_status == 1){
+                                            echo '<i class="fas fa-check text-success""></i>';
+                                        }else{
+                                            echo '<i class="fas fa-times text-danger"></i>';
+                                        }
+                                    ?>
+                                </p>
+                            </div>
+                            <div class="task-box">
+                                <?php foreach ($data->task as $task) { ?>
+                                    <p><?php
+                                        if($task->t_type == 1){
+                                            echo '<span class="tweak">W</span>ireframe';
+                                        }else if($task->t_type == 2){
+                                            echo '<span class="tweak">M</span>ockup';
+                                        }else{
+                                            echo '<span class="tweak">P</span>rototype';
+                                        }
+                                    ?>: <?php echo $task->u_fname . ' ' . $task->u_lname; ?>
+                                    <?php 
+                                        if($task->a_accept == 0){
+                                            echo '<i class="far fa-eye-slash text-primary"></i>';
+                                        }else if($task->a_accept == 1){
+                                            echo '<i class="fas fa-check text-success""></i>';
+                                        }else{
+                                            echo '<i class="fas fa-times text-danger"></i>';
+                                        }
+                                    ?>
+                                    </p>
+                                <?php } ?>
                             </div>
                         </div>
                     </div>
-                </div>
-
-            <div class="col-md-12">
-                <div class="col-md-3">
-                    <div class="card text-white bg-flat-color-4">
-                    <div class="card-body pb-0">
-                        <div class="dropdown float-right">
-                            <button class="btn bg-transparent dropdown-toggle theme-toggle text-light" type="button" id="dropdownMenuButton" data-toggle="dropdown">
-                                <i class="fa fa-cog"></i>
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <div class="dropdown-menu-content">
-                                    <a class="dropdown-item" href="#">View Email Address</a>
-                                </div>
-                            </div>
-                        </div>
-                        <h4 class="mb-0">
-                            <span class="count">10468</span>
-                        </h4>
-                        <p class="text-light">Assigned User</p>
-
-                        <div class="chart-wrapper px-3" style="height:70px;" height="70">
-                            
-                        </div>
-
-                    </div>
-                </div>
-                </div>
-
-                <div class="col-md-3">
-                    <div class="card text-white bg-flat-color-4">
-                        <div class="card-body pb-0">
-                            <div class="dropdown float-right">
-                                <button class="btn bg-transparent dropdown-toggle theme-toggle text-light" type="button" id="dropdownMenuButton" data-toggle="dropdown">
-                                    <i class="fa fa-cog"></i>
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <div class="dropdown-menu-content">
-                                        <a class="dropdown-item" href="#">View Project Name</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <h4 class="mb-0">
-                                <span class="count">10468</span>
-                            </h4>
-                            <p class="text-light">Total Projects</p>
-
-                            <div class="chart-wrapper px-3" style="height:70px;" height="70">
-                                <canvas id="widgetChart4"></canvas>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-3">
-                    <div class="card text-white bg-flat-color-4">
-                        <div class="card-body pb-0">
-                            <div class="dropdown float-right">
-                                <button class="btn bg-transparent dropdown-toggle theme-toggle text-light" type="button" id="dropdownMenuButton" data-toggle="dropdown">
-                                    <i class="fa fa-cog"></i>
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <div class="dropdown-menu-content">
-                                        <a class="dropdown-item" href="#">View Task Name</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <h4 class="mb-0">
-                                <span class="count">10468</span>
-                            </h4>
-                            <p class="text-light">Total Task</p>
-
-                            <div class="chart-wrapper px-3" style="height:70px;" height="70">
-                                <canvas id="widgetChart4"></canvas>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
+                <?php } ?>
             </div>
 
         </div> <!-- .content -->

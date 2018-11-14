@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 21, 2018 at 10:46 PM
+-- Generation Time: Nov 14, 2018 at 08:45 AM
 -- Server version: 10.1.36-MariaDB
 -- PHP Version: 7.2.10
 
@@ -21,6 +21,32 @@ SET time_zone = "+00:00";
 --
 -- Database: `automated_db`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `activities`
+--
+
+CREATE TABLE `activities` (
+  `act_id` int(50) NOT NULL,
+  `act_name` varchar(100) NOT NULL,
+  `act_code` longtext NOT NULL,
+  `act_xml` longtext NOT NULL,
+  `p_id` int(11) NOT NULL,
+  `t_type` int(11) NOT NULL,
+  `done_by_id` int(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `activities`
+--
+
+INSERT INTO `activities` (`act_id`, `act_name`, `act_code`, `act_xml`, `p_id`, `t_type`, `done_by_id`) VALUES
+(6, 'main activity', '<p id=\"image_1\" class=\"border-on-icon ui-draggable-handle ui-draggable selected\" style=\"position: absolute; margin-bottom: 0px; top: 35.5469px; left: 76.4375px; padding: 4px; border: 0px; width: 107px; height: 89px;\"><img src=\"https://cdn.pixabay.com/photo/2012/04/10/23/56/cross-27168_1280.png\" style=\"width:-webkit-fill-available;height:100% !important\"></p>', '', 16, 1, 27),
+(7, 'login activity', '', '', 16, 1, 27),
+(8, 'register activity', '', '', 16, 1, 27),
+(9, 'dashboard activity', '', '', 16, 1, 27);
 
 -- --------------------------------------------------------
 
@@ -139,6 +165,12 @@ INSERT INTO `users` (`u_id`, `u_fname`, `u_lname`, `u_email`, `u_pass`, `status`
 --
 
 --
+-- Indexes for table `activities`
+--
+ALTER TABLE `activities`
+  ADD PRIMARY KEY (`act_id`);
+
+--
 -- Indexes for table `assigns`
 --
 ALTER TABLE `assigns`
@@ -165,6 +197,12 @@ ALTER TABLE `users`
 --
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `activities`
+--
+ALTER TABLE `activities`
+  MODIFY `act_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `assigns`

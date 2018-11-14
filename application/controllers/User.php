@@ -32,11 +32,12 @@ class User extends CI_Controller {
     }
 
 	public function index(){
-		if(isset($_SESSION['u_id'])){
-			$this->load->view('user_dashboard');
-        }else{
-            redirect('Login/index');
-        }
+            if(isset($_SESSION['u_id'])){
+                $data['all_data'] = $this->User_model->get_all_created_project();
+		$this->load->view('user_dashboard', $data);
+            }else{
+                redirect('Login/index');
+            }
 	}
 
 	public function logout(){

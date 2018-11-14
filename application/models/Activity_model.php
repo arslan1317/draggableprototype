@@ -31,5 +31,19 @@ class Activity_model extends CI_Model{
         return $query->result();
     }
     
+    public function insert_wireframe_code($id, $code){
+        $this->db->set('act_code', $code);
+        $this->db->where('act_id', $id);
+        $this->db->update('activities');
+        return $this->db->affected_rows();
+    }
+    
+    public function get_html_of_activity($id){
+        $this->db->select("*"); 
+        $this->db->from('activities');
+        $this->db->where('act_id', $id);
+        $query = $this->db->get();
+        return $query->result();
+    }
 }
 ?>
