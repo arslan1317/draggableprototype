@@ -34,7 +34,7 @@ class Wireframes extends CI_Controller {
 	}
     
     function get_all_methods(){
-	$data = $this->Wireframe_model->get_all_methods();
+		$data = $this->Wireframe_model->get_all_methods();
         echo json_encode($data);
     }
 }

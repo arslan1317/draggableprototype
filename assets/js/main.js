@@ -5,7 +5,8 @@ jQuery(document).ready(function($) {
     GLOBALREQUEST = new Array();
     $(document).on('keydown', function(e){
         if((e.keyCode == 46) || (e.keyCode == 8)) {
-            $('.item.selected').remove();
+            // $('.item.selected').remove();
+          $('.mobile-inner .selected').remove();
         }
     });
     
@@ -51,6 +52,8 @@ jQuery(document).ready(function($) {
         initDatapickerOnProjectDateField();
     }else if(bodyId == 'wireframe-page'){
         allWireframesMethods();   
+    }else if(bodyId == 'mockup-page'){
+        allMockupsMethods();
     }
     
     $( "#labelDrop, #inputDrop, #buttonDrop, #imageDrop, #radioDrop, #checkboxDrop").draggable({
@@ -70,6 +73,7 @@ jQuery(document).ready(function($) {
           accept: '#labelDrop, #inputDrop, #buttonDrop, #imageDrop, #radioDrop, #checkboxDrop',
           hoverClass: "drop-hover",
       drop: function( event, ui ) {
+          $('.mobile-inner').children().removeClass('selected');
           var draggable = ui.draggable;
           var getID = draggable.prop("id");
           var dragged = draggable.clone();
@@ -106,7 +110,7 @@ jQuery(document).ready(function($) {
               dropImage++;
               (dragged).css({'padding': '4px', 'border':'0px', width:'20%', height:'8%'});
               $(dragged).html('');
-              $(dragged).append('<img src="https://cdn.pixabay.com/photo/2012/04/10/23/56/cross-27168_1280.png" style="width:-webkit-fill-available;height:100% !important">');
+              $(dragged).append('<img src="'+baseURL+'assets/images/image.png" style="width:-webkit-fill-available;height:100% !important">');
               var newDropId = 'image_' + dropImage;
               addSomeAttributes(dragged, newDropId);
           }else if(getID == 'radioDrop'){
@@ -129,6 +133,7 @@ jQuery(document).ready(function($) {
             });
             
             $(".item" ).mousedown(function() {
+              $('.mobile-inner').children().removeClass('selected');
                $('.item').removeClass('selected');
                $(this).addClass('selected');
                var id = $(this).attr('id');
@@ -150,6 +155,8 @@ jQuery(document).ready(function($) {
     var selectedProject = $('#selectProject').val();
     if(selectedProject != 0){
       getAllActivities(selectedProject);
+    }else{
+      $('#activity-name-show').html('');
     }
   });
 
@@ -181,7 +188,7 @@ $('#save-wireframe').click(function(){
         }else{
             $('.mobile-inner p').resizable('destroy');
             var getWireframeCode = $('.mobile-inner').html();
-            
+            $('.mobile-inner').children().removeClass('selected');
             $.ajax({
                 url:baseURL+'activity/insert_wireframe_code',
                 method: 'post',
@@ -213,7 +220,7 @@ $('#save-wireframe').click(function(){
             }else{
               $('#activity-name-show').html('');
               for(var i = 0; i < response.length; i++){
-                $('#activity-name-show').append('<li ondblclick="selectedActivity(this)" id="'+response[i]['act_id']+'">'+response[i]['act_name']+'</li>');
+                $('#activity-name-show').append('<li onclick="selectedActivity(this)" id="'+response[i]['act_id']+'">'+response[i]['act_name']+'</li>');
               }
             }
         }
@@ -1589,9 +1596,31 @@ function allWireframesMethods(){
           dataType: 'json',
           success: function(response){
             console.log(response);
-            for(var i = 0; i < response.length; i++){
-            $('#selectProject').append('<option value='+response[i]['p_id']+'>'+response[i]['p_name']+'</option>');
-          }
+            if(response.length == 0){
+              errorBox('<p>No Wireframe Assigned</p>');
+            }else{
+              for(var i = 0; i < response.length; i++){
+                $('#selectProject').append('<option value='+response[i]['p_id']+'>'+response[i]['p_name']+'</option>');
+              }
+            }
+        }
+    });
+}
+
+function allMockupsMethods(){
+    $.ajax({
+        url:baseURL+'mockups/get_all_mockups',
+          dataType: 'json',
+          success: function(response){
+            console.log(response.length);
+            if(response.length == 0){
+              errorBox('<p>No Mockup Assigned</p>');
+            }else{
+
+            }
+          //   for(var i = 0; i < response.length; i++){
+          //   $('#selectProject').append('<option value='+response[i]['p_id']+'>'+response[i]['p_name']+'</option>');
+          // }
         }
     });
 }
@@ -1629,6 +1658,7 @@ function selectedActivity(a){
        }
     });
 }
+
 function addSomeAttributes(component, id){
     $(component).attr('id', id);
     var id = $(component).attr('id');

@@ -10,10 +10,10 @@
     <div id="right-panel" class="right-panel">
         <?php $this->view('masterpage/nav.php'); ?>
         <div class="breadcrumbs mt-10">
-            <div class="col-sm-2">
+            <div class="col-sm-2 blue-border-left">
                 <div class="page-header float-left">
                     <div class="page-title">
-                        <h1>Wireframes</h1>
+                        <h1><span class="tweak">W</span>ireframes</h1>
                     </div>
                 </div>
             </div>
@@ -52,7 +52,7 @@
                 <div class="row">
                     <div class="col-md-2 offset-md-3">
                         <div class="form-group">
-                        <label for="projectID">Selected Activity</label>
+                        <label for="projectID"><span class="tweak">S</span>elected <span class="tweak">A</span>ctivity</label>
                         <input type="text" readonly="" class="form-control" id="selected-activity">
                         <input type="hidden" id="selected-activity-id">
                     </div>
@@ -66,10 +66,11 @@
                     </div>
                     <div class="col-md-3">
                         <div class="save-activity text-center">
-                            <h2 class="activityHead">Activities</h2>
+                            <h2 class="activityHead"><span class="tweak">A</span>ctivities</h2>
                             <ul id="activity-name-show">
                             </ul>
                         </div>
+                        
                         <div class="save-button mt-">
                             <button class="btn wire-btn main-btn" id="save-wireframe">Save</button>
                         </div>

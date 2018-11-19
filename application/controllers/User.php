@@ -34,6 +34,8 @@ class User extends CI_Controller {
 	public function index(){
             if(isset($_SESSION['u_id'])){
                 $data['all_data'] = $this->User_model->get_all_created_project();
+                $data['supervising'] = $this->User_model->get_all_supervising();
+                $data['wireframe'] = $this->User_model->get_all_wireframe();
 		$this->load->view('user_dashboard', $data);
             }else{
                 redirect('Login/index');

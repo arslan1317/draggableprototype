@@ -22,7 +22,8 @@ class Mockups extends CI_Controller {
         parent::__construct();
         $this->load->helper('form');
         $this->load->library('session');
-    }
+        $this->load->model('Mockup_model');
+        }
 
 	public function index(){
 		if(isset($_SESSION['u_id'])){
@@ -30,5 +31,10 @@ class Mockups extends CI_Controller {
         }else{
             redirect('Login/index');
         }
+	}
+
+	public function get_all_mockups(){
+		$data = $this->Mockup_model->get_all_mockups();
+        echo json_encode($data);
 	}
 }

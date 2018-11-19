@@ -521,6 +521,7 @@ aside.left-panel {
     float: none;
     position: relative; }
     .navbar .navbar-nav li {
+      position: relative;
       width: 100%; }
       .navbar .navbar-nav li.active .menu-icon, .navbar .navbar-nav li:hover .toggle_nav_button:before,
       .navbar .navbar-nav li .toggle_nav_button.nav-open:before {
@@ -1029,13 +1030,15 @@ div#project-details-table_filter label input, #task-details-table_filter label i
 .not-seen{background-color: lightgray;}
 .open-wireframe-box{
     overflow-y: scroll;
-    position: absolute;
+    position: fixed;
     width: 20%;
     border: 1px solid grey;
     z-index: 9999999;
     left: 20%;
     bottom: 10%;
-    top: 22%;
+    top: 11rem;
+    background-color: #f1f2f7;
+    border-left: 0px;
 }
 .frame-open-padding{
     padding: 5px 20px 1px;
@@ -1044,12 +1047,14 @@ div#project-details-table_filter label input, #task-details-table_filter label i
     list-style: none;
     display: inline-block;
     margin: 3px 0px;
-    width: 80px;
+    width: 32%;
     text-align: center;
     display: inline-block;
 }
 #components ul li i span{
     font-weight: 600 !important;
+    font-size: 12px;
+    font-family: arial;
 }
 .border-on-icon{
     margin-bottom: 0px;
@@ -1113,4 +1118,23 @@ footer{
 }
 .all-data-box span {
     font-size: 18px;
+}
+#left-panel::-webkit-scrollbar-track
+{
+    -webkit-box-shadow: inset 0 0 6px blue;
+    /*border-radius: 10px;*/
+    background-color: #F5F5F5;
+}
+
+#left-panel::-webkit-scrollbar
+{
+    width: 12px;
+    background-color: #F5F5F5;
+}
+
+#left-panel::-webkit-scrollbar-thumb
+{
+    /*border-radius: 10px;*/
+    -webkit-box-shadow: inset 0 0 6px #6195FF;
+    background-color: #6195FF;
 }

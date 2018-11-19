@@ -217,6 +217,60 @@ class User_model extends CI_Model{
         return $result;
     }
     
+    public function get_all_supervising(){
+        $this->db->select("*");
+        $this->db->from('projects');
+        $this->db->join('users', 'projects.u_id = users.u_id', 'left');
+        $this->db->where('projects.s_id', $this->session->userdata('u_id'));
+        $this->db->order_by("projects.p_id", "dsc");
+        $query = $this->db->get();
+        $result = $query->result();
+        foreach ($result as $results) {
+            $results->task = $this->getAllTask($results->p_id );
+        }
+        return $result;
+    }
+
+    public function get_all_wireframe(){
+        $this->db->select("*");
+        $this->db->from('projects');
+        $this->db->join('users', 'projects.u_id = users.u_id');
+        $this->db->join('assigns', 'assigns.p_id = projects.p_id');
+        $this->db->where('assigns.u_id', $this->session->userdata('u_id'));
+        $this->db->order_by("assigns.a_id", 'desc');
+
+        $query = $this->db->get();
+        $result = $query->result();
+        // $this->db->join('users', 'projects.s_id = users.u_id', 'left');
+        // $query = $this->db->get();
+        // $result = $query->result();
+        foreach ($result as $results) {
+            $results->supervisor = $this->getAllSupervisor($results->p_id);
+            $results->task = $this->getAssingTask($results->p_id);
+        }
+        return $result;
+    }
+
+    public function getAssingTask($id){
+        $this->db->select("*");
+        $this->db->from('tasks');
+        // $this->db->join('assigns', 'assigns.t_id = tasks.t_id', 'left');
+        // $this->db->join('users', 'users.u_id = assigns.u_id', 'left');
+        $this->db->where('tasks.p_id', $id);
+        // $this->db->order_by("tasks.t_type");
+        $query = $this->db->get();
+        return $query->result();
+    }
+    public function getAllSupervisor($id){
+        $this->db->select("users.*");
+        $this->db->from('projects');
+        $this->db->join('users', 'projects.s_id = users.u_id', 'left');
+        $this->db->where('projects.s_id', $this->session->userdata('u_id'));
+        $this->db->where('projects.p_id', $id);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
     public function getAllTask($id){
         $this->db->select("*");
         $this->db->from('tasks');
