@@ -19,9 +19,42 @@ class Mockup_model extends CI_Model{
         $this->db->where('assigns.u_id', $this->session->userdata('u_id'));
         $this->db->where('assigns.a_accept', 1);
         $this->db->where('tasks.t_type', 2);
-        $this->db->order_by("assigns.a_id", "dsc");
         $query = $this->db->get();
-        return $query->result();
+        $result = $query->result();
+        // $reultP_id;
+        // foreach ($result as $results) {
+        //     $resultReturn = $this->checkWireframeDone($results->p_id);
+        // }
+        // if($resultReturn == null){
+        //     return 2;
+        // }else{
+        //     return $result;
+        // }
+
+        return $result;
+    }
+
+    public function get_mockup_status($id){
+        $this->db->select('*');
+        $this->db->from('tasks');
+        $this->db->join('assigns', 'tasks.t_id = assigns.t_id');
+        $this->db->where('tasks.p_id', $id);
+        $this->db->where('tasks.t_type', 1);
+        $query = $this->db->get();
+        $result = $query->result();
+        return $result;
+    }
+
+    function checkWireframeDone($p_id){
+        $this->db->select('*');
+        $this->db->from('tasks');
+        $this->db->join('assigns', 'tasks.t_id = assigns.t_id');
+        $this->db->where('tasks.p_id', $p_id);
+        $this->db->where('tasks.t_type', 1);
+        $this->db->where('assigns.a_status', 2);
+        $query = $this->db->get();
+        $result = $query->result();
+        return $result;
     }
 }
 

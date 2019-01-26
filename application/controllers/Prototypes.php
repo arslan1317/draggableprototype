@@ -22,6 +22,7 @@ class Prototypes extends CI_Controller {
         parent::__construct();
         $this->load->helper('form');
         $this->load->library('session');
+        $this->load->model('Prototype_model');
     }
 
 	public function index(){
@@ -30,5 +31,16 @@ class Prototypes extends CI_Controller {
         }else{
             redirect('Login/index');
         }
+	}
+
+	public function get_all_prototype(){
+		$data = $this->Prototype_model->get_all_prototype();
+        echo json_encode($data);
+	}
+
+	public function get_all_prototype_layout(){
+		$id = $this->input->post('selectedProject');
+		$data = $this->Prototype_model->get_all_prototype_layout($id);
+        echo json_encode($data);
 	}
 }

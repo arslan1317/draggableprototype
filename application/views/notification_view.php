@@ -19,11 +19,11 @@
             </div>
         </div>
         
-        <div class="content mt-3">
+        <div class="content mt-10">
             <?php if(!empty($notification)): ?>
                 <?php foreach($notification as $item){?>
                     <div class="col-md-12">
-                        <div class="notify-box clearfix" style="background-color: <?php if($item->seen == 0){ echo '#ccc'; }else{echo '#fff';} ?>;border: <?php if($item->seen == 0){ echo '#ccc'; }else{echo '1px solid #302e2d';} ?>">
+                        <div class="notify-box clearfix" style="background-color: <?php if($item->seen == 0){ echo 'white'; }else{echo '#fff';} ?>;border: <?php if($item->seen == 0){ echo '1px solid #ccc'; }else{echo '1px solid #302e2d';} ?>">
                             <div class="row">
                                 <div class="col-md-9" value="<?php echo $item->a_id; ?>" id="notify-box">
                                     <div class="col-md-2">
@@ -54,15 +54,15 @@
                                 </div>
                                 <div class="col-md-3">
                                     <?php if($item->a_accept == 0){
-                                        echo '<button class="btn btn-default btn-block btn-custom" style="margin-top: 0px !important" onclick="acceptNotification('.$item->a_id.', 1)">Accept</button>
-                                        <button class="btn btn-default btn-block btn-custom" onclick="declineNotification('.$item->a_id.', 1)">Decline</button>';
+                                        echo '<button class="btn btn-default btn-block main-btn" style="margin-top: 0px !important" onclick="acceptNotification('.$item->a_id.', 1)">Accept</button>
+                                        <button class="btn btn-default btn-block main-btn" onclick="declineNotification('.$item->a_id.', 1)">Decline</button>';
 
                                     }else if($item->a_accept == 1){
-                                        echo '<button class="btn btn-default btn-block btn-custom" style="margin-top: 0px !important;opacity:0.7">Accepted</button>
-                                        <button class="btn btn-default btn-block btn-custom" onclick="declineNotification('.$item->a_id.', 1)">Decline</button>';
+                                        echo '<button class="btn btn-default btn-block main-btn" style="margin-top: 0px !important;opacity:0.7">Accepted</button>
+                                        <button class="btn btn-default btn-block main-btn" onclick="declineNotification('.$item->a_id.', 1)">Decline</button>';
                                     }else{
-                                        echo '<button class="btn btn-default btn-block btn-custom" style="margin-top: 0px !important" onclick="acceptNotification('.$item->a_id.', 1)">Accept</button>
-                                        <button class="btn btn-default btn-block btn-custom" style="opacity:0.7">Declined</button>';
+                                        echo '<button class="btn btn-default btn-block main-btn" style="margin-top: 0px !important" onclick="acceptNotification('.$item->a_id.', 1)">Accept</button>
+                                        <button class="btn btn-default btn-block main-btn" style="opacity:0.7">Declined</button>';
                                     }
                                     ?>
                                 </div>

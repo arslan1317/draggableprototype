@@ -1,7 +1,7 @@
 <?php $this->view('masterpage/header.php'); ?>
 <body id="task-page">
-<?php $this->view('masterpage/aside.php'); ?>
-        <!-- Left Panel -->
+    <?php $this->view('masterpage/aside.php'); ?>
+    <!-- Left Panel -->
 
     <!-- Left Panel -->
 
@@ -22,7 +22,7 @@
             <div class="col-sm-8">
                 <div class="float-right">
                     <div class="alert text-center mt-1 mb-1" style="display: none" id="error-box">
-                        
+
                     </div>
                 </div>
             </div>
@@ -43,24 +43,24 @@
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="taskType" class="normal-bold">Task Type</label>
-                              <select class="form-control" id="taskType" name="taskType">
+                            <select class="form-control" id="taskType" name="taskType">
                                 <option value="">--Select--</option>
                                 <option value="1">Wireframe</option>
                                 <option value="2">Mockup</option>
                                 <option value="3">Prototype</option>
-                              </select>
+                            </select>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="taskStart" class="normal-bold">Task Start</label>
-                            <input type="text" class="form-control" id="projectStart" name="taskStart">
+                            <input type="text" class="form-control" id="taskStart" name="taskStart">
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="taskEnds" class="normal-bold">Task End</label>
-                            <input type="text" class="form-control" id="projectEnd" name="taskEnd">
+                            <input type="text" class="form-control" id="taskEnd" name="taskEnd">
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -101,7 +101,7 @@
                         </tr>
                     </thead>
                     <tbody id="task-details-table-tbody">
-                        
+
                     </tbody>
                 </table>
             </div>
@@ -110,58 +110,58 @@
     <!-- view Popup (By Waleed)-->
     <div class="col-12 pupopBg overflow-yscroll" id="pupop" style="display:none;">
         <div class="col-lg-offset-4 col-lg-4 col-md-offset-3 col-md-6 col-sm-offset-2 col-sm-8 col-11 boxes pupopInnerBox pb-4" style="margin-top:30px; margin-bottom:30px;">
-<div class="col-12 pt-3 overflow-hidden p-0 mt-2 mb-2">
-<input type="hidden" id="taskid">
-<h3 class="pull-left col-11 blue-border-left pt-2 pb-2">Task Details</h3>
-<p class="pull-right pointer closePopopIcon tweak mr-4" onclick="closePupop()">X</p>
-<div class="clearfix"></div>
-<div id="popup_error" class="alert mb-0 mt-2" style="display:none;"></div>
-</div>
-<div class="col-12 pb-3">
+            <div class="col-12 pt-3 overflow-hidden p-0 mt-2 mb-2">
+                <input type="hidden" id="taskid">
+                <h3 class="float-left col-11 blue-border-left pt-2 pb-2">Task Details</h3>
+                <p class="float-right pointer closePopopIcon tweak mr-4" onclick="closePupop()">X</p>
+                <div class="clearfix"></div>
+                <div id="popup_error" class="alert mb-0 mt-2" style="display:none;"></div>
+            </div>
+            <div class="col-12 pb-3">
 
-<div class="form-group col-12 p-0"> 
-    <label for="projectNameEdit" class="colorGreen">Project Name</label>
-    <select class="icon-arrowPop form-control borderpuopInput marginicon" id="projectNameEdit">
-        <option>-Select-</option>
-    </select>  
-  </div>
-   <div class="form-group col-12 p-0">
-    <label for="taskTypeEdit" class="colorGreen">Task Type</label>
-    <select class="icon-arrowPop form-control borderpuopInput marginicon" id="taskTypeEdit">
-                             <option value="">--Select--</option>
-                                <option value="1">Wireframe</option>
-                                <option value="2">Mockup</option>
-                                <option value="3">Prototype</option>
-    </select>                                
-  </div>
+                <div class="form-group col-12 p-0"> 
+                    <label for="projectNameEdit" class="colorGreen">Project Name</label>
+                    <select class="icon-arrowPop form-control borderpuopInput marginicon" id="projectNameEdit">
+                        <option>-Select-</option>
+                    </select>  
+                </div>
+                <div class="form-group col-12 p-0">
+                    <label for="taskTypeEdit" class="colorGreen">Task Type</label>
+                    <select class="icon-arrowPop form-control borderpuopInput marginicon" id="taskTypeEdit">
+                        <option value="">--Select--</option>
+                        <option value="1">Wireframe</option>
+                        <option value="2">Mockup</option>
+                        <option value="3">Prototype</option>
+                    </select>                                
+                </div>
 
-    <div class="form-group col-12 p-0">
-                            <label for="taskStartEdit" class="colorGreen">Task Start</label>
-                            <input type="text" class="form-control icon-edit pupopBgPosition borderpuopInput" id="taskStartEdit" name="taskStartEdit">
-   </div>
+                <div class="form-group col-12 p-0">
+                    <label for="taskStartEdit" class="colorGreen">Task Start</label>
+                    <input type="text" class="form-control icon-edit pupopBgPosition borderpuopInput" id="taskStartEdit" name="taskStartEdit">
+                </div>
 
-     <div class="form-group col-12 p-0">
-                            <label for="taskEndEdit" class="colorGreen">Task End</label>
-                            <input type="text" class="form-control icon-edit pupopBgPosition borderpuopInput" id="taskEndEdit" name="taskEndEdit">
+                <div class="form-group col-12 p-0">
+                    <label for="taskEndEdit" class="colorGreen">Task End</label>
+                    <input type="text" class="form-control icon-edit pupopBgPosition borderpuopInput" id="taskEndEdit" name="taskEndEdit">
+                </div>
+
+
+
+                <div class="form-group col-12 p-0"> 
+                    <label for="taskDetailsEdit" class="colorGreen">Task Details</label>
+                    <textarea type="text" class="form-control icon-edit2 borderpuopInput height-70px" id="taskDetailsEdit" style="padding-right:50px !important;"></textarea>
+                </div>
+
+
+
+
+                <div class="form-group col-12 p-0 m-auto">
+                    <input type="button" class="btn bg-green col-8 main-btn mt-1" value="UPDATE" onclick="updateTaskById()">
+                </div>
+
+            </div>
+        </div>
     </div>
- 
-  
-
-   <div class="form-group col-12 p-0"> 
-    <label for="taskDetailsEdit" class="colorGreen">Task Details</label>
-    <textarea type="text" class="form-control icon-edit2 borderpuopInput height-70px" id="taskDetailsEdit" style="padding-right:50px !important;"></textarea>
-  </div>
-  
-  
-   
- 
-  <div class="form-group col-12 p-0 m-auto">
-      <input type="button" class="btn bg-green col-8 main-btn mt-1" value="UPDATE" onclick="updateTaskById()">
-  </div>
-      
-</div>
-</div>
-</div>
- <!-- View_popup finished (by Waleed) -->
+    <!-- View_popup finished (by Waleed) -->
     <!-- Right Panel -->
-<?php $this->view('masterpage/footer.php'); ?>
+    <?php $this->view('masterpage/footer.php'); ?>

@@ -50,6 +50,12 @@ class Activity extends CI_Controller {
         echo json_encode($data);
     }
     
+    public function get_activity(){
+        $id = $this->input->post('selectedProject');
+        $task = $this->input->post('tastType');
+        $data = $this->Activity_model->get_activity($id, $task);
+        echo json_encode($data);
+    }
     public function insert_wireframe_code(){
         $id = $this->input->post('activityId');
         $code = $this->input->post('getWireframeCode');
@@ -60,6 +66,12 @@ class Activity extends CI_Controller {
     public function get_html_of_activity(){
         $id = $this->input->post('getActivityId');
         $data = $this->Activity_model->get_html_of_activity($id);
+        echo json_encode($data);
+    }
+
+    public function get_activity_for_mockups(){
+        $id = $this->input->post('selectedProject');
+        $data = $this->Activity_model->get_activity_for_mockups($id);
         echo json_encode($data);
     }
 }

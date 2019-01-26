@@ -50,12 +50,12 @@ class Assign_model extends CI_Model{
     }
 
     public function get_assign_work(){
-            $this->db->select('*')
-                ->from('assigns')
-                ->join('users', 'users.u_id = assigns.u_id')
-                ->join('projects', 'projects.p_id = assigns.p_id')
-                ->join('tasks', 'tasks.t_id =assigns.t_id')
-                ->where('assigns.a_by', $this->session->userdata('u_id'));
+        $this->db->select('*')
+            ->from('assigns')
+            ->join('users', 'users.u_id = assigns.u_id')
+            ->join('projects', 'projects.p_id = assigns.p_id')
+            ->join('tasks', 'tasks.t_id =assigns.t_id')
+            ->where('assigns.a_by', $this->session->userdata('u_id'));
         $query = $this->db->get();
         return $query->result();
     }
@@ -136,6 +136,21 @@ class Assign_model extends CI_Model{
         $this->db->where('a_id', $id);
         $this->db->update('assigns');
         return $this->db->affected_rows();
+    }
+    
+    public function update_status($id){
+        $this->db->set('a_status', 1);
+        $this->db->where('a_id', $id);
+        $this->db->update('assigns');
+        return $this->get_update_record($id);
+    }
+    
+    public function get_update_record($id){
+        $this->db->select('*');
+        $this->db->from('assigns');
+        $this->db->where('a_id', $id);
+        $query = $this->db->get();
+        return $query->result();
     }
 }
 ?>

@@ -23,7 +23,7 @@
                         <ol class="breadcrumb text-right float-right">
                             <li>
                                 <select class="form-control" id="selectProject">
-                                    <option value="0">--Select Project--</option>
+                                    <option value="0" data-status="-1">--Select Project--</option>
                                 </select>
                             </li>
                         </ol>
@@ -70,9 +70,16 @@
                             <ul id="activity-name-show">
                             </ul>
                         </div>
-                        
-                        <div class="save-button mt-">
-                            <button class="btn wire-btn main-btn" id="save-wireframe">Save</button>
+                        <div class="assign-status mt-3">
+                            <span>Progress <i class="far fa-circle" id="assign-progress"></i></span><br>
+                            <span>Submitted <i class="far fa-circle" id="assign-submit"></i></span><br>
+                            <span>Changing <i class="far fa-circle" id="assign-changed"></i></span><br>
+                            <span>Approved <i class="far fa-circle" id="assign-approved"></i></span><br>
+                        </div>
+                        <input type="hidden" id="assign-id" value="-1">
+                        <div class="save-button">
+                            <button class="btn main-btn" id="save-wireframe">Save</button>
+                            <button class="btn main-btn" id="submit-wireframe">Submit</button>
                         </div>
                     </div>
                 </div>

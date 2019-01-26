@@ -30,6 +30,24 @@ class Activity_model extends CI_Model{
         $query = $this->db->get();
         return $query->result();
     }
+
+    public function get_activity_for_mockups($id){
+        $this->db->select("*"); 
+        $this->db->from('activities');
+        $this->db->where('p_id', $id);
+        $query = $this->db->get();
+        return $query->result();
+    }
+    
+    public function get_activity($id, $task){
+        $this->db->select("*"); 
+        $this->db->from('activities');
+        $this->db->join('projects', 'projects.p_id = activities.p_id');
+        $this->db->where('activities.p_id', $id);
+        $this->db->where('activities.t_type', $task);
+        $query = $this->db->get();
+        return $query->result();
+    }
     
     public function insert_wireframe_code($id, $code){
         $this->db->set('act_code', $code);

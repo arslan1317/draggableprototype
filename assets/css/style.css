@@ -216,7 +216,7 @@ span#showUserName {
 }
 .mobile-inner {
     position: relative;
-    width: 84%;
+    width: 16rem;
     border: 1px solid black;
     height: 477px;
     margin: 0 auto;
@@ -280,8 +280,7 @@ span#showUserName {
   border-bottom: 1px solid black;
 }
 .save-button{
-    margin: 0 auto;
-    margin-top: 30%;
+    margin-top: 1rem;
 }
 .mockups-error{
   margin:10px 0px !important;
@@ -1006,7 +1005,7 @@ h1, h2, h3, h4, h5, h6{font-family: 'Varela Round', sans-serif !important;font-w
 }
 .dropdown-boxes .supervisor-inner-box:last-child{border-bottom: 0px;}
 .content input, .content select, .content textarea, .pupopBg input, .pupopBg select{height: 40px !important;}
-.form-btn{margin-top: 35px;}
+.form-btn{margin-top: 35px;padding-top: 8px !important}
 .content label{font-size: 18px;}
 .table thead td{font-size: 18px;}
 .upper-eye{position: absolute;top: 12px;right: 22px;font-size: 22px;}
@@ -1028,7 +1027,7 @@ div#project-details-table_filter label input, #task-details-table_filter label i
 .notification-btn{padding: 3px 15px!important;}
 .notifiaction-hover:hover{background-color: grey; color: white;}
 .not-seen{background-color: lightgray;}
-.open-wireframe-box{
+.open-wireframe-box, .open-mockup-box{
     overflow-y: scroll;
     position: fixed;
     width: 20%;
@@ -1061,7 +1060,7 @@ div#project-details-table_filter label input, #task-details-table_filter label i
     padding: 2px 8px;
     border: 1px solid grey;
 }
-#property{
+#property, #selected-component{
     padding: 10px 15px;
     margin: 10px 15px;
 }
@@ -1084,12 +1083,17 @@ div#project-details-table_filter label input, #task-details-table_filter label i
 footer{
     position: absolute;
     bottom: 0px;
-    background-color: red;
+    background-color: #fff;
     left: 0;
     right: 0;
+    line-height: 60px;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.15);
 }
 .wire-btn{
      padding: 4px 40px !important;
+}
+.save-button button{
+    padding: 4px 36px !important;
 }
 .wire-btn-box{
     margin:10px 0px 0px;
@@ -1107,7 +1111,6 @@ footer{
     background-color: white;
     padding: 5% 6%;
     border: 2px solid black;
-    height: 218px;
     margin-bottom: 10%;
 }
 .all-data-box p {
@@ -1137,4 +1140,57 @@ footer{
     /*border-radius: 10px;*/
     -webkit-box-shadow: inset 0 0 6px #6195FF;
     background-color: #6195FF;
+}
+li.active i{
+    color: white;
+}
+.setting-width-mockups .col-form-label{
+  width: 45%;
+}
+.setting-width-mockups .left-input{
+  width: 55%;
+}
+.pro-box {
+    margin: 0 auto;
+    border: 1px solid;
+    height: 12rem;
+    position: relative;
+    width: 14rem;
+}
+#left-panel ul li.active{
+  background-color: #6195FF;
+  color: white !important;
+  position: relative;
+  width: 100%;
+}
+#left-panel ul li.active a{
+  background: none !important;
+  color: white !important;
+  display: inline-block;
+  font-family: 'Open Sans';
+  font-size: 14px;
+  line-height: 30px;
+  padding: 10px 0;
+  position: relative;
+  width: 100%;
+}
+.border-on-hover li.active:after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-right: 15px solid #f1f2f7;
+    border-bottom: 10px solid transparent;
+    right: 0;
+    top: 16px;
+}
+.content{
+  padding-bottom: 40px !important;
+}
+#error-box p{
+  color: black !important;
+}
+.mobile-inner.mt-0{
+  margin:0;
 }

@@ -19,34 +19,37 @@ class User extends CI_Controller {
 	 * @see https://codeigniter.com/user_guide/general/urls.html
 	 */
 	function __construct(){
-        parent::__construct();
-        $this->load->helper('form');
-        $this->load->library('form_validation');
-        $this->load->library('session');
-       
-        $this->load->library('email');
-        $this->load->helper('url');
-        $this->load->database();
-        $this->load->model('User_model');
-        
-    }
+		parent::__construct();
+		$this->load->helper('form');
+		$this->load->library('form_validation');
+		$this->load->library('session');
+
+		$this->load->library('email');
+		$this->load->helper('url');
+		$this->load->database();
+		$this->load->model('User_model');
+		$this->load->model('Wireframe_model');
+
+	}
 
 	public function index(){
-            if(isset($_SESSION['u_id'])){
-                $data['all_data'] = $this->User_model->get_all_created_project();
-                $data['supervising'] = $this->User_model->get_all_supervising();
-                $data['wireframe'] = $this->User_model->get_all_wireframe();
-		$this->load->view('user_dashboard', $data);
-            }else{
-                redirect('Login/index');
-            }
+		if(isset($_SESSION['u_id'])){
+			$data['all_data'] = $this->User_model->get_all_created_project();
+			$data['supervising'] = $this->User_model->get_all_supervising();
+			$data['wireframe'] = $this->User_model->get_all_wireframe();
+			$data['mockup'] = $this->User_model->get_all_mockup();
+			$data['prototype'] = $this->User_model->get_all_prototype();
+			$this->load->view('user_dashboard', $data);
+		}else{
+			redirect('Login/index');
+		}
 	}
 
 	public function logout(){
-		 if($this->session->has_userdata('u_id')){
-            $this->session->sess_destroy();
-            redirect('User');
-        }
+		if($this->session->has_userdata('u_id')){
+			$this->session->sess_destroy();
+			redirect('User');
+		}
 	}
 
 	public function profile(){
@@ -78,11 +81,26 @@ class User extends CI_Controller {
 		$data = $this->User_model->message_assign_by();
 		print_r($data);
 	}
-        
-        public function seen_notification(){
-            $id = $this->input->post('id');
-            $data = $this->User_model->seen_notification($id);
-            echo json_encode($data);
-        }
+
+	public function seen_notification(){
+		$id = $this->input->post('id');
+		$data = $this->User_model->seen_notification($id);
+		echo json_encode($data);
+	}
+
+	public function submittedwork(){
+		if(isset($_SESSION['u_id'])){
+			$data['wireframe'] = $this->Wireframe_model->getSubmittedWork();
+			$this->load->view('user_submit', $data);
+		}else{
+			redirect('Login/index');
+		}
+	}
+
+	public function approved_wireframe(){
+		$id = $this->input->post('a_id');
+		$data = $this->User_model->approved_wireframe($id);
+		echo json_encode($data);
+	}
 
 }

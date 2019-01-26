@@ -27,7 +27,7 @@ class Assign extends CI_Controller {
 
 	public function index($data = NULL){
             if(isset($_SESSION['u_id'])){
-		$this->load->view('assign_view');
+		      $this->load->view('assign_view');
             }else{
                 redirect('Login/index');
             }
@@ -84,14 +84,16 @@ class Assign extends CI_Controller {
                 }
 	}
         
-        public function get_project_name_having_task(){
-            $data = $this->Assign_model->get_project_having_task();
-            echo json_encode($data);
-        }
-        public function get_all_task(){
-            $data['assign_work'] = $this->Assign_model->get_assign_work();
-            echo json_encode($data);
-        }
+    public function get_project_name_having_task(){
+        $data = $this->Assign_model->get_project_having_task();
+        echo json_encode($data);
+    }
+
+    public function get_all_task(){
+        $data['assign_work'] = $this->Assign_model->get_assign_work();
+        echo json_encode($data);
+    }
+
 	public function accept_notification($id){
 		$data = $this->Assign_model->accept_notification($id);
 		echo json_encode($data);
@@ -114,7 +116,7 @@ class Assign extends CI_Controller {
         }
         
         public function accept_assign(){
-            $id = $this->input->post('id');;
+            $id = $this->input->post('id');
             $data = $this->Assign_model->accept_assign($id);
             echo json_encode($data);
         }
@@ -122,6 +124,12 @@ class Assign extends CI_Controller {
         public function reject_assign(){
             $id = $this->input->post('id');;
             $data = $this->Assign_model->reject_assign($id);
+            echo json_encode($data);
+        }
+        
+        public function update_status(){
+            $id = $this->input->post('activityId');
+            $data = $this->Assign_model->update_status($id);
             echo json_encode($data);
         }
 }

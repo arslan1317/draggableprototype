@@ -3,7 +3,7 @@
  * Description: Login model class
  */
 class User_model extends CI_Model{
-    
+
     function __construct(){
         parent::__construct();
         $this->load->database();
@@ -75,7 +75,7 @@ class User_model extends CI_Model{
             return false;
         }
         
-       
+
     }
     
     //activate account
@@ -96,8 +96,8 @@ class User_model extends CI_Model{
 
     function get_image($id){
         $query = $this->db->select('path')
-                ->where('u_id', $id)
-                ->get('users');
+        ->where('u_id', $id)
+        ->get('users');
         foreach ($query->result() as $row)
         {
             $this->session->set_userdata('path', $row->path);
@@ -115,7 +115,7 @@ class User_model extends CI_Model{
         $this->session->set_userdata('u_lname', $last_name);
     }
     // Done by Mirza
-        function updatePass($old_password, $new_password){
+    function updatePass($old_password, $new_password){
         $id = $this->session->userdata('u_id');
         $this->db->select('*');
         $this->db->from('users');
@@ -236,17 +236,55 @@ class User_model extends CI_Model{
         $this->db->from('projects');
         $this->db->join('users', 'projects.u_id = users.u_id');
         $this->db->join('assigns', 'assigns.p_id = projects.p_id');
+        $this->db->join('tasks', 'tasks.t_id = assigns.t_id');
         $this->db->where('assigns.u_id', $this->session->userdata('u_id'));
+        $this->db->where('tasks.t_type', 1);
         $this->db->order_by("assigns.a_id", 'desc');
 
         $query = $this->db->get();
         $result = $query->result();
-        // $this->db->join('users', 'projects.s_id = users.u_id', 'left');
-        // $query = $this->db->get();
-        // $result = $query->result();
         foreach ($result as $results) {
-            $results->supervisor = $this->getAllSupervisor($results->p_id);
-            $results->task = $this->getAssingTask($results->p_id);
+            $results->supervisor = $this->getAllSupervisor($results->s_id);
+            $results->task = $this->getAllTask($results->p_id);
+            $results->owner = $this->getAllSupervisor($results->a_by);
+        }
+        return $result;
+    }
+
+    public function get_all_mockup(){
+        $this->db->select("*");
+        $this->db->from('projects');
+        $this->db->join('users', 'projects.u_id = users.u_id');
+        $this->db->join('assigns', 'assigns.p_id = projects.p_id');
+        $this->db->join('tasks', 'tasks.t_id = assigns.t_id');
+        $this->db->where('assigns.u_id', $this->session->userdata('u_id'));
+        $this->db->where('tasks.t_type', 2);
+        $this->db->order_by("assigns.a_id", 'desc');
+
+        $query = $this->db->get();
+        $result = $query->result();
+        foreach ($result as $results) {
+            $results->supervisor = $this->getAllSupervisor($results->s_id);
+            $results->task = $this->getAllTask($results->p_id);
+            $results->owner = $this->getAllSupervisor($results->a_by);
+        }
+        return $result;
+    }
+
+    public function get_all_prototype(){
+        $this->db->select('*');
+        $this->db->from('assigns');
+        $this->db->join('projects', 'assigns.p_id = projects.p_id');
+        $this->db->join('tasks', 'tasks.t_id = assigns.t_id');
+        $this->db->where('assigns.u_id', $this->session->userdata('u_id'));
+        $this->db->where('assigns.a_accept', 1);
+        $this->db->where('tasks.t_type', 3);
+        $query = $this->db->get();
+        $result = $query->result();
+        foreach ($result as $results) {
+            $results->supervisor = $this->getAllSupervisor($results->s_id);
+            $results->task = $this->getAllTask($results->p_id);
+            $results->owner = $this->getAllSupervisor($results->a_by);
         }
         return $result;
     }
@@ -254,19 +292,15 @@ class User_model extends CI_Model{
     public function getAssingTask($id){
         $this->db->select("*");
         $this->db->from('tasks');
-        // $this->db->join('assigns', 'assigns.t_id = tasks.t_id', 'left');
-        // $this->db->join('users', 'users.u_id = assigns.u_id', 'left');
-        $this->db->where('tasks.p_id', $id);
-        // $this->db->order_by("tasks.t_type");
+        $this->db->where('t_id', $id);
         $query = $this->db->get();
         return $query->result();
     }
+
     public function getAllSupervisor($id){
-        $this->db->select("users.*");
-        $this->db->from('projects');
-        $this->db->join('users', 'projects.s_id = users.u_id', 'left');
-        $this->db->where('projects.s_id', $this->session->userdata('u_id'));
-        $this->db->where('projects.p_id', $id);
+        $this->db->select("*");
+        $this->db->from('users');
+        $this->db->where('u_id', $id);
         $query = $this->db->get();
         return $query->result();
     }
@@ -280,6 +314,14 @@ class User_model extends CI_Model{
         $this->db->order_by("tasks.t_type");
         $query = $this->db->get();
         return $query->result();
+    }
+
+    public function approved_wireframe($id){
+        $this->db->set('a_status', 2);
+        $this->db->where('a_id', $id);
+        $this->db->where('a_by', $this->session->userdata('u_id'));
+        $this->db->update('assigns');
+        return true;
     }
 }
 ?>

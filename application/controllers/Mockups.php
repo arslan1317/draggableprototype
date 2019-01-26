@@ -23,7 +23,7 @@ class Mockups extends CI_Controller {
         $this->load->helper('form');
         $this->load->library('session');
         $this->load->model('Mockup_model');
-        }
+    }
 
 	public function index(){
 		if(isset($_SESSION['u_id'])){
@@ -35,6 +35,12 @@ class Mockups extends CI_Controller {
 
 	public function get_all_mockups(){
 		$data = $this->Mockup_model->get_all_mockups();
+        echo json_encode($data);
+	}
+
+	public function getMockupStatus(){
+		$id = $this->input->post('projectid');
+		$data = $this->Mockup_model->get_mockup_status($id);
         echo json_encode($data);
 	}
 }
