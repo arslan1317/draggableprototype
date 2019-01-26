@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Nov 14, 2018 at 08:45 AM
+-- Generation Time: Jan 26, 2019 at 02:02 PM
 -- Server version: 10.1.36-MariaDB
 -- PHP Version: 7.2.10
 
@@ -43,8 +43,8 @@ CREATE TABLE `activities` (
 --
 
 INSERT INTO `activities` (`act_id`, `act_name`, `act_code`, `act_xml`, `p_id`, `t_type`, `done_by_id`) VALUES
-(6, 'main activity', '<p id=\"image_1\" class=\"border-on-icon ui-draggable-handle ui-draggable selected\" style=\"position: absolute; margin-bottom: 0px; top: 35.5469px; left: 76.4375px; padding: 4px; border: 0px; width: 107px; height: 89px;\"><img src=\"https://cdn.pixabay.com/photo/2012/04/10/23/56/cross-27168_1280.png\" style=\"width:-webkit-fill-available;height:100% !important\"></p>', '', 16, 1, 27),
-(7, 'login activity', '', '', 16, 1, 27),
+(6, 'main activity', '<p id=\"image_1\" class=\"border-on-icon ui-draggable-handle ui-draggable\" style=\"position: absolute; margin-bottom: 0px; top: 77.5469px; left: 76.4375px; padding: 4px; border: 0px; width: 107px; height: 89px;\"><img src=\"https://cdn.pixabay.com/photo/2012/04/10/23/56/cross-27168_1280.png\" style=\"width:-webkit-fill-available;height:100% !important\"></p><div class=\"ui-resizable-handle ui-resizable-e\" style=\"z-index: 90;\"></div><div class=\"ui-resizable-handle ui-resizable-s\" style=\"z-index: 90;\"></div><div class=\"ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se\" style=\"z-index: 90;\"></div><p class=\"ui-draggable ui-draggable-handle\" style=\"position: relative;\"></p><div class=\"ui-resizable-handle ui-resizable-e\" style=\"z-index: 90;\"></div><div class=\"ui-resizable-handle ui-resizable-s\" style=\"z-index: 90;\"></div><div class=\"ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se\" style=\"z-index: 90;\"></div><p class=\"ui-draggable ui-draggable-handle\" style=\"position: relative;\"></p><div class=\"ui-resizable-handle ui-resizable-e\" style=\"z-index: 90;\"></div><div class=\"ui-resizable-handle ui-resizable-s\" style=\"z-index: 90;\"></div><div class=\"ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se\" style=\"z-index: 90;\"></div><p class=\"ui-draggable ui-draggable-handle\" style=\"position: relative;\"></p><p id=\"Button_1\" class=\"border-on-icon ui-draggable-handle ui-draggable selected\" style=\"position: absolute; margin-bottom: 0px; top: 401.547px; left: 87.3125px; padding: 4px; border: 0px; width: 88px; height: 8%;\"><input type=\"button\" style=\"width:-webkit-fill-available;height:100% !important\" value=\"Button\"></p><div class=\"ui-resizable-handle ui-resizable-e\" style=\"z-index: 90;\"></div><div class=\"ui-resizable-handle ui-resizable-s\" style=\"z-index: 90;\"></div><div class=\"ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se\" style=\"z-index: 90;\"></div><p class=\"ui-draggable ui-draggable-handle\" style=\"position: relative;\"></p><div class=\"ui-resizable-handle ui-resizable-e\" style=\"z-index: 90;\"></div><div class=\"ui-resizable-handle ui-resizable-s\" style=\"z-index: 90;\"></div><div class=\"ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se\" style=\"z-index: 90;\"></div><p class=\"ui-draggable ui-draggable-handle\" style=\"position: relative;\"></p><div class=\"ui-resizable-handle ui-resizable-e\" style=\"z-index: 90;\"></div><div class=\"ui-resizable-handle ui-resizable-s\" style=\"z-index: 90;\"></div><div class=\"ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se\" style=\"z-index: 90;\"></div><p class=\"ui-draggable ui-draggable-handle\" style=\"position: relative;\"></p>', '', 16, 1, 27),
+(7, 'login activity', '<p id=\"edit_text_1\" class=\"border-on-icon ui-draggable-handle item ui-draggable selected\" style=\"position: absolute; margin-bottom: 0px; top: 161px; left: 48.3906px; padding: 4px; border: 0px; width: 157px; height: 37px;\"><input type=\"text\" style=\"width:-webkit-fill-available;height:100% !important\"></p>', '', 16, 1, 27),
 (8, 'register activity', '', '', 16, 1, 27),
 (9, 'dashboard activity', '', '', 16, 1, 27);
 
@@ -65,6 +65,7 @@ CREATE TABLE `assigns` (
   `a_by` int(50) NOT NULL,
   `seen` int(1) NOT NULL DEFAULT '0',
   `a_status` int(1) NOT NULL DEFAULT '0',
+  `a_status_comment` text NOT NULL,
   `a_accept` int(1) NOT NULL DEFAULT '0',
   `a_timespan` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -73,8 +74,10 @@ CREATE TABLE `assigns` (
 -- Dumping data for table `assigns`
 --
 
-INSERT INTO `assigns` (`a_id`, `u_id`, `p_id`, `t_id`, `a_start`, `a_end`, `a_detail`, `a_by`, `seen`, `a_status`, `a_accept`, `a_timespan`) VALUES
-(2, 27, 16, 4, '10/19/2018', '11/30/2018', 'Assign you the wireframe of uber', 120, 0, 0, 1, '0000-00-00 00:00:00');
+INSERT INTO `assigns` (`a_id`, `u_id`, `p_id`, `t_id`, `a_start`, `a_end`, `a_detail`, `a_by`, `seen`, `a_status`, `a_status_comment`, `a_accept`, `a_timespan`) VALUES
+(2, 27, 16, 4, '10/19/2018', '11/30/2018', 'Assign you the wireframe of uber', 120, 0, 3, '', 1, '0000-00-00 00:00:00'),
+(3, 121, 16, 5, '12/04/2018', '01/04/2019', 'Just make It Color Full as you like', 120, 0, 0, '', 1, '0000-00-00 00:00:00'),
+(4, 122, 16, 9, '01/26/2019', '02/06/2019', 'Assign the prototype to the checker', 120, 0, 0, '', 1, '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -102,11 +105,7 @@ CREATE TABLE `projects` (
 --
 
 INSERT INTO `projects` (`p_id`, `p_name`, `p_type`, `p_start`, `p_end`, `p_detail`, `u_id`, `s_id`, `s_status`, `u_seen`, `p_active`, `timespan`) VALUES
-(16, 'Uber', 'Pick & Drop', '10/01/2018', '11/30/2018', 'Make friendly Application', 120, 27, 0, 0, 0, NULL),
-(17, 'Whatever', 'Travel', '10/15/2018', '11/12/2018', 'Explore the nature of the world', 120, 27, 1, 1, 1, NULL),
-(18, 'draggable', 'Travel', '10/16/2018', '11/22/2018', 'lollllllllll', 120, 27, 0, 0, 1, NULL),
-(19, 'Checking Purpose', 'Music', '10/10/2018', '11/22/2018', 'cheking purpose details', 120, 27, 2, 1, 1, '2018-10-14 14:43:10'),
-(20, 'Daniyal Project Testing', 'Travel', '10/25/2018', '11/24/2018', 'Daniyal Project Add Testing', 120, 27, 1, 1, 0, '2018-10-18 22:07:35');
+(16, 'Uber', 'Pick & Drop', '10/01/2018', '11/30/2018', 'Make friendly Application', 120, 27, 0, 0, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -134,7 +133,8 @@ INSERT INTO `tasks` (`t_id`, `t_type`, `t_start`, `t_end`, `t_detail`, `p_id`) V
 (5, '2', '10/19/2018', '11/14/2018', 'Make Mockup of Uber', 16),
 (6, '1', '10/20/2018', '11/21/2018', 'Wireframe is added on behalf of daniyal project testing', 20),
 (7, '2', '10/25/2018', '11/19/2018', 'Mockup Task', 20),
-(8, '3', '11/28/2018', '12/31/2018', 'Prototype Daniyal Project Testing Testing', 20);
+(8, '3', '11/28/2018', '12/31/2018', 'Prototype Daniyal Project Testing Testing', 20),
+(9, '3', '02/01/2019', '03/31/2019', 'Assign the prototype', 16);
 
 -- --------------------------------------------------------
 
@@ -157,8 +157,10 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`u_id`, `u_fname`, `u_lname`, `u_email`, `u_pass`, `status`, `path`) VALUES
-(27, 'daniyal', 'hussain', 'daniyalbutt785@gmail.com', '4e075844d2e00e4c800c8c62716bed8c', 1, NULL),
-(120, 'admin', 'admin', 'admin', '21232f297a57a5a743894a0e4a801fc3', 1, NULL);
+(27, 'daniyal', 'hussain', 'daniyal', '21232f297a57a5a743894a0e4a801fc3', 1, NULL),
+(120, 'admin', 'admin', 'admin', '21232f297a57a5a743894a0e4a801fc3', 1, NULL),
+(121, 'Waleed', 'Ali', 'waleed', '21232f297a57a5a743894a0e4a801fc3', 1, NULL),
+(122, 'checker', 'pro', 'checker', '21232f297a57a5a743894a0e4a801fc3', 1, NULL);
 
 --
 -- Indexes for dumped tables
@@ -208,25 +210,25 @@ ALTER TABLE `activities`
 -- AUTO_INCREMENT for table `assigns`
 --
 ALTER TABLE `assigns`
-  MODIFY `a_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `a_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `projects`
 --
 ALTER TABLE `projects`
-  MODIFY `p_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `p_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `tasks`
 --
 ALTER TABLE `tasks`
-  MODIFY `t_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `t_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `u_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=121;
+  MODIFY `u_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=123;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
