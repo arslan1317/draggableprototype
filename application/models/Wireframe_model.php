@@ -48,6 +48,17 @@ class Wireframe_model extends CI_Model{
         $query = $this->db->get();
         return $query->result();
     }
+
+    public function get_wireframe_status($id){
+        $this->db->select('*');
+        $this->db->from('tasks');
+        $this->db->join('assigns', 'tasks.t_id = assigns.t_id');
+        $this->db->where('tasks.p_id', $id);
+        $this->db->where('tasks.t_type', 1);
+        $query = $this->db->get();
+        $result = $query->result();
+        return $result;
+    }
 }
 
 ?>

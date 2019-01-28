@@ -22,6 +22,9 @@
                     <li <?php if($this->uri->segment(2)=="submittedwork"){echo 'class="active"';}?>>
                         <a href="<?php echo base_url();?>user/submittedwork">Submitted Work </a>
                     </li>
+                    <li <?php if($this->uri->segment(1)=="chat"){echo 'class="active"';}?>>
+                        <a href="<?php echo base_url();?>chat">Chat </a>
+                    </li>
                     <h3 class="menu-title"><span class="tweak" style="font-size: 20px;">P</span>rovided <span class="tweak" style="font-size: 20px;">B</span>y <span class="tweak" style="font-size: 20px;">Y</span>ou</h3>
                     <li <?php if($this->uri->segment(1)=="project"){echo 'class="active"';}?>>
                         <a href="<?php echo base_url();?>project">Project </a>

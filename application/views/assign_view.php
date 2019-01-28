@@ -170,8 +170,6 @@
                 </div>
 
 
-
-
                 <div class="form-group col-12 p-0 m-auto">
                     <input type="button" class="btn bg-green col-8 main-btn mt-1" value="UPDATE" onclick="updateEmp()">
                 </div>

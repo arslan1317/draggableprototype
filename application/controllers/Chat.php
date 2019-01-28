@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Wireframes extends CI_Controller {
+class Chat extends CI_Controller {
 
 	/**
 	 * Index Page for this controller.
@@ -21,26 +21,22 @@ class Wireframes extends CI_Controller {
 	function __construct(){
         parent::__construct();
         $this->load->helper('form');
-        $this->load->library('session');
-        $this->load->model('Wireframe_model');
-        }
+        $this->load->database();
+        $this->load->model('Chat_model');
+    }
 
-	function index(){
+	public function index($data = NULL){
             if(isset($_SESSION['u_id'])){
-                $this->load->view('wireframe_view');
+		$this->load->view('chat_view');
             }else{
                 redirect('Login/index');
             }
 	}
-    
-    function get_all_methods(){
-		$data = $this->Wireframe_model->get_all_methods();
-        echo json_encode($data);
-    }
 
-    function getWireframeStatus(){
-    	$id = $this->input->post('projectid');
-		$data = $this->Wireframe_model->get_wireframe_status($id);
-        echo json_encode($data);
-    }
+	public function get_project_chat(){
+		$data = $this->Chat_model->get_project_chat();
+		echo json_encode($data);
+	}
+
+	
 }

@@ -21,7 +21,7 @@
 
         <?php if(empty($all_data)) { ?>
             <div class="col-md-12 content mt-2" style="padding-bottom: 0px !important;">
-                <div class="col-md-12 no-data-found bg-danger text-white p-2">
+                <div class="col-md-12 no-data-found alert alert-danger p-2">
                     <span>No Data Found</span>
                 </div>
             <?php }else{ ?>
@@ -87,7 +87,7 @@
 
     <?php if(empty($supervising)) { ?>
         <div class="col-md-12 content mt-2" style="padding-bottom: 0px !important;">
-            <div class="col-md-12 no-data-found bg-danger text-white p-2">
+            <div class="col-md-12 no-data-found alert alert-danger p-2">
                 <span>No Data Found</span>
             </div>
         <?php }else { ?>
@@ -144,7 +144,7 @@
 
     <?php if(empty($wireframe)) { ?>
         <div class="col-md-12 content mt-2" style="padding-bottom: 0px !important;">
-            <div class="col-md-12 no-data-found bg-danger text-white p-2">
+            <div class="col-md-12 no-data-found alert alert-danger p-2">
                 <span>No Data Found</span>
             </div>
         <?php }else { ?>
@@ -205,7 +205,7 @@
 
     <?php if(empty($mockup)) { ?>
         <div class="col-md-12 content mt-2" style="padding-bottom: 0px !important;">
-            <div class="col-md-12 no-data-found bg-danger text-white p-2">
+            <div class="col-md-12 no-data-found alert alert-danger p-2">
                 <span>No Data Found</span>
             </div>
         <?php }else { ?>
@@ -266,7 +266,7 @@
     </div>
     <?php if(empty($prototype)) { ?>
         <div class="col-md-12 content mt-2" style="padding-bottom: 0px !important;">
-            <div class="col-md-12 no-data-found bg-danger text-white p-2">
+            <div class="col-md-12 no-data-found alert alert-danger p-2">
                 <span>No Data Found</span>
             </div>
         <?php }else { ?>

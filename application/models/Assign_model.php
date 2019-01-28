@@ -42,7 +42,7 @@ class Assign_model extends CI_Model{
     }
 
     public function get_task_type($data){
-        $this->db->select('t_type');
+        $this->db->select('t_type, t_id');
         $this->db->from('tasks');
         $this->db->where('p_id', $data);
         $query = $this->db->get();

@@ -43,4 +43,10 @@ class Prototypes extends CI_Controller {
 		$data = $this->Prototype_model->get_all_prototype_layout($id);
         echo json_encode($data);
 	}
+
+	public function getPrototypeStatus(){
+		$id = $this->input->post('projectid');
+		$data = $this->Prototype_model->get_prototype_status($id);
+        echo json_encode($data);
+	}
 }

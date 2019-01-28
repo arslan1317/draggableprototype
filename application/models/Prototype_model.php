@@ -33,6 +33,17 @@ class Prototype_model extends CI_Model{
         $result = $query->result();
         return $result;
     }
+
+    public function get_prototype_status($id){
+        $this->db->select('*');
+        $this->db->from('tasks');
+        $this->db->join('assigns', 'tasks.t_id = assigns.t_id');
+        $this->db->where('tasks.p_id', $id);
+        $this->db->where('tasks.t_type', 2);
+        $query = $this->db->get();
+        $result = $query->result();
+        return $result;
+    }
 }
 
 ?>

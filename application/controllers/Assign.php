@@ -46,42 +46,42 @@ class Assign extends CI_Controller {
 	}
 
 	public function add_assign(){
-                $this->form_validation->set_rules('userEmailId','User Email', 'trim|required');
-                $this->form_validation->set_rules('projectName','Project Name', 'trim|required');
-                $this->form_validation->set_rules('taskType','Task Type', 'trim|required');
-                $this->form_validation->set_rules('projectStart','Assign Date', 'trim|required');
-                $this->form_validation->set_rules('projectEnd', 'Assign End', 'trim|required');
-                $this->form_validation->set_rules('assignDetail', 'Assign Detail', 'trim|required');
-                if($this->form_validation->run() == false){
-                    $data['message'] = validation_errors();
-                    $data['code'] = 1;
+        $this->form_validation->set_rules('userEmailId','User Email', 'trim|required');
+        $this->form_validation->set_rules('projectName','Project Name', 'trim|required');
+        $this->form_validation->set_rules('taskType','Task Type', 'trim|required');
+        $this->form_validation->set_rules('projectStart','Assign Date', 'trim|required');
+        $this->form_validation->set_rules('projectEnd', 'Assign End', 'trim|required');
+        $this->form_validation->set_rules('assignDetail', 'Assign Detail', 'trim|required');
+        if($this->form_validation->run() == false){
+            $data['message'] = validation_errors();
+            $data['code'] = 1;
+            echo json_encode($data);
+        }else{
+            if($this->Assign_model->check_project_task($this->input->post('projectName'), $this->input->post('taskType'))){
+                $assign = array(
+                    'u_id' => $this->input->post('userEmailId'),
+                    'p_id' => $this->input->post('projectName'),
+                    't_id' => $this->input->post('taskType'),
+                    'a_start' => $this->input->post('projectStart'),
+                    'a_end' => $this->input->post('projectEnd'),
+                    'a_by' => $this->session->userdata('u_id'),
+                    'a_detail' => $this->input->post('assignDetail'),
+                );
+                if($this->Assign_model->add_assign($assign)){
+                    $data['message'] = '<p>Assign Has Been Done</p>';
+                    $data['code'] = 2;
                     echo json_encode($data);
                 }else{
-                    if($this->Assign_model->check_project_task($this->input->post('projectName'), $this->input->post('taskType'))){
-                        $assign = array(
-                            'u_id' => $this->input->post('userEmailId'),
-                            'p_id' => $this->input->post('projectName'),
-                            't_id' => $this->input->post('taskType'),
-                            'a_start' => $this->input->post('projectStart'),
-                            'a_end' => $this->input->post('projectEnd'),
-                            'a_by' => $this->session->userdata('u_id'),
-                            'a_detail' => $this->input->post('assignDetail'),
-                        );
-                        if($this->Assign_model->add_assign($assign)){
-                            $data['message'] = '<p>Assign Has Been Done</p>';
-                            $data['code'] = 2;
-                            echo json_encode($data);
-                        }else{
-                            $data['message'] = '<p>Error, Please Contact You Administrator</p>';
-                            $data['code'] = 3;
-                            echo json_encode($data);
-                        }
-                    }else{
-                        $data['message'] = '<p>Error, Please Contact You Administrator</p>';
-                        $data['code'] = 4;
-                        echo json_encode($data);
-                    }
+                    $data['message'] = '<p>Error, Please Contact You Administrator</p>';
+                    $data['code'] = 3;
+                    echo json_encode($data);
                 }
+            }else{
+                $data['message'] = '<p>Error, Please Contact You Administrator</p>';
+                $data['code'] = 4;
+                echo json_encode($data);
+            }
+        }
 	}
         
     public function get_project_name_having_task(){
