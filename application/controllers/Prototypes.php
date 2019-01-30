@@ -49,4 +49,12 @@ class Prototypes extends CI_Controller {
 		$data = $this->Prototype_model->get_prototype_status($id);
         echo json_encode($data);
 	}
+
+	public function storeButtonSequence(){
+		$id = $this->input->post('id');
+		$button = $this->input->post('button');
+		$activity = $this->input->post('activity');
+		$data = $this->Prototype_model->store_button_sequence($id, $button, $activity);
+		echo json_encode($data);
+	}
 }

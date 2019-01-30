@@ -44,6 +44,20 @@ class Prototype_model extends CI_Model{
         $result = $query->result();
         return $result;
     }
+
+    public function store_button_sequence($id, $button, $activity){
+        $value = $button . ',' . $activity;
+        $this->db->select('*');
+        $this->db->from('activities');
+        $this->db->where("FIND_IN_SET('".$button."', act_prototype) ");  
+        // $this->db->set('act_prototype', $value);
+        $this->db->where('act_id', $id);
+        $query = $this->db->get();
+        $result = $query->result();
+        print_r($result);
+        // $this->db->update('activities');
+        // return $result;
+    }
 }
 
 ?>

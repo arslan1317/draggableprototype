@@ -118,12 +118,6 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label for="inputText" class="col-form-label">Text</label>
-                <div class="left-input">
-                    <input type="text" class="form-control" id="inputText" placeholder="Text">
-                </div>
-            </div>
-            <div class="form-group row">
                 <label for="inputWidth" class="col-form-label">Width</label>
                 <div class="left-input">
                     <input type="text" class="form-control" id="inputWidth" placeholder="Width">
@@ -133,6 +127,30 @@
                 <label for="inputHeight" class="col-form-label">Height</label>
                 <div class="left-input">
                     <input type="text" class="form-control" id="inputHeight" placeholder="Height">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputTop" class="col-form-label">Top</label>
+                <div class="left-input">
+                    <input type="text" class="form-control" id="inputTop" placeholder="Top">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputLeft" class="col-form-label">Left</label>
+                <div class="left-input">
+                    <input type="text" class="form-control" id="inputLeft" placeholder="Left">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputRight" class="col-form-label">Right</label>
+                <div class="left-input">
+                    <input type="text" class="form-control" id="inputRight" placeholder="Right">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputBottom" class="col-form-label">Bottom</label>
+                <div class="left-input">
+                    <input type="text" class="form-control" id="inputBottom" placeholder="Bottom">
                 </div>
             </div>
         </div>

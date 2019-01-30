@@ -1343,4 +1343,14 @@ img{ max-width:100%;}
   height: 516px;
   overflow-y: auto;
 }
-
+#pupop .mobile-inner{
+  background-color: #f1f2f6;
+}
+.pro-before:before{
+  content: attr(data-content);
+  bottom: -18px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  text-align: center;
+}

@@ -4,10 +4,12 @@ jQuery(document).ready(function($) {
         //Notication VIew
         GLOBALREQUEST = new Array();
         $(document).on('keydown', function(e) {
+            if((e.target.id != 'inputWidth') && (e.target.id != 'inputHeight') && (e.target.id != 'inputTop') && (e.target.id != 'inputLeft') && (e.target.id != 'inputRight') && (e.target.id != 'inputBottom') && (e.target.id != 'inputText')){
                 if ((e.keyCode == 46) || (e.keyCode == 8)) {
-                        // $('.item.selected').remove();
+                        alert("checking");
                         $('.mobile-inner .selected').remove();
                 }
+            }
         });
 
         $('.open-dropdown-box').click(function(e) {
@@ -165,6 +167,7 @@ jQuery(document).ready(function($) {
                                 data: { selectedProject: selectedProject },
                                 dataType: 'json',
                                 success: function(response) {
+                                    console.log(response);
                                     $('#select-activity').html('');
                                         var pos = 1;
                                         var top = 20;
@@ -177,12 +180,37 @@ jQuery(document).ready(function($) {
                                                 $('#pro-box-screens').append('<div class="mobile-inner mt-0 prototype-mobile-inner" data-content="'+response[i]['act_name']+'" data-id="'+response[i]['act_id']+'" style="left:' + pos + 'rem;top:'+top+'px;position:absolute;background-color:white">' + response[i]['act_code'] + '</div>');
                                                 pos = pos + 17;
                                                 $('#select-activity').append('<option value="'+response[i]['act_id']+'">'+response[i]['act_name']+'</option>');
+                                                if(response[i]['act_prototype'] != null){
+                                                    var proCode = response[i]['act_prototype'].split(',');
+                                                    console.log(proCode[1]);
+                                                    var div = $('.mobile-inner')[i];
+                                                    var valueActivity = '';
+                                                    for(var j = 0; j < response.length; j++){
+                                                        if(response[j]['act_id'] == proCode[1]){
+                                                            valueActivity = response[j]['act_name']
+                                                            valueActivity = valueActivity.split(' ');
+                                                        }
+                                                    }
+                                                    $(div).find('#' + proCode[0]).attr('data-content', valueActivity[0]);
+                                                    $(div).find('#' + proCode[0]).addClass('pro-before');
+                                                }
                                         }
+                                        $('.mobile-inner').each(function(){
+                                            var count = 0;
+                                            $(this).find('input[type="button"]').each(function(){
+                                                count++;
+                                                $(this).attr('button-number', count);
+                                            })
+                                            // var count = $(this).find('input[type="button"]').length;
+                                        });
                                         $('.mobile-inner p').removeClass('selected');
                                         $('.mobile-inner input[type="button"]').click(function(){
+                                            $('#pro-click-button').val($(this).parent().attr('id'));
+                                            $('#pro-act-id').val($(this).parent().parent().data('id'));
+                                            $('#button-count').val($(this).attr('data-button-count'));
                                             $('#exampleModal').modal('show');
                                         });
-
+                                        // $( "<div>Test</div>" ).insertAfter("#pro-box-screens");
                                         // successBox('<p>Wireframe Submitted Successfully</p>');
                                         // assingStatusFunction();
                                 }
@@ -190,8 +218,25 @@ jQuery(document).ready(function($) {
                 }
         });
 
-        $('.mobile-inner input[type="button"]').click(function(){
-          alert("click");
+        $('#save-prototype-number').click(function(){
+            var button = $('#pro-click-button').val();
+            var activity = $('#select-activity').val();
+            var id = $('#pro-act-id').val();
+            var buttonCount = $('#button-count').val();
+            $.ajax({
+                    url: baseURL + 'prototypes/storeButtonSequence',
+                    method: 'post',
+                    type: 'post',
+                    data: { button: button, activity:activity, id:id, buttonCount:buttonCount},
+                    dataType: 'json',
+                    success: function(response) {
+                        console.log(response);
+                        if(response == true){
+                            $('#exampleModal').modal('hide');
+                            successBox('<p>Prototype Save</p>');
+                        }
+                    }
+            });
         });
 
         $('#selectProject').change(function() {
@@ -331,6 +376,36 @@ jQuery(document).ready(function($) {
                                 }
                         });
                 }
+        });
+
+        $( "#inputWidth" ).keyup(function() {
+            var value = $(this).val();
+            $('.mobile-inner p.selected').css('width', value+'px');
+        });
+
+        $( "#inputHeight" ).keyup(function() {
+            var value = $(this).val();
+            $('.mobile-inner p.selected').css('height', value+'px');
+        });
+
+        $( "#inputTop" ).keyup(function() {
+            var value = $(this).val();
+            $('.mobile-inner p.selected').css('top', value+'px');
+        });
+
+        $( "#inputLeft" ).keyup(function() {
+            var value = $(this).val();
+            $('.mobile-inner p.selected').css('left', value+'px');
+        });
+
+        $( "#inputRight" ).keyup(function() {
+            var value = $(this).val();
+            $('.mobile-inner p.selected').css('right', value+'px');
+        });
+
+        $( "#inputBottom" ).keyup(function() {
+            var value = $(this).val();
+            $('.mobile-inner p.selected').css('bottom', value+'px');
         });
 
         function getAllActivities(selectedProject) {
@@ -1887,21 +1962,40 @@ function selectedActivity(a, b) {
                                         var id = $(this).attr('id');
                                         addSomeAttributes(this, id);
                                 });
+                                $('.mobile-inner p').removeClass('selected');
                         }
                 }
         });
 }
 
 function addSomeAttributes(component, id) {
+        console.log(component);
         $(component).attr('id', id);
         var id = $(component).attr('id');
-        var text = $(component).html();
-        fillTheProperties(id, text);
+        var text = $(component).text();
+        var width = $(component).css('width');
+        var height = $(component).css('height');
+        var top = $(component).css('top');
+        var left = $(component).css('left');
+        var right = $(component).css('right');
+        var bottom = $(component).css('bottom');
+        fillTheProperties(id, text, width, height, top, left, right, bottom);
 }
 
-function fillTheProperties(id, text) {
+function fillTheProperties(id, text, width, height, top, left, right, bottom) {
+        var width = width.split('p');
+        var height = height.split('p');
+        var top = top.split('p');
+        var left = left.split('p');
+        var right = right.split('p');
+        var bottom = bottom.split('p');
         $('#inputID').val(id);
-        $('#inputText').val(text);
+        $('#inputWidth').val(width[0]);
+        $('#inputHeight').val(height[0]);
+        $('#inputTop').val(top[0]);
+        $('#inputLeft').val(left[0]);
+        $('#inputRight').val(right[0]);
+        $('#inputBottom').val(bottom[0]);
 }
 
 function openWireframeModel(p_id, t_type, a_id) {

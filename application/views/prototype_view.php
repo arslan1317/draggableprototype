@@ -77,8 +77,11 @@
               </div>
           </div>
           <div class="modal-footer">
+            <input type="hidden" id="pro-click-button">
+            <input type="hidden" id="pro-act-id">
+            <input type="hidden" id="button-count">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn wire-btn main-btn">Save changes</button>
+            <button type="button" class="btn wire-btn main-btn" id="save-prototype-number">Save changes</button>
           </div>
         </div>
       </div>
