@@ -425,7 +425,7 @@ a, button {
   -ms-transition: all 0.25s ease;
   -o-transition: all 0.25s ease;
   transition: all 0.25s ease; }
-  a:active, a.active, button:active, button.active {
+  a:active, a.active, button.active {
     background: none !important;
     border: none !important; }
 
@@ -1353,4 +1353,7 @@ img{ max-width:100%;}
   left: 0;
   right: 0;
   text-align: center;
+}
+#pro-box-screens{
+  height: -webkit-fill-available;
 }

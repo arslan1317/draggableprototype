@@ -6,7 +6,6 @@ jQuery(document).ready(function($) {
         $(document).on('keydown', function(e) {
             if((e.target.id != 'inputWidth') && (e.target.id != 'inputHeight') && (e.target.id != 'inputTop') && (e.target.id != 'inputLeft') && (e.target.id != 'inputRight') && (e.target.id != 'inputBottom') && (e.target.id != 'inputText')){
                 if ((e.keyCode == 46) || (e.keyCode == 8)) {
-                        alert("checking");
                         $('.mobile-inner .selected').remove();
                 }
             }
@@ -160,83 +159,48 @@ jQuery(document).ready(function($) {
                 if (selectedProject == 0) {
                         errorBox('<p>Please Select Project Name</p>');
                 } else {
-                        $.ajax({
-                                url: baseURL + 'prototypes/get_all_prototype_layout',
-                                type: 'post',
-                                dataType: 'json',
-                                data: { selectedProject: selectedProject },
-                                dataType: 'json',
-                                success: function(response) {
-                                    console.log(response);
-                                    $('#select-activity').html('');
-                                        var pos = 1;
-                                        var top = 20;
-                                        for (var i = 0; i < response.length; i++) {
-                                                pos = pos;
-                                                if(i == 4){
-                                                    pos = 1;
-                                                    top = 532;
-                                                }
-                                                $('#pro-box-screens').append('<div class="mobile-inner mt-0 prototype-mobile-inner" data-content="'+response[i]['act_name']+'" data-id="'+response[i]['act_id']+'" style="left:' + pos + 'rem;top:'+top+'px;position:absolute;background-color:white">' + response[i]['act_code'] + '</div>');
-                                                pos = pos + 17;
-                                                $('#select-activity').append('<option value="'+response[i]['act_id']+'">'+response[i]['act_name']+'</option>');
-                                                if(response[i]['act_prototype'] != null){
-                                                    var proCode = response[i]['act_prototype'].split(',');
-                                                    console.log(proCode[1]);
-                                                    var div = $('.mobile-inner')[i];
-                                                    var valueActivity = '';
-                                                    for(var j = 0; j < response.length; j++){
-                                                        if(response[j]['act_id'] == proCode[1]){
-                                                            valueActivity = response[j]['act_name']
-                                                            valueActivity = valueActivity.split(' ');
-                                                        }
-                                                    }
-                                                    $(div).find('#' + proCode[0]).attr('data-content', valueActivity[0]);
-                                                    $(div).find('#' + proCode[0]).addClass('pro-before');
-                                                }
-                                        }
-                                        $('.mobile-inner').each(function(){
-                                            var count = 0;
-                                            $(this).find('input[type="button"]').each(function(){
-                                                count++;
-                                                $(this).attr('button-number', count);
-                                            })
-                                            // var count = $(this).find('input[type="button"]').length;
-                                        });
-                                        $('.mobile-inner p').removeClass('selected');
-                                        $('.mobile-inner input[type="button"]').click(function(){
-                                            $('#pro-click-button').val($(this).parent().attr('id'));
-                                            $('#pro-act-id').val($(this).parent().parent().data('id'));
-                                            $('#button-count').val($(this).attr('data-button-count'));
-                                            $('#exampleModal').modal('show');
-                                        });
-                                        // $( "<div>Test</div>" ).insertAfter("#pro-box-screens");
-                                        // successBox('<p>Wireframe Submitted Successfully</p>');
-                                        // assingStatusFunction();
-                                }
-                        });
+                    printPrototype(selectedProject);
                 }
         });
 
         $('#save-prototype-number').click(function(){
             var button = $('#pro-click-button').val();
-            var activity = $('#select-activity').val();
+            var activity_id = $('#select-activity').val();
+            var activity_name = $("#select-activity option:selected").text();
             var id = $('#pro-act-id').val();
+            var checkerId = $('#prototype-id').val();
             var buttonCount = $('#button-count').val();
-            $.ajax({
-                    url: baseURL + 'prototypes/storeButtonSequence',
-                    method: 'post',
-                    type: 'post',
-                    data: { button: button, activity:activity, id:id, buttonCount:buttonCount},
-                    dataType: 'json',
-                    success: function(response) {
-                        console.log(response);
-                        if(response == true){
-                            $('#exampleModal').modal('hide');
-                            successBox('<p>Prototype Save</p>');
+            if(checkerId != ''){
+                //update
+                 $.ajax({
+                        url: baseURL + 'prototypes/updateButtonSequence',
+                        method: 'post',
+                        type: 'post',
+                        data: { button: button, activity_id:activity_id, activity_name:activity_name, id:id, buttonCount:buttonCount, checkerId:checkerId},
+                        dataType: 'json',
+                        success: function(response) {
+                            if(response == true){
+                                successBox('<p>Sequence Of Prototype Updated</p>');
+                                printPrototype($("#selectProjectForPrototype option:selected").val());
+                                $('#exampleModal').modal('hide');
+                            }
                         }
-                    }
-            });
+                });
+            }else{
+                //insert
+                $.ajax({
+                        url: baseURL + 'prototypes/storeButtonSequence',
+                        method: 'post',
+                        type: 'post',
+                        data: { button: button, activity_id:activity_id, activity_name:activity_name, id:id, buttonCount:buttonCount},
+                        dataType: 'json',
+                        success: function(response) {
+                            if(response == true){
+                                successBox('<p>Sequence Of Prototype Inserted</p>');
+                            }
+                        }
+                });
+            }
         });
 
         $('#selectProject').change(function() {
@@ -833,6 +797,7 @@ jQuery(document).ready(function($) {
         });
 
         $("#selectProjectForPrototype").change(function() {
+                $('.save-button i').css({ 'background-color': 'transparent', 'border-radius': '50px' });
                 var projectid = $('#selectProjectForPrototype').val();
                 if (projectid != 0) {
                         $.ajax({
@@ -2028,4 +1993,64 @@ function allProjectCreatedChat(){
                         console.log(response);
                 }
         });
+}
+
+function printPrototype(selectedProject){
+    $('#pro-box-screens').html('');
+     $.ajax({
+            url: baseURL + 'prototypes/get_all_prototype_layout',
+            type: 'post',
+            dataType: 'json',
+            data: { selectedProject: selectedProject },
+            dataType: 'json',
+            success: function(response) {
+                console.log(response);
+                $('#select-activity').html('');
+                    var pos = 1;
+                    var top = 30;
+                    for (var i = 0; i < response.length; i++) {
+                            pos = pos;
+                            if(i == 4){
+                                pos = 1;
+                                top = 552;
+                            }
+                            $('#pro-box-screens').append('<div class="mobile-inner mt-0 prototype-mobile-inner" data-content="'+response[i]['act_name']+'" data-id="'+response[i]['act_id']+'" style="left:' + pos + 'rem;top:'+top+'px;position:absolute;background-color:white">' + response[i]['act_code'] + '</div>');
+                            pos = pos + 17;
+                            $('#select-activity').append('<option value="'+response[i]['act_id']+'">'+response[i]['act_name']+'</option>');
+                            var div = $('.mobile-inner')[i];
+                            if(response[i]['prototype'].length != 0){
+                                for(var j = 0; j < response[i]['prototype'].length; j++){
+                                    var proName = response[i]['prototype'][j]['act_open_name'].split(' ');
+                                    $(div).find('#' + response[i]['prototype'][j]['act_button']).attr('data-content', proName[0]);
+                                    $(div).find('#' + response[i]['prototype'][j]['act_button']).addClass('pro-before');
+                                    $(div).find('#' + response[i]['prototype'][j]['act_button']).children().attr('data-status', 'edit');
+                                    $(div).find('#' + response[i]['prototype'][j]['act_button']).children().attr('data-edit-activity', response[i]['prototype'][j]['act_open_id']);
+                                    $(div).find('#' + response[i]['prototype'][j]['act_button']).children().attr('data-prototype-id', response[i]['prototype'][j]['pt_id']);
+                                }
+                            }
+                    }
+                    $('.mobile-inner').each(function(){
+                        var count = 0;
+                        $(this).find('input[type="button"]').each(function(){
+                            count++;
+                            $(this).attr('button-number', count);
+                        })
+                        // var count = $(this).find('input[type="button"]').length;
+                    });
+                    $('.mobile-inner p').removeClass('selected');
+                    $('.mobile-inner input[type="button"]').click(function(){
+                        $('#prototype-id').val('');
+                        $('#pro-click-button').val($(this).parent().attr('id'));
+                        $('#pro-act-id').val($(this).parent().parent().data('id'));
+                        $('#button-count').val($(this).attr('data-button-count'));
+                        if($(this).attr('data-status') == 'edit'){
+                            $('#prototype-id').val($(this).attr('data-prototype-id'));
+                            $('#exampleModal #select-activity').val($(this).attr('data-edit-activity'));
+                        }else{
+                            $('#exampleModal #select-activity option:eq(0)').prop('selected', true);
+                        }
+                        $('#exampleModal').modal('show');
+                    });
+            }
+    });
 }

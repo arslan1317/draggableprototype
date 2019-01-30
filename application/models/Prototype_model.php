@@ -31,7 +31,18 @@ class Prototype_model extends CI_Model{
         $this->db->where('projects.p_id', $id);
         $query = $this->db->get();
         $result = $query->result();
+        foreach ($result as $results) {
+            $results->prototype = $this->get_all_pro_sequence($results->act_id );
+        }
         return $result;
+    }
+
+    public function get_all_pro_sequence($id){
+        $this->db->select("*");
+        $this->db->from('prototype');
+        $this->db->where('act_id', $id);
+        $query = $this->db->get();
+        return $query->result();
     }
 
     public function get_prototype_status($id){
@@ -45,18 +56,17 @@ class Prototype_model extends CI_Model{
         return $result;
     }
 
-    public function store_button_sequence($id, $button, $activity){
-        $value = $button . ',' . $activity;
-        $this->db->select('*');
-        $this->db->from('activities');
-        $this->db->where("FIND_IN_SET('".$button."', act_prototype) ");  
-        // $this->db->set('act_prototype', $value);
-        $this->db->where('act_id', $id);
-        $query = $this->db->get();
-        $result = $query->result();
-        print_r($result);
-        // $this->db->update('activities');
-        // return $result;
+    public function store_button_sequence($data){
+        $prototype = $this->db->insert('prototype', $data);
+        return $prototype;
+    }
+
+    public function update_button_sequence($pt_id, $act_id, $act_open_name, $act_open_id, $act_button){
+        $this->db->set('act_open_name', $act_open_name);
+        $this->db->set('act_open_id', $act_open_id);
+        $this->db->where('pt_id', $pt_id);
+        $this->db->update('prototype');
+        return true;
     }
 }
 

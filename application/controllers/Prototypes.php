@@ -51,10 +51,23 @@ class Prototypes extends CI_Controller {
 	}
 
 	public function storeButtonSequence(){
-		$id = $this->input->post('id');
-		$button = $this->input->post('button');
-		$activity = $this->input->post('activity');
-		$data = $this->Prototype_model->store_button_sequence($id, $button, $activity);
+		$prototype = array(
+            'act_id' => $this->input->post('id'),
+            'act_open_name' => $this->input->post('activity_name'),
+            'act_open_id' => $this->input->post('activity_id'),
+            'act_button' => $this->input->post('button'),
+        );
+		$data = $this->Prototype_model->store_button_sequence($prototype);
+		echo json_encode($data);
+	}
+
+	public function updateButtonSequence(){
+		$pt_id = $this->input->post('checkerId');
+		$act_id = $this->input->post('id');
+		$act_open_name = $this->input->post('activity_name');
+		$act_open_id = $this->input->post('activity_id');
+		$act_button = $this->input->post('button');
+        $data = $this->Prototype_model->update_button_sequence($pt_id, $act_id, $act_open_name, $act_open_id, $act_button);
 		echo json_encode($data);
 	}
 }

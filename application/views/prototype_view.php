@@ -47,6 +47,16 @@
         </div>
 
         <div class="content mt-3">
+            <div class="checker-div clearfix">
+                <div class="col-md-12 text-right save-button mt-0">
+                    <span class="mr-3">Progress <i class="far fa-circle" id="assign-progress"></i></span>
+                    <span class="mr-3">Submitted <i class="far fa-circle" id="assign-submit"></i></span>
+                    <span class="mr-3">Changing <i class="far fa-circle" id="assign-changed"></i></span>
+                    <span class="mr-3">Approved <i class="far fa-circle" id="assign-approved"></i></span>
+                    <button class="btn main-btn wire-btn" id="submit-prototype">Submit</button>
+                    <button class="btn main-btn wire-btn" id="preview-prototype">Preview</button>
+                </div>
+            </div>
             <div id="pro-box-screens" style="position: relative;">
                 
             </div>
@@ -80,6 +90,7 @@
             <input type="hidden" id="pro-click-button">
             <input type="hidden" id="pro-act-id">
             <input type="hidden" id="button-count">
+            <input type="hidden" id="prototype-id">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             <button type="button" class="btn wire-btn main-btn" id="save-prototype-number">Save changes</button>
           </div>

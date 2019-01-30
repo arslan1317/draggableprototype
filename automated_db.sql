@@ -2,10 +2,10 @@
 -- version 4.8.3
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Jan 30, 2019 at 05:25 AM
--- Server version: 10.1.36-MariaDB
--- PHP Version: 7.2.10
+-- Host: 127.0.0.1
+-- Generation Time: Jan 30, 2019 at 04:20 PM
+-- Server version: 10.1.35-MariaDB
+-- PHP Version: 7.2.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -48,7 +48,8 @@ INSERT INTO `activities` (`act_id`, `act_name`, `act_code`, `act_prototype`, `ac
 (6, 'main activity', '<p id=\"image_1\" class=\"border-on-icon ui-draggable-handle ui-draggable\" style=\"position: absolute; margin-bottom: 0px; top: 100.547px; left: 78.4375px; padding: 4px; border: 0px; width: 107px; height: 89px;\"><img src=\"https://cdn.pixabay.com/photo/2012/04/10/23/56/cross-27168_1280.png\" style=\"width:-webkit-fill-available;height:100% !important\"></p><div class=\"ui-resizable-handle ui-resizable-e\" style=\"z-index: 90;\"></div><div class=\"ui-resizable-handle ui-resizable-s\" style=\"z-index: 90;\"></div><div class=\"ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se\" style=\"z-index: 90;\"></div><p class=\"ui-draggable ui-draggable-handle\" style=\"position: relative;\"></p><div class=\"ui-resizable-handle ui-resizable-e\" style=\"z-index: 90;\"></div><div class=\"ui-resizable-handle ui-resizable-s\" style=\"z-index: 90;\"></div><div class=\"ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se\" style=\"z-index: 90;\"></div><p class=\"ui-draggable ui-draggable-handle\" style=\"position: relative;\"></p><div class=\"ui-resizable-handle ui-resizable-e\" style=\"z-index: 90;\"></div><div class=\"ui-resizable-handle ui-resizable-s\" style=\"z-index: 90;\"></div><div class=\"ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se\" style=\"z-index: 90;\"></div><p class=\"ui-draggable ui-draggable-handle\" style=\"position: relative;\"></p><p id=\"Button_1\" class=\"border-on-icon ui-draggable-handle ui-draggable selected\" style=\"position: absolute; margin-bottom: 0px; top: 407.547px; left: 92.3125px; padding: 4px; border: 0px; width: 95px; height: 36px;\"><input type=\"button\" style=\"width:-webkit-fill-available;height:100% !important\" value=\"Button\"></p><div class=\"ui-resizable-handle ui-resizable-e\" style=\"z-index: 90;\"></div><div class=\"ui-resizable-handle ui-resizable-s\" style=\"z-index: 90;\"></div><div class=\"ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se\" style=\"z-index: 90;\"></div><p class=\"ui-draggable ui-draggable-handle\" style=\"position: relative;\"></p><div class=\"ui-resizable-handle ui-resizable-e\" style=\"z-index: 90;\"></div><div class=\"ui-resizable-handle ui-resizable-s\" style=\"z-index: 90;\"></div><div class=\"ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se\" style=\"z-index: 90;\"></div><p class=\"ui-draggable ui-draggable-handle\" style=\"position: relative;\"></p><div class=\"ui-resizable-handle ui-resizable-e\" style=\"z-index: 90;\"></div><div class=\"ui-resizable-handle ui-resizable-s\" style=\"z-index: 90;\"></div><div class=\"ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se\" style=\"z-index: 90;\"></div><p class=\"ui-draggable ui-draggable-handle\" style=\"position: relative;\"></p><p id=\"text_view_1\" class=\"border-on-icon ui-draggable-handle item ui-draggable\" style=\"position: absolute; margin-bottom: 0px; top: 38px; left: 81.3594px; width: 102px; height: 32px;\">Text</p><p id=\"edit_text_1\" class=\"border-on-icon ui-draggable-handle item ui-draggable\" style=\"position: absolute; margin-bottom: 0px; top: 267px; left: 35.3906px; padding: 4px; border: 0px; width: 190px; height: 46px;\"><input type=\"text\" style=\"width:-webkit-fill-available;height:100% !important\"></p>', 'Button_1,7', NULL, '', 16, 1, 27),
 (7, 'login activity', '<p id=\"edit_text_1\" class=\"border-on-icon ui-draggable-handle ui-draggable\" style=\"position: absolute; margin-bottom: 0px; top: 267px; left: 28.375px; padding: 4px; border: 0px; width: 199px; height: 37px;\"><input type=\"text\" style=\"width:-webkit-fill-available;height:100% !important\"></p><p id=\"edit_text_2\" class=\"border-on-icon ui-draggable-handle item ui-draggable\" style=\"position: absolute; margin-bottom: 0px; top: 310px; left: 26.3906px; padding: 4px; border: 0px; width: 205px; height: 40px;\"><input type=\"text\" style=\"width:-webkit-fill-available;height:100% !important\"></p><p id=\"Button_1\" class=\"border-on-icon ui-draggable-handle item ui-draggable\" style=\"position: absolute; margin-bottom: 0px; top: 358px; left: 29.4219px; padding: 4px; border: 0px; width: 100px; height: 35px;\"><input type=\"button\" style=\"width:-webkit-fill-available;height:100% !important\" value=\"Button\"></p><p id=\"Button_2\" class=\"border-on-icon ui-draggable-handle item ui-draggable\" style=\"position: absolute; margin-bottom: 0px; top: 359px; left: 136.422px; padding: 4px; border: 0px; width: 92px; height: 36px;\"><input type=\"button\" style=\"width:-webkit-fill-available;height:100% !important\" value=\"Button\"></p><p id=\"text_view_2\" class=\"border-on-icon ui-draggable-handle item ui-draggable selected\" style=\"position: absolute; margin-bottom: 0px; top: 76px; left: 103.359px;\">Text</p>', 'Button_1,8', NULL, '', 16, 1, 27),
 (8, 'register activity', '<p id=\"text_view_4\" class=\"border-on-icon ui-draggable-handle item ui-draggable selected\" style=\"position: absolute; margin-bottom: 0px; top: 79px; left: 104.359px; width: 49px; height: 30px;\">Text</p><p id=\"edit_text_3\" class=\"border-on-icon ui-draggable-handle item ui-draggable\" style=\"position: absolute; margin-bottom: 0px; top: 217px; left: 40.3906px; padding: 4px; border: 0px; width: 182px; height: 40px;\"><input type=\"text\" style=\"width:-webkit-fill-available;height:100% !important\"></p><p id=\"edit_text_4\" class=\"border-on-icon ui-draggable-handle item ui-draggable\" style=\"position: absolute; margin-bottom: 0px; top: 264px; left: 42.3906px; padding: 4px; border: 0px; width: 180px; height: 40px;\"><input type=\"text\" style=\"width:-webkit-fill-available;height:100% !important\"></p><p id=\"edit_text_5\" class=\"border-on-icon ui-draggable-handle item ui-draggable\" style=\"position: absolute; margin-bottom: 0px; top: 315px; left: 43.3906px; padding: 4px; border: 0px; width: 177px; height: 40px;\"><input type=\"text\" style=\"width:-webkit-fill-available;height:100% !important\"></p><p id=\"Button_3\" class=\"border-on-icon ui-draggable-handle item ui-draggable\" style=\"position: absolute; margin-bottom: 0px; top: 366px; left: 46.4219px; padding: 4px; border: 0px; width: 87px; height: 34px;\"><input type=\"button\" style=\"width:-webkit-fill-available;height:100% !important\" value=\"Button\"></p><p id=\"Button_4\" class=\"border-on-icon ui-draggable-handle item ui-draggable\" style=\"position: absolute; margin-bottom: 0px; top: 366px; left: 138.422px; padding: 4px; border: 0px; width: 84px; height: 34px;\"><input type=\"button\" style=\"width:-webkit-fill-available;height:100% !important\" value=\"Button\"></p>', NULL, NULL, '', 16, 1, 27),
-(9, 'dashboard activity', '', NULL, NULL, '', 16, 1, 27);
+(9, 'dashboard activity', '', NULL, NULL, '', 16, 1, 27),
+(10, 'main activity', '<p id=\"image_1\" class=\"border-on-icon ui-draggable-handle ui-draggable\" style=\"position: absolute; margin-bottom: 0px; top: 100.547px; left: 78.4375px; padding: 4px; border: 0px; width: 107px; height: 89px;\"><img src=\"https://cdn.pixabay.com/photo/2012/04/10/23/56/cross-27168_1280.png\" style=\"width:-webkit-fill-available;height:100% !important\"></p><div class=\"ui-resizable-handle ui-resizable-e\" style=\"z-index: 90;\"></div><div class=\"ui-resizable-handle ui-resizable-s\" style=\"z-index: 90;\"></div><div class=\"ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se\" style=\"z-index: 90;\"></div><p class=\"ui-draggable ui-draggable-handle\" style=\"position: relative;\"></p><div class=\"ui-resizable-handle ui-resizable-e\" style=\"z-index: 90;\"></div><div class=\"ui-resizable-handle ui-resizable-s\" style=\"z-index: 90;\"></div><div class=\"ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se\" style=\"z-index: 90;\"></div><p class=\"ui-draggable ui-draggable-handle\" style=\"position: relative;\"></p><div class=\"ui-resizable-handle ui-resizable-e\" style=\"z-index: 90;\"></div><div class=\"ui-resizable-handle ui-resizable-s\" style=\"z-index: 90;\"></div><div class=\"ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se\" style=\"z-index: 90;\"></div><p class=\"ui-draggable ui-draggable-handle\" style=\"position: relative;\"></p><p id=\"Button_1\" class=\"border-on-icon ui-draggable-handle ui-draggable selected\" style=\"position: absolute; margin-bottom: 0px; top: 407.547px; left: 92.3125px; padding: 4px; border: 0px; width: 95px; height: 36px;\"><input type=\"button\" style=\"width:-webkit-fill-available;height:100% !important\" value=\"Button\"></p><div class=\"ui-resizable-handle ui-resizable-e\" style=\"z-index: 90;\"></div><div class=\"ui-resizable-handle ui-resizable-s\" style=\"z-index: 90;\"></div><div class=\"ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se\" style=\"z-index: 90;\"></div><p class=\"ui-draggable ui-draggable-handle\" style=\"position: relative;\"></p><div class=\"ui-resizable-handle ui-resizable-e\" style=\"z-index: 90;\"></div><div class=\"ui-resizable-handle ui-resizable-s\" style=\"z-index: 90;\"></div><div class=\"ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se\" style=\"z-index: 90;\"></div><p class=\"ui-draggable ui-draggable-handle\" style=\"position: relative;\"></p><div class=\"ui-resizable-handle ui-resizable-e\" style=\"z-index: 90;\"></div><div class=\"ui-resizable-handle ui-resizable-s\" style=\"z-index: 90;\"></div><div class=\"ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se\" style=\"z-index: 90;\"></div><p class=\"ui-draggable ui-draggable-handle\" style=\"position: relative;\"></p><p id=\"text_view_1\" class=\"border-on-icon ui-draggable-handle item ui-draggable\" style=\"position: absolute; margin-bottom: 0px; top: 38px; left: 81.3594px; width: 102px; height: 32px;\">Text</p><p id=\"edit_text_1\" class=\"border-on-icon ui-draggable-handle item ui-draggable\" style=\"position: absolute; margin-bottom: 0px; top: 267px; left: 35.3906px; padding: 4px; border: 0px; width: 190px; height: 46px;\"><input type=\"text\" style=\"width:-webkit-fill-available;height:100% !important\"></p>', 'Button_1,7', NULL, '', 16, 1, 27);
 
 -- --------------------------------------------------------
 
@@ -112,6 +113,29 @@ CREATE TABLE `projects` (
 INSERT INTO `projects` (`p_id`, `p_name`, `p_type`, `p_start`, `p_end`, `p_detail`, `u_id`, `s_id`, `s_status`, `u_seen`, `p_active`, `timespan`) VALUES
 (16, 'Uber', 'Pick & Drop', '10/01/2018', '11/30/2018', 'Make friendly Application', 120, 27, 0, 0, 0, NULL),
 (17, 'Checker', 'Pick & Drop', '01/28/2019', '05/31/2019', 'checker project details', 120, 27, 0, 0, 0, '2019-01-26 21:57:39');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `prototype`
+--
+
+CREATE TABLE `prototype` (
+  `pt_id` int(191) NOT NULL,
+  `act_id` int(191) NOT NULL,
+  `act_open_name` varchar(191) NOT NULL,
+  `act_open_id` int(191) NOT NULL,
+  `act_button` varchar(191) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `prototype`
+--
+
+INSERT INTO `prototype` (`pt_id`, `act_id`, `act_open_name`, `act_open_id`, `act_button`) VALUES
+(1, 6, 'login activity', 7, 'Button_1'),
+(2, 7, 'register activity', 8, 'Button_1'),
+(3, 7, 'dashboard activity', 9, 'Button_2');
 
 -- --------------------------------------------------------
 
@@ -194,6 +218,12 @@ ALTER TABLE `projects`
   ADD PRIMARY KEY (`p_id`);
 
 --
+-- Indexes for table `prototype`
+--
+ALTER TABLE `prototype`
+  ADD PRIMARY KEY (`pt_id`);
+
+--
 -- Indexes for table `tasks`
 --
 ALTER TABLE `tasks`
@@ -213,7 +243,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `activities`
 --
 ALTER TABLE `activities`
-  MODIFY `act_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `act_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `assigns`
@@ -226,6 +256,12 @@ ALTER TABLE `assigns`
 --
 ALTER TABLE `projects`
   MODIFY `p_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
+--
+-- AUTO_INCREMENT for table `prototype`
+--
+ALTER TABLE `prototype`
+  MODIFY `pt_id` int(191) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `tasks`
