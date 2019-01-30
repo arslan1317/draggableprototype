@@ -128,7 +128,8 @@ class Assign_model extends CI_Model{
         $this->db->set('a_accept', 1);
         $this->db->where('a_id', $id);
         $this->db->update('assigns');
-        return $this->db->affected_rows();
+        $result = $this->db->affected_rows();
+        return $result;
     }
     
     public function reject_assign($id){

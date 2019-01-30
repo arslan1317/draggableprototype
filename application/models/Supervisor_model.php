@@ -25,16 +25,32 @@ class Supervisor_model extends CI_Model{
         $this->db->set('s_status', 1);
         $this->db->where('p_id', $id);
         $this->db->update('projects');
-        return $this->db->affected_rows();
+        $return = $this->db->affected_rows();
+        $this->insertIdToChat($id);
+        return $return;
     }
     
+    public function insertIdToChat($id){
+        $this->db->set('s_id', $this->session->userdata('u_id'));
+        $this->db->where('p_id', $id);
+        $this->db->update('chat');
+    }
+
     public function reject_supervisor($id){
         $this->db->set('s_status', 2);
         $this->db->where('p_id', $id);
         $this->db->update('projects');
-        return $this->db->affected_rows();
+        $result = $this->db->affected_rows();
+        $this->removeIdToChat($id);
+        return $result;
     }
     
+    public function removeIdToChat($id){
+        $this->db->set('s_id', null);
+        $this->db->where('p_id', $id);
+        $this->db->update('chat');
+    }
+
     public function check_Accept_Or_Reject_Supervisor(){
         $id = $this->session->userdata('u_id');
         $this->db->select('*');
