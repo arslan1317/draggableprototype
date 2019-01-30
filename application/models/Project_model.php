@@ -10,8 +10,17 @@ class Project_model extends CI_Model{
         $this->load->library('session');
     }
 
-    public function add_project($data){  
-        return $this->db->insert('projects',$data);
+    public function add_project($data, $id){
+
+        $project = $this->db->insert('projects',$data);
+        $messages = array(
+            'p_id' => $this->db->insert_id(),
+            'u_id' => $id,
+        );
+
+        $this->db->insert('chat', $messages);
+        return $project;
+       
     }
 
     public function get_all_project(){

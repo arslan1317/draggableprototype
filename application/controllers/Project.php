@@ -57,7 +57,7 @@ class Project extends CI_Controller {
                         's_id' => $this->input->post('supervisor'),
                         'timespan' => $now,
                     );
-                    if($this->Project_model->add_project($project)){
+                    if($this->Project_model->add_project($project, $this->session->userdata('u_id'))){
                         $data['message'] = '<p>Project Has Been Added</p>';
                         $data['code'] = 2;
                         echo json_encode($data);

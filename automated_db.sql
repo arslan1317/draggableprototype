@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 30, 2019 at 04:20 PM
+-- Generation Time: Jan 30, 2019 at 06:06 PM
 -- Server version: 10.1.35-MariaDB
 -- PHP Version: 7.2.9
 
@@ -84,6 +84,22 @@ INSERT INTO `assigns` (`a_id`, `u_id`, `p_id`, `t_id`, `a_start`, `a_end`, `a_de
 (6, 27, 17, 10, '01/28/2019', '02/28/2019', 'Checker assign wireframe', 120, 0, 0, '', 0, '0000-00-00 00:00:00'),
 (7, 122, 17, 11, '01/31/2019', '02/28/2019', 'assing checker mockup', 120, 0, 0, '', 1, '0000-00-00 00:00:00'),
 (8, 121, 17, 12, '02/22/2019', '03/30/2019', 'protoype checker assign', 120, 0, 0, '', 1, '0000-00-00 00:00:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `chat`
+--
+
+CREATE TABLE `chat` (
+  `ch_id` int(191) NOT NULL,
+  `p_id` int(191) NOT NULL,
+  `u_id` int(191) NOT NULL,
+  `s_id` int(191) DEFAULT NULL,
+  `w_id` int(191) DEFAULT NULL,
+  `m_id` int(191) DEFAULT NULL,
+  `pr_id` int(191) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -212,6 +228,12 @@ ALTER TABLE `assigns`
   ADD PRIMARY KEY (`a_id`);
 
 --
+-- Indexes for table `chat`
+--
+ALTER TABLE `chat`
+  ADD PRIMARY KEY (`ch_id`);
+
+--
 -- Indexes for table `projects`
 --
 ALTER TABLE `projects`
@@ -252,10 +274,16 @@ ALTER TABLE `assigns`
   MODIFY `a_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
+-- AUTO_INCREMENT for table `chat`
+--
+ALTER TABLE `chat`
+  MODIFY `ch_id` int(191) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `projects`
 --
 ALTER TABLE `projects`
-  MODIFY `p_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `p_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `prototype`
