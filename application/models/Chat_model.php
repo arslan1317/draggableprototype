@@ -31,5 +31,13 @@ class Chat_model extends CI_Model{
         }
         return $result;  
     }
+
+    public function get_user_name($id){
+        $this->db->select('*');
+        $this->db->from('users');
+        $this->db->where('u_id', $id);
+        $query = $this->db->get();
+        return $query->result();
+    }
 }
 ?>

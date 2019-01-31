@@ -2112,12 +2112,53 @@ function openPrototypeModel(p_id, t_type, a_id) {
 }
 
 function allProjectCreatedChat(){
+    $('#inbox_chat').html('');
     $.ajax({
                 method: 'post',
                 type: 'post',
                 url: baseURL + 'chat/get_project_chat',
                 dataType: 'json',
                 success: function(response) {
+                    for(var i = 0; i < response.length; i++){
+                        var supervisor;
+                        var wireframe;
+                        var mockup;
+                        var prototype;
+                        if(response[i]['supervisor'].length > 0){
+                            supervisor = '<u>Supervisor:</u> ' + response[i]['supervisor'][0]['u_fname'] + ' ' + response[i]['supervisor'][0]['u_lname'];
+                        }else{
+                            supervisor = '';
+                        }
+                        if(response[i]['wireframe'].length > 0){
+                            wireframe = '<u>Wireframe:</u> ' + response[i]['wireframe'][0]['u_fname'] + ' ' + response[i]['wireframe'][0]['u_lname'];
+                        }else{
+                            wireframe = '';
+                        }
+                        if(response[i]['mockup'].length > 0){
+                            mockup = '<u>Mockup:</u> ' +response[i]['mockup'][0]['u_fname'] + ' ' + response[i]['mockup'][0]['u_lname'];
+                        }else{
+                            mockup = '';
+                        }
+                        if(response[i]['prototype'].length > 0){
+                            prototype = '<u>Prototype:</u> ' + response[i]['prototype'][0]['u_fname'] + ' ' + response[i]['prototype'][0]['u_lname'];
+                        }else{
+                            prototype = '';
+                        }
+                        $('#inbox_chat').append('<div class="chat_list active_chat">\
+                                        <div class="chat_people">\
+                                          <div class="chat_img"><img src="https://cdn2.iconfinder.com/data/icons/startup-management/325/Project_management_Business_Case-512.png"></div>\
+                                          <div class="chat_ib">\
+                                            <h5>'+response[i]['p_name']+' <span class="chat_date">Dec 25</span></h5>\
+                                            <p>'+ '<u>Project Owner:</u> ' + response[i]['owner'][0]['u_fname'] + ' ' + response[i]['owner'][0]['u_lname'] + '<br>'
+                                                + supervisor + '<br>'
+                                                + wireframe + '<br>'
+                                                + mockup + '<br>'
+                                                + prototype + '<br>'
+                                                +'</p>\
+                                          </div>\
+                                        </div>\
+                                      </div>');
+                    }
                         console.log(response);
                 }
         });

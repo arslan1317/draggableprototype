@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 31, 2019 at 09:31 PM
+-- Generation Time: Jan 31, 2019 at 10:39 PM
 -- Server version: 10.1.36-MariaDB
 -- PHP Version: 7.2.10
 
@@ -110,7 +110,8 @@ CREATE TABLE `chat` (
 --
 
 INSERT INTO `chat` (`ch_id`, `p_id`, `u_id`, `s_id`, `w_id`, `m_id`, `pr_id`) VALUES
-(1, 18, 120, NULL, 122, 27, NULL);
+(1, 18, 120, NULL, 122, NULL, NULL),
+(3, 17, 120, NULL, 122, 27, NULL);
 
 -- --------------------------------------------------------
 
@@ -292,7 +293,7 @@ ALTER TABLE `assigns`
 -- AUTO_INCREMENT for table `chat`
 --
 ALTER TABLE `chat`
-  MODIFY `ch_id` int(191) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `ch_id` int(191) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `projects`
