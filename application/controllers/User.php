@@ -90,7 +90,9 @@ class User extends CI_Controller {
 
 	public function submittedwork(){
 		if(isset($_SESSION['u_id'])){
-			$data['wireframe'] = $this->Wireframe_model->getSubmittedWork();
+			$data['wireframe'] = $this->Wireframe_model->getSubmittedWork(1);
+			$data['mockup'] = $this->Wireframe_model->getSubmittedWork(2);
+			$data['prototype'] = $this->Wireframe_model->getSubmittedWork(3);
 			$this->load->view('user_submit', $data);
 		}else{
 			redirect('Login/index');

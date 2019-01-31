@@ -32,6 +32,7 @@
             <div class="upper-form-box">
                 <!--assign/add_assign-->
                 <div class="col-md-12">
+                    <form id="form-reset">
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="user-email" class="normal-bold">User Email</label>
@@ -81,6 +82,7 @@
                             <input type="submit" class="btn-custom main-btn form-btn" id="addAssign" value="Add" name="add-assign">
                         </div>
                     </div>
+                    </form>
                 </div>
             </div>
         </div> <!-- .content -->

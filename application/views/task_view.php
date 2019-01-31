@@ -32,6 +32,7 @@
             <div class="upper-form-box">
                 <!-- task/add_task -->
                 <div class="col-md-12">
+                    <form id="form-reset">
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="projectName" class="normal-bold">Project Name</label>
@@ -74,6 +75,7 @@
                             <input type="submit" class="main-btn form-btn col-12" id="addTask" value="Add" name="add-task">
                         </div>
                     </div>
+                    </form>
                 </div>
             </div>
         </div> <!-- .content -->

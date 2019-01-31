@@ -53,7 +53,7 @@ jQuery(document).ready(function($) {
         } else if (bodyId == 'prototype-page') {
                 allPrototypeMethods();
         }else if(bodyId == 'chat-page'){
-            allProjectCreatedChat();
+                allProjectCreatedChat();
         }
 
         $("#labelDrop, #inputDrop, #buttonDrop, #imageDrop, #radioDrop, #checkboxDrop").draggable({
@@ -159,6 +159,13 @@ jQuery(document).ready(function($) {
                 if (selectedProject == 0) {
                         errorBox('<p>Please Select Project Name</p>');
                 } else {
+                    $("#preview-prototype").prop('disabled', false);
+                    if($('#selectProjectForPrototype option:selected').attr('data-assign-id') != 0){
+                        $("#submit-prototype").prop('disabled', true);
+                        $('#first-activity').prop('disabled', true);
+                    }
+                    var assignId = $('#selectProjectForPrototype option:selected').attr('data-assign-id');
+                    $('#assign-id').val(assignId);
                     printPrototype(selectedProject);
                 }
         });
@@ -232,8 +239,8 @@ jQuery(document).ready(function($) {
                                                 //assignstatus
                                                 //0 progress
                                                 //1 submit
-                                                //2 change request
-                                                //3 approved
+                                                //2 approved
+                                                //3 change
                                                 var assignId = $(this).children("option:selected").data('assign-id');
                                                 $('#assign-id').val(assignId);
                                                 var assignStatus = $(this).children("option:selected").data('status');
@@ -249,6 +256,46 @@ jQuery(document).ready(function($) {
                 } else {
                         $('#activity-name-show').html('');
                 }
+        });
+
+        $('#first-activity').change(function(){
+            var value = $(this).val();
+            var projectId = $('#selectProjectForPrototype option:selected').val();
+            if(value != 0){
+                $.ajax({
+                        url: baseURL + 'activity/update_first_activity',
+                        method: 'post',
+                        type: 'post',
+                        dataType: 'json',
+                        data: { value: value, projectId:projectId },
+                        dataType: 'json',
+                        success: function(response) {
+                                GLOBAL_ACTIVITY_RESULT = response;
+                                console.log(response);
+                                successBox('<p>First Activity Saved Successfully</p>');
+                        }
+                });
+            }
+        });
+
+        $('#submit-prototype').click(function(){
+            var activityId = $('#assign-id').val();
+            if (activityId == -1) {
+                    errorBox('<p>No Project Selected</p>');
+            } else {
+                    $.ajax({
+                            url: baseURL + 'assign/update_status',
+                            method: 'post',
+                            type: 'post',
+                            dataType: 'json',
+                            data: { activityId: activityId },
+                            dataType: 'json',
+                            success: function(response) {
+                                    successBox('<p>Prototype Submitted Successfully</p>');
+                                    assingStatusFunction(1);
+                            }
+                    });
+            }
         });
 
         function assingStatusFunction(assignStatus) {
@@ -761,13 +808,13 @@ jQuery(document).ready(function($) {
                                         } else if (statusOfWireframe == 1) {
                                                 errorBox('<p>Wireframe is in Submit State</p>');
                                         } else if (statusOfWireframe == 2) {
-                                                errorBox('<p>Wireframe is in Change Request State</p>');
-                                        } else {
                                                 successBox('<p>Mockups Can Start</p>');
                                                 var a = $('#selectProjectForMockup').find(':selected').data('status-id');
                                                 if (a == 0) {
                                                         $('#assign-progress').css({ 'background-color': 'blue', 'border-radius': '50px' });
                                                 }
+                                        } else {
+                                                errorBox('<p>Wireframe is in Change Request State</p>');
                                         }
                                 }
                         });
@@ -807,6 +854,7 @@ jQuery(document).ready(function($) {
                                 data: { projectid: projectid },
                                 dataType: 'json',
                                 success: function(response) {
+                                    console.log(response);
                                         var statusOfWireframe = response[0]['a_status'];
                                         if (statusOfWireframe == 0) {
                                                 errorBox('<p>Mockups is in Progress State</p>');
@@ -819,6 +867,8 @@ jQuery(document).ready(function($) {
                                                 var a = $('#selectProjectForPrototype').find(':selected').data('status-id');
                                                 if (a == 0) {
                                                         $('#assign-progress').css({ 'background-color': 'blue', 'border-radius': '50px' });
+                                                }else if(a == 1){
+                                                        $('#assign-submit').css({ 'background-color': 'blue', 'border-radius': '50px' });
                                                 }
                                         }
                                 }
@@ -888,6 +938,8 @@ jQuery(document).ready(function($) {
                                         errorBox(response.message);
                                 } else if (response.code == 2) {
                                         //successfully add
+                                        $('#projectNameTask').html('');
+                                        $('#projectNameTask').append('<option value="">--Select--</option>');
                                         successBox(response.message);
                                         emptyAllTaskFields();
                                         loadAllTasksFromDatabase();
@@ -923,6 +975,7 @@ jQuery(document).ready(function($) {
                                 } else if (response.code == 2) {
                                         //successfully add
                                         successBox(response.message);
+                                        emptyAllTaskFields();
                                         getAllAssignWithDatabase();
                                 } else {
                                         //error in inserting
@@ -967,7 +1020,47 @@ jQuery(document).ready(function($) {
                 if (e.keyCode == 13)
                         $("#btnRegister").click();
         });
+
+        $('#preview-prototype').click(function(){
+            $('#mobile-preview').html('');
+            var firstactivity = GLOBAL_ACTIVITY_RESULT[0]['first_act'];
+            for(var i = 0; i < GLOBAL_ACTIVITY_RESULT.length; i++){
+                if(GLOBAL_ACTIVITY_RESULT[i]['act_id'] == firstactivity) {
+                    $('#mobile-preview').append(GLOBAL_ACTIVITY_RESULT[i]['act_code']);
+                    var div = $('#mobile-preview');
+                    if(GLOBAL_ACTIVITY_RESULT[i]['prototype'].length != 0){
+                        for(var j = 0; j < GLOBAL_ACTIVITY_RESULT[i]['prototype'].length; j++){
+                            $(div).find('#' + GLOBAL_ACTIVITY_RESULT[i]['prototype'][j]['act_button']).children().attr('data-activity-open', GLOBAL_ACTIVITY_RESULT[i]['prototype'][j]['act_open_id']);
+                        }
+                    }
+                    $('#mobile-preview input[type="button"]').click(function(){
+                        var openId = $(this).attr('data-activity-open');
+                        previewSingleActivity(openId);
+                    });
+                }
+            }
+            $("#pupop").fadeIn("slow");
+        });
 });
+
+function previewSingleActivity(id){
+    $('#mobile-preview').html('');
+    for(var i = 0; i < GLOBAL_ACTIVITY_RESULT.length; i++){
+        if(GLOBAL_ACTIVITY_RESULT[i]['act_id'] == id) {
+            $('#mobile-preview').append(GLOBAL_ACTIVITY_RESULT[i]['act_code']);
+            var div = $('#mobile-preview');
+            if(GLOBAL_ACTIVITY_RESULT[i]['prototype'].length != 0){
+                for(var j = 0; j < GLOBAL_ACTIVITY_RESULT[i]['prototype'].length; j++){
+                    $(div).find('#' + GLOBAL_ACTIVITY_RESULT[i]['prototype'][j]['act_button']).children().attr('data-activity-open', GLOBAL_ACTIVITY_RESULT[i]['prototype'][j]['act_open_id']);
+                }
+            }
+            $('#mobile-preview input[type="button"]').click(function(){
+                var openId = $(this).attr('data-activity-open');
+                previewSingleActivity(openId);
+            });
+        }
+    }
+}
 
 function dataTableProjectInit() {
         $('#project-details-table').dataTable({
@@ -1027,6 +1120,7 @@ function emptyAllProjectFields() {
 }
 
 function emptyAllTaskFields() {
+        $('#form-reset').trigger("reset");
         $('#projectName').val('');
         $('#taskType').val('');
         $('#projectStart').val('');
@@ -1528,6 +1622,10 @@ function closePupop() {
         $('#pupop input[type="text"], #pupop select, #pupop textarea').val('');
 }
 
+function closePreviewPupop(){
+        $("#preview-prototype").fadeOut();
+}
+
 function printUserEmail(e, id) {
         $('#user-email-id').attr('value', id);
         $('#user-email').val(e.getElementsByTagName("p")[0].innerHTML);
@@ -1886,7 +1984,7 @@ function allPrototypeMethods() {
                                 errorBox('<p>No Prototype Assigned</p>');
                         } else {
                                 for (var i = 0; i < response.length; i++) {
-                                        $('#selectProjectForPrototype').append('<option value=' + response[i]['p_id'] + ' data-status-id=' + response[i]['a_status'] + '>' + response[i]['p_name'] + '</option>');
+                                        $('#selectProjectForPrototype').append('<option value=' + response[i]['p_id'] + ' data-status-id=' + response[i]['a_status'] + ' data-assign-id='+response[i]['a_id']+'>' + response[i]['p_name'] + '</option>');
                                 }
                         }
                 }
@@ -1983,6 +2081,36 @@ function openWireframeModel(p_id, t_type, a_id) {
         $("#pupop").fadeIn("slow");
 }
 
+function openPrototypeModel(p_id, t_type, a_id) {
+        $.ajax({
+                method: 'post',
+                type: 'post',
+                url: baseURL + 'prototypes/get_all_prototype_layout_by_owner',
+                data: { selectedProject: p_id, tastType: t_type },
+                dataType: 'json',
+                success: function(response) {
+                        $('#mobile-preview').html('');
+                        var firstactivity = GLOBAL_ACTIVITY_RESULT[0]['first_act'];
+                        for(var i = 0; i < GLOBAL_ACTIVITY_RESULT.length; i++){
+                            if(GLOBAL_ACTIVITY_RESULT[i]['act_id'] == firstactivity) {
+                                $('#mobile-preview').append(GLOBAL_ACTIVITY_RESULT[i]['act_code']);
+                                var div = $('#mobile-preview');
+                                if(GLOBAL_ACTIVITY_RESULT[i]['prototype'].length != 0){
+                                    for(var j = 0; j < GLOBAL_ACTIVITY_RESULT[i]['prototype'].length; j++){
+                                        $(div).find('#' + GLOBAL_ACTIVITY_RESULT[i]['prototype'][j]['act_button']).children().attr('data-activity-open', GLOBAL_ACTIVITY_RESULT[i]['prototype'][j]['act_open_id']);
+                                    }
+                                }
+                                $('#mobile-preview input[type="button"]').click(function(){
+                                    var openId = $(this).attr('data-activity-open');
+                                    previewSingleActivity(openId);
+                                });
+                            }
+                        }
+                        $("#preview-prototype").fadeIn("slow");
+                }
+        });
+}
+
 function allProjectCreatedChat(){
     $.ajax({
                 method: 'post',
@@ -1995,6 +2123,8 @@ function allProjectCreatedChat(){
         });
 }
 
+var GLOBAL_ACTIVITY_RESULT;;
+
 function printPrototype(selectedProject){
     $('#pro-box-screens').html('');
      $.ajax({
@@ -2004,8 +2134,10 @@ function printPrototype(selectedProject){
             data: { selectedProject: selectedProject },
             dataType: 'json',
             success: function(response) {
-                console.log(response);
+                GLOBAL_ACTIVITY_RESULT = response;
                 $('#select-activity').html('');
+                $('#select-activity').html('');
+                $('#select-activity').append('<option value="0">--Select First Activity--</option>');
                     var pos = 1;
                     var top = 30;
                     for (var i = 0; i < response.length; i++) {
@@ -2017,6 +2149,11 @@ function printPrototype(selectedProject){
                             $('#pro-box-screens').append('<div class="mobile-inner mt-0 prototype-mobile-inner" data-content="'+response[i]['act_name']+'" data-id="'+response[i]['act_id']+'" style="left:' + pos + 'rem;top:'+top+'px;position:absolute;background-color:white">' + response[i]['act_code'] + '</div>');
                             pos = pos + 17;
                             $('#select-activity').append('<option value="'+response[i]['act_id']+'">'+response[i]['act_name']+'</option>');
+                            var selectedActivity = '';
+                            if(response[i]['first_act'] == response[i]['act_id']){
+                                selectedActivity = 'selected';
+                            }
+                            $('#first-activity').append('<option value="'+response[i]['act_id']+'" '+selectedActivity+'>'+response[i]['act_name']+'</option>');
                             var div = $('.mobile-inner')[i];
                             if(response[i]['prototype'].length != 0){
                                 for(var j = 0; j < response[i]['prototype'].length; j++){
@@ -2038,19 +2175,21 @@ function printPrototype(selectedProject){
                         // var count = $(this).find('input[type="button"]').length;
                     });
                     $('.mobile-inner p').removeClass('selected');
-                    $('.mobile-inner input[type="button"]').click(function(){
-                        $('#prototype-id').val('');
-                        $('#pro-click-button').val($(this).parent().attr('id'));
-                        $('#pro-act-id').val($(this).parent().parent().data('id'));
-                        $('#button-count').val($(this).attr('data-button-count'));
-                        if($(this).attr('data-status') == 'edit'){
-                            $('#prototype-id').val($(this).attr('data-prototype-id'));
-                            $('#exampleModal #select-activity').val($(this).attr('data-edit-activity'));
-                        }else{
-                            $('#exampleModal #select-activity option:eq(0)').prop('selected', true);
-                        }
-                        $('#exampleModal').modal('show');
-                    });
+                    if($('#first-activity').prop('disabled') != true){
+                        $('.mobile-inner input[type="button"]').click(function(){
+                            $('#prototype-id').val('');
+                            $('#pro-click-button').val($(this).parent().attr('id'));
+                            $('#pro-act-id').val($(this).parent().parent().data('id'));
+                            $('#button-count').val($(this).attr('data-button-count'));
+                            if($(this).attr('data-status') == 'edit'){
+                                $('#prototype-id').val($(this).attr('data-prototype-id'));
+                                $('#exampleModal #select-activity').val($(this).attr('data-edit-activity'));
+                            }else{
+                                $('#exampleModal #select-activity option:eq(0)').prop('selected', true);
+                            }
+                            $('#exampleModal').modal('show');
+                        });
+                    }
             }
     });
 }

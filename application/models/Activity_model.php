@@ -63,5 +63,16 @@ class Activity_model extends CI_Model{
         $query = $this->db->get();
         return $query->result();
     }
+
+    public function update_first_activity($value, $id){
+        $this->db->set('first_act', $value);
+        $this->db->where('p_id', $id);
+        $this->db->update('activities');
+
+        $this->load->model('Prototype_model', 'prototype');
+        $result = $this->prototype->get_all_prototype_layout($id);
+    
+        return $result;
+    }
 }
 ?>

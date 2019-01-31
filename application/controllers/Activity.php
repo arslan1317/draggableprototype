@@ -74,4 +74,11 @@ class Activity extends CI_Controller {
         $data = $this->Activity_model->get_activity_for_mockups($id);
         echo json_encode($data);
     }
+
+    public function update_first_activity(){
+        $value = $this->input->post('value');
+        $id = $this->input->post('projectId');
+        $data = $this->Activity_model->update_first_activity($value, $id);
+        echo json_encode($data);
+    }
 }

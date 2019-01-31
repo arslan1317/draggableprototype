@@ -23,18 +23,19 @@ class Wireframe_model extends CI_Model{
         return $query->result();
     }
     
-    public function getSubmittedWork(){
+    public function getSubmittedWork($id){
         $this->db->select('assigns.*, projects.p_name');
         $this->db->from('assigns');
         $this->db->join('projects', 'assigns.p_id = projects.p_id');
         $this->db->join('tasks', 'tasks.t_id = assigns.t_id');
         $this->db->where('assigns.a_by', $this->session->userdata('u_id'));
         $this->db->where('assigns.a_accept', 1);
-        $this->db->where('tasks.t_type', 1);
+        $this->db->where('tasks.t_type', $id);
         $this->db->where('assigns.a_status !=' , 0);
         $this->db->order_by("assigns.a_id", "dsc");
         $query = $this->db->get();
         $result = $query->result();
+        
         foreach($result as $results){
             $results->assignTo = $this->getAssignUserName($results->u_id);
         }

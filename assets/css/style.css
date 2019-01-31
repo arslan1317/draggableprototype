@@ -1185,9 +1185,9 @@ li.active i{
     right: 0;
     top: 16px;
 }
-.content{
+/*.content{
   padding-bottom: 40px !important;
-}
+}*/
 #error-box p{
   color: black !important;
 }
@@ -1356,4 +1356,40 @@ img{ max-width:100%;}
 }
 #pro-box-screens{
   height: -webkit-fill-available;
+}
+.checker-div{
+    border-bottom: 1px solid black;
+    padding-bottom: 16px;
+    margin-bottom: 10px;
+}
+.mobile-preview{
+  width: 16rem !important;
+  position: absolute;
+  left: 0;
+  right: 0;
+  display: block;
+  margin: 0 auto;
+  border: 1px solid black;
+}
+#mobile-preview-outer{
+  margin-top: 30px;
+  margin-bottom: 30px;
+  height: 500px;
+  border-radius: 57px;
+  height: 600px;
+  border-radius: 30px;
+  width: 21rem;
+  border: 2px solid black;
+}
+#mobile-preview-outer .closePopopIcon{
+  font-size: 20px;
+  font-weight: bold;
+  /* left: 0; */
+  position: absolute;
+  right: -65px;
+  background-color: white;
+  padding: 6px 12px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border: 2px solid black;
 }

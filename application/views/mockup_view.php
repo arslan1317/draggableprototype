@@ -66,7 +66,7 @@
                     <div class="col-md-3">
                         <div class="save-activity text-center">
                             <h2 class="activityHead"><span class="tweak">A</span>ctivities</h2>
-                            <ul id="activity-name-show">
+                            <ul id="activity-name-show" data-task-type="2">
                             </ul>
                         </div>
                         <div class="assign-status mt-3">
@@ -83,7 +83,6 @@
                     </div>
                 </div>
             </div>
-            <?php $this->view('masterpage/rightfooter.php'); ?>
         </div>
     </div><!-- /#right-panel -->
     <div class="open-mockup-box" style="display:none">

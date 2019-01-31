@@ -11,22 +11,25 @@ class Chat_model extends CI_Model{
     }
 
     public function get_project_chat(){
-    	$this->db->select('*');
-        $this->db->from('assigns');
-        // $this->db->join('users', 'users.u_id = assigns.a_by');
-        $this->db->join('projects', 'projects.p_id = assigns.p_id');
-        // $this->db->join('tasks', 'tasks.t_id = assigns.t_id');
-        $this->db->group_by('assigns.p_id');
-        $this->db->order_by('assigns.a_id', 'desc');
-        // $this->db->where('assigns.a_by', $this->session->userdata('u_id'));
+        $this->db->select('*')
+                ->from('chat')
+                ->join('projects','projects.p_id = chat.p_id')
+                ->where('chat.u_id ', $this->session->userdata('u_id'))
+                ->or_where('chat.s_id', $this->session->userdata('u_id'))
+                ->or_where('chat.w_id', $this->session->userdata('u_id'))
+                ->or_where('chat.m_id', $this->session->userdata('u_id'))
+                ->or_where('chat.pr_id', $this->session->userdata('u_id'));
         $query = $this->db->get();
         $result = $query->result();
 
-        foreach ($result as $results) {
-            
+        for ($i=0; $i<count($result) ; $i++) { 
+                $result[$i]->owner = $this->get_user_name($result[$i]->u_id);
+                $result[$i]->supervisor = $this->get_user_name($result[$i]->s_id);
+                $result[$i]->wireframe = $this->get_user_name($result[$i]->w_id);
+                $result[$i]->mockup = $this->get_user_name($result[$i]->m_id);
+                $result[$i]->prototype = $this->get_user_name($result[$i]->pr_id);
         }
-
-        return $result;
+        return $result;  
     }
 }
 ?>

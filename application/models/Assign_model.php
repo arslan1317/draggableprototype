@@ -129,14 +129,68 @@ class Assign_model extends CI_Model{
         $this->db->where('a_id', $id);
         $this->db->update('assigns');
         $result = $this->db->affected_rows();
+        $this->insertIdToChat($id);
         return $result;
     }
+
+    public function insertIdToChat($id){
+       $this->db->select('tasks.t_type , assigns.p_id')
+            ->from('assigns')
+            ->join('tasks', 'tasks.t_id =assigns.t_id')
+            ->where('assigns.a_id', $id);
+        $query = $this->db->get();
+        $return = $query->result();
+        if ($return[0]->t_type == 1) {
+            $this->db->set('w_id', $this->session->userdata('u_id'));
+            $this->db->where('p_id', $return[0]->p_id);
+            $this->db->update('chat');           
+        }
+        elseif ($return[0]->t_type == 2) {
+           $this->db->set('m_id', $this->session->userdata('u_id'));
+            $this->db->where('p_id', $return[0]->p_id);
+            $this->db->update('chat');           
+        }
+        elseif ($return[0]->t_type == 3) {
+           $this->db->set('pr_id', $this->session->userdata('u_id'));
+            $this->db->where('p_id', $return[0]->p_id);
+            $this->db->update('chat');         
+        }
+        return $return;
+    }
+
     
     public function reject_assign($id){
         $this->db->set('a_accept', 2);
         $this->db->where('a_id', $id);
         $this->db->update('assigns');
-        return $this->db->affected_rows();
+        $result = $this->db->affected_rows();
+        $this->removeIdToChat($id);
+        return $result;
+    }
+
+    public function removeIdToChat($id){
+         $this->db->select('tasks.t_type , assigns.p_id')
+            ->from('assigns')
+            ->join('tasks', 'tasks.t_id =assigns.t_id')
+            ->where('assigns.a_id', $id);
+        $query = $this->db->get();
+        $return = $query->result();
+        if ($return[0]->t_type == 1) {
+            $this->db->set('w_id', null);
+            $this->db->where('p_id', $return[0]->p_id);
+            $this->db->update('chat');           
+        }
+        elseif ($return[0]->t_type == 2) {
+           $this->db->set('m_id', null);
+            $this->db->where('p_id', $return[0]->p_id);
+            $this->db->update('chat');           
+        }
+        elseif ($return[0]->t_type == 3) {
+           $this->db->set('pr_id', null);
+            $this->db->where('p_id', $return[0]->p_id);
+            $this->db->update('chat');         
+        }
+        return $return;
     }
     
     public function update_status($id){

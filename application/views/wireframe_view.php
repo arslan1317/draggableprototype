@@ -84,7 +84,6 @@
                     </div>
                 </div>
             </div>
-            <footer>Footer</footer>
         </div> <!-- .content -->
     </div><!-- /#right-panel -->
     <div class="open-wireframe-box" style="display:none">

@@ -48,13 +48,19 @@
 
         <div class="content mt-3">
             <div class="checker-div clearfix">
-                <div class="col-md-12 text-right save-button mt-0">
+                <div class="col-md-3">
+                    <select class="form-control" id="first-activity">
+                        <option value="0">--Select First Activity--</option>
+                    </select>
+                </div>
+                <div class="col-md-9 text-right save-button mt-0">
                     <span class="mr-3">Progress <i class="far fa-circle" id="assign-progress"></i></span>
                     <span class="mr-3">Submitted <i class="far fa-circle" id="assign-submit"></i></span>
                     <span class="mr-3">Changing <i class="far fa-circle" id="assign-changed"></i></span>
                     <span class="mr-3">Approved <i class="far fa-circle" id="assign-approved"></i></span>
-                    <button class="btn main-btn wire-btn" id="submit-prototype">Submit</button>
-                    <button class="btn main-btn wire-btn" id="preview-prototype">Preview</button>
+                    <input type="hidden" id="assign-id" value="-1">
+                    <button class="btn main-btn wire-btn" id="submit-prototype" disabled="true">Submit</button>
+                    <button class="btn main-btn wire-btn" id="preview-prototype" disabled="true">Preview</button>
                 </div>
             </div>
             <div id="pro-box-screens" style="position: relative;">
@@ -98,4 +104,13 @@
       </div>
     </div>
 
+    <div class="col-12 pupopBg overflow-yscroll" id="pupop" style="display: none">
+        <div class="col-lg-offset-4 col-lg-4 col-md-offset-3 col-md-6 col-sm-offset-2 col-sm-8 col-11 boxes pupopInnerBox pb-4" id="mobile-preview-outer">
+            <div class="mobile-top"></div>
+            <p class="float-right pointer closePopopIcon tweak mr-4" onclick="closePupop()">X</p>
+            <div class="col-12 pt-3 overflow-hidden p-0 mt-2 mb-2 mobile-preview" style="width: 16rem !important;height: 477px !important" id="mobile-preview">
+            </div>
+            <div class="mobile-bottom" style="position: absolute;bottom:8px;left:0;right: 0"></div>
+        </div>
+    </div>
 <?php $this->view('masterpage/footer.php'); ?>
