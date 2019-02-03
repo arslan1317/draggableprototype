@@ -11,7 +11,7 @@ class Chat_model extends CI_Model{
     }
 
     public function get_project_chat(){
-        $this->db->select('*')
+        $this->db->select('projects.p_name, chat.*')
                 ->from('chat')
                 ->join('projects','projects.p_id = chat.p_id')
                 ->where('chat.u_id ', $this->session->userdata('u_id'))
@@ -38,6 +38,30 @@ class Chat_model extends CI_Model{
         $this->db->where('u_id', $id);
         $query = $this->db->get();
         return $query->result();
+    }
+
+    public function send_message($id,$message_text,$date){
+
+        $message = array(
+            'message_text' => $message_text,
+            'ch_id' => $id,
+            'sent_by' => $this->session->userdata('u_id'),
+            'message_time' => $date,
+        );
+
+        $results = $this->db->insert('message', $message);
+        return $this->getAllChatById($id);
+    }
+
+    function getAllChatById($id){
+        $this->db->select('*');
+        $this->db->from('message');
+        $this->db->where('ch_id', $id);
+        $this->db->order_by('message_id', 'asc');
+        $query = $this->db->get();
+        $result = $query->result();
+        $result[0]->myid = $this->session->userdata('u_id');
+        return $result;
     }
 }
 ?>

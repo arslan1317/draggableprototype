@@ -98,45 +98,105 @@
         <button type="button" class="btn btn-info mt-1" data-toggle="collapse" data-target="#property" style="width: 100%">Properties</button>
         <div id="property" class="collapse in show setting-width-mockups">
             <div class="form-group row">
+                <label for="inputText" class="col-form-label">Text</label>
+                <div class="left-input">
+                    <input type="text" class="form-control no-select" id="inputText">
+                </div>
+            </div>
+            <div class="form-group row">
                 <label for="inputImage" class="col-form-label">Select Image</label>
                 <div class="left-input">
-                    <input type="file" class="form-control" id="inputImage">
+                    <button class="form-control" id="selectImage">Select Image</button>
+                    <input type="file" class="form-control no-select" id="inputImage" style="display: none" accept="image/*">
                 </div>
             </div>
             <div class="form-group row">
                 <label for="inputFontSize" class="col-form-label">Font Size(px)</label>
                 <div class="left-input">
-                    <input type="text" class="form-control" id="inputFontSize" placeholder="Font Size">
+                    <input type="text" class="form-control no-select" id="inputFontSize" placeholder="Font Size">
                 </div>
             </div>
             <div class="form-group row">
                 <label for="inputFontWeight" class="col-form-label">Font Weight</label>
                 <div class="left-input">
-                    <input type="text" class="form-control" id="inputFontWeight" placeholder="Font Weight">
+                    <input type="text" class="form-control no-select" id="inputFontWeight" placeholder="Font Weight">
                 </div>
             </div>
             <div class="form-group row">
                 <label for="inputColor" class="col-form-label">Color</label>
                 <div class="left-input">
-                    <input type="text" class="form-control" id="inputColor" placeholder="Color">
+                    <input type="text" class="form-control no-select" id="inputColor" placeholder="Color">
                 </div>
             </div>
             <div class="form-group row">
                 <label for="inputBgColor" class="col-form-label">Bg Color</label>
                 <div class="left-input">
-                    <input type="text" class="form-control" id="inputBgColor" placeholder="Bg Color">
+                    <input type="text" class="form-control no-select" id="inputBgColor" placeholder="Bg Color">
                 </div>
             </div>
             <div class="form-group row">
-                <label for="inputMargin" class="col-form-label">Margin (px)</label>
+                <label for="inputAlignText" class="col-form-label">Align Text</label>
                 <div class="left-input">
-                    <input type="text" class="form-control" id="inputMargin" placeholder="T R B L">
+                    <select class="form-control no-select" id="inputAlignText">
+                        <option value="none">--Select--</option>
+                        <option value="center">Center</option>
+                        <option value="left">Left</option>
+                        <option value="right">Right</option>
+                    </select>
                 </div>
             </div>
             <div class="form-group row">
-                <label for="inputPadding" class="col-form-label">Padding (px)</label>
+                <label for="inputLineHeight" class="col-form-label">Line Height</label>
                 <div class="left-input">
-                    <input type="text" class="form-control" id="inputPadding" placeholder="T R B L">
+                    <input type="text" class="form-control no-select" id="inputLineHeight" placeholder="Align Text">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputMarginTop" class="col-form-label">Margin Top</label>
+                <div class="left-input">
+                    <input type="text" class="form-control no-select" id="inputMarginTop" placeholder="Margin Top">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputMarginLeft" class="col-form-label">Margin Left</label>
+                <div class="left-input">
+                    <input type="text" class="form-control no-select" id="inputMarginLeft" placeholder="Margin Left">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputMarginRight" class="col-form-label">Margin Right</label>
+                <div class="left-input">
+                    <input type="text" class="form-control no-select" id="inputMarginRight" placeholder="Margin Right">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputMarginBottom" class="col-form-label">Margin Bottom</label>
+                <div class="left-input">
+                    <input type="text" class="form-control no-select" id="inputMarginBottom" placeholder="Margin Bottom">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputPaddingTop" class="col-form-label">Padding Top</label>
+                <div class="left-input">
+                    <input type="text" class="form-control no-select" id="inputPaddingTop" placeholder="Padding Top">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputPaddingLeft" class="col-form-label">Padding Left</label>
+                <div class="left-input">
+                    <input type="text" class="form-control no-select" id="inputPaddingLeft" placeholder="Padding Left">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputPaddingRight" class="col-form-label">Padding Right</label>
+                <div class="left-input">
+                    <input type="text" class="form-control no-select" id="inputPaddingRight" placeholder="Padding Right">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputPaddingBottom" class="col-form-label">Padding Bottom</label>
+                <div class="left-input">
+                    <input type="text" class="form-control no-select" id="inputPaddingBottom" placeholder="Padding Bottom">
                 </div>
             </div>
         </div>

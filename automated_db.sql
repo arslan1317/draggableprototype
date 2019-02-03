@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 31, 2019 at 10:39 PM
+-- Generation Time: Feb 03, 2019 at 01:41 AM
 -- Server version: 10.1.36-MariaDB
 -- PHP Version: 7.2.10
 
@@ -112,6 +112,56 @@ CREATE TABLE `chat` (
 INSERT INTO `chat` (`ch_id`, `p_id`, `u_id`, `s_id`, `w_id`, `m_id`, `pr_id`) VALUES
 (1, 18, 120, NULL, 122, NULL, NULL),
 (3, 17, 120, NULL, 122, 27, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `message`
+--
+
+CREATE TABLE `message` (
+  `message_id` int(100) NOT NULL,
+  `ch_id` int(100) NOT NULL,
+  `u_seen` int(10) DEFAULT NULL,
+  `s_seen` int(10) DEFAULT NULL,
+  `w_seen` int(10) DEFAULT NULL,
+  `m_seen` int(10) DEFAULT NULL,
+  `pr_seen` int(10) DEFAULT NULL,
+  `message_text` text NOT NULL,
+  `sent_by` int(10) NOT NULL,
+  `message_time` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `message`
+--
+
+INSERT INTO `message` (`message_id`, `ch_id`, `u_seen`, `s_seen`, `w_seen`, `m_seen`, `pr_seen`, `message_text`, `sent_by`, `message_time`) VALUES
+(1, 1, NULL, NULL, NULL, NULL, NULL, 'fsdfserwer', 120, ''),
+(2, 1, NULL, NULL, NULL, NULL, NULL, 'rrereewwrwe', 120, ''),
+(3, 1, NULL, NULL, NULL, NULL, NULL, 'dfsaferewrerwe', 120, ''),
+(4, 1, NULL, NULL, NULL, NULL, NULL, 'mmmm', 120, ''),
+(5, 1, NULL, NULL, NULL, NULL, NULL, 'what', 120, '3-2-2019 4:22:44'),
+(6, 1, NULL, NULL, NULL, NULL, NULL, 'lll', 120, '3-2-2019 4:26:51'),
+(7, 3, NULL, NULL, NULL, NULL, NULL, 'jhlkj', 120, '3-2-2019 4:27:5'),
+(8, 1, NULL, NULL, NULL, NULL, NULL, 'asdfadsf', 120, '3-2-2019 4:28:8'),
+(9, 1, NULL, NULL, NULL, NULL, NULL, 'ewrwer', 120, '3-2-2019 4:32:34'),
+(10, 1, NULL, NULL, NULL, NULL, NULL, 'adfsderew', 120, '3-2-2019 4:37:24'),
+(11, 1, NULL, NULL, NULL, NULL, NULL, 'erwqrqwer', 120, '3-2-2019 4:38:56'),
+(12, 1, NULL, NULL, NULL, NULL, NULL, 'daniyal here?', 120, '3-2-2019 4:39:56'),
+(13, 1, NULL, NULL, NULL, NULL, NULL, 'afdewrwe', 120, '3-2-2019 4:40:51'),
+(14, 1, NULL, NULL, NULL, NULL, NULL, 'ewrwerwq', 120, '3-2-2019 4:42:10'),
+(15, 1, NULL, NULL, NULL, NULL, NULL, '334132', 120, '3-2-2019 4:42:19'),
+(16, 1, NULL, NULL, NULL, NULL, NULL, 'vcvxzcv', 120, '3-2-2019 4:47:0'),
+(17, 1, NULL, NULL, NULL, NULL, NULL, 'aerwerqwe', 120, '3-2-2019 4:47:57'),
+(18, 1, NULL, NULL, NULL, NULL, NULL, 'uiyuyfhgh', 27, '3-2-2019 4:48:48'),
+(19, 1, NULL, NULL, NULL, NULL, NULL, 'kppoewr', 27, '3-2-2019 4:52:28'),
+(20, 1, NULL, NULL, NULL, NULL, NULL, 'daniyal wireframe??', 27, '3-2-2019 4:53:29'),
+(21, 1, NULL, NULL, NULL, NULL, NULL, 'rwrqerw', 27, '3-2-2019 4:59:35'),
+(22, 1, NULL, NULL, NULL, NULL, NULL, 'hello testing purpose', 27, '3-2-2019 5:2:14'),
+(23, 1, NULL, NULL, NULL, NULL, NULL, 'admin testing', 120, '3-2-2019 5:25:47'),
+(24, 3, NULL, NULL, NULL, NULL, NULL, 'admin testing', 120, '3-2-2019 5:34:42'),
+(25, 3, NULL, NULL, NULL, NULL, NULL, 'wireframe testing', 27, '3-2-2019 5:35:3');
 
 -- --------------------------------------------------------
 
@@ -250,6 +300,12 @@ ALTER TABLE `chat`
   ADD PRIMARY KEY (`ch_id`);
 
 --
+-- Indexes for table `message`
+--
+ALTER TABLE `message`
+  ADD PRIMARY KEY (`message_id`);
+
+--
 -- Indexes for table `projects`
 --
 ALTER TABLE `projects`
@@ -294,6 +350,12 @@ ALTER TABLE `assigns`
 --
 ALTER TABLE `chat`
   MODIFY `ch_id` int(191) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `message`
+--
+ALTER TABLE `message`
+  MODIFY `message_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `projects`

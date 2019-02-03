@@ -10,5 +10,21 @@
     <script type='text/javascript'>
         var baseURL= "<?php echo base_url();?>";
     </script>
+    <script src="<?php echo base_url(); ?>assets/js/colorpicker.js"></script>
+    <script>
+        $('#inputColor').ColorPicker({
+            onChange: function(hsb, hex, rgb){
+                $("#inputColor").val('#'+hex);
+                $('.mobile-inner p.selected').css('color', '#'+hex);
+            }
+        });
+
+        $('#inputBgColor').ColorPicker({
+            onChange: function(hsb, hex, rgb){
+                $("#inputBgColor").val('#'+hex);
+                $('.mobile-inner p.selected').css('backgroundColor', '#'+hex);
+            }
+        });
+    </script>
 </body>
 </html>

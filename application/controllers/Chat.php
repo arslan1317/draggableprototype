@@ -38,5 +38,18 @@ class Chat extends CI_Controller {
 		echo json_encode($data);
 	}
 
-	
+	public function send_message(){
+		$id = $this->input->post('chat_id');
+		$message_text = $this->input->post('message_text');
+		$date = $this->input->post('datetime');
+		$data = $this->Chat_model->send_message($id,$message_text, $date);
+		echo json_encode($data);
+	}
+
+	public function get_all_chat_by_id(){
+		$id = $this->input->post('chat_id');
+		$data = $this->Chat_model->getAllChatById($id);
+		echo json_encode($data);
+	}
+
 }

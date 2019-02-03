@@ -4,7 +4,7 @@ jQuery(document).ready(function($) {
         //Notication VIew
         GLOBALREQUEST = new Array();
         $(document).on('keydown', function(e) {
-            if((e.target.id != 'inputWidth') && (e.target.id != 'inputHeight') && (e.target.id != 'inputTop') && (e.target.id != 'inputLeft') && (e.target.id != 'inputRight') && (e.target.id != 'inputBottom') && (e.target.id != 'inputText')){
+            if((e.target.id != 'inputWidth') && (e.target.id != 'inputHeight') && (e.target.id != 'inputTop') && (e.target.id != 'inputLeft') && (e.target.id != 'inputRight') && (e.target.id != 'inputBottom') && ($(e.target).attr('class') != 'form-control no-select')){
                 if ((e.keyCode == 46) || (e.keyCode == 8)) {
                         $('.mobile-inner .selected').remove();
                 }
@@ -389,6 +389,7 @@ jQuery(document).ready(function($) {
                 }
         });
 
+        //for wireframe
         $( "#inputWidth" ).keyup(function() {
             var value = $(this).val();
             $('.mobile-inner p.selected').css('width', value+'px');
@@ -417,6 +418,72 @@ jQuery(document).ready(function($) {
         $( "#inputBottom" ).keyup(function() {
             var value = $(this).val();
             $('.mobile-inner p.selected').css('bottom', value+'px');
+        });
+
+        //for mockups
+        $( "#inputText" ).keyup(function() {
+            var value = $(this).val();
+            $('.mobile-inner p.selected').text(value);
+        });
+
+        $( "#inputFontSize" ).keyup(function() {
+            var value = $(this).val();
+            $('.mobile-inner p.selected').css('fontSize', value+'px');
+        });
+
+        $( "#inputFontWeight" ).keyup(function() {
+            var value = $(this).val();
+            $('.mobile-inner p.selected').css('fontWeight', value);
+        });
+
+        $('#inputMarginTop').keyup(function() {
+            var value = $(this).val();
+            $('.mobile-inner p.selected').css('marginTop', value+'px');
+        });
+
+        $('#inputMarginLeft').keyup(function() {
+            var value = $(this).val();
+            $('.mobile-inner p.selected').css('marginLeft', value+'px');
+        });
+
+        $('#inputMarginRight').keyup(function() {
+            var value = $(this).val();
+            $('.mobile-inner p.selected').css('marginRight', value+'px');
+        });
+
+        $('#inputMarginBottom').keyup(function() {
+            var value = $(this).val();
+            $('.mobile-inner p.selected').css('marginBottom', value+'px');
+        });
+
+        $('#inputPaddingTop').keyup(function() {
+            var value = $(this).val();
+            $('.mobile-inner p.selected').css('paddingTop', value+'px');
+        });
+
+        $('#inputPaddingLeft').keyup(function() {
+            var value = $(this).val();
+            $('.mobile-inner p.selected').css('paddingLeft', value+'px');
+        });
+
+        $('#inputPaddingRight').keyup(function() {
+            var value = $(this).val();
+            $('.mobile-inner p.selected').css('paddingRight', value+'px');
+        });
+
+        $('#inputPaddingBottom').keyup(function() {
+            var value = $(this).val();
+            $('.mobile-inner p.selected').css('paddingBottom', value+'px');
+        });
+
+        $('#inputLineHeight').keyup(function() {
+            var value = $(this).val();
+            $('.mobile-inner p.selected').css('lineHeight', value+'px');
+        });
+
+        $('#inputAlignText').keyup(function() {
+            var value = $(this).val();
+            $('.mobile-inner p.selected').css('textAlign', value);
         });
 
         function getAllActivities(selectedProject) {
@@ -1004,6 +1071,55 @@ jQuery(document).ready(function($) {
                 });
         });
 
+        //send chat
+        $('#sms_send_button').click(function() {
+            var currentdate = new Date(); 
+            var datetime = currentdate.getDate() + "-"
+                + (currentdate.getMonth()+1)  + "-" 
+                + currentdate.getFullYear() + " "  
+                + currentdate.getHours() + ":"  
+                + currentdate.getMinutes() + ":" 
+                + currentdate.getSeconds();
+            var chat_id = $('#sms_send_button').attr('data-myval');
+            var message_text = $('#message_text').val();
+            $.ajax({
+                    url: baseURL + 'chat/send_message',
+                    method: 'post',
+                    type: 'post',
+                    data: { chat_id: chat_id, message_text: message_text, datetime:datetime},
+                    dataType: 'json',
+                    success: function(response) {
+                        $('.msg_history').html('');
+                        var myId = response[0]['myid'];
+                        for(var i = 0; i < response.length; i++){
+                            if(myId == response[i]['sent_by']){
+                                $('.msg_history').append('<div class="outgoing_msg">\
+                                                            <div class="sent_msg">\
+                                                              <p>'+response[i]['message_text']+'</p>\
+                                                              <span class="time_date">'+response[i]['message_time']+'</span>\
+                                                            </div>\
+                                                          </div>');
+                            }else{
+                                $('.msg_history').append('<div class="incoming_msg">\
+                                                            <div class="incoming_msg_img">\
+                                                              <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">\
+                                                            </div>\
+                                                            <div class="received_msg">\
+                                                              <div class="received_withd_msg">\
+                                                                <p>'+response[i]['message_text']+'</p>\
+                                                                <span class="time_date">'+response[i]['message_time']+'</span>\
+                                                              </div>\
+                                                            </div>\
+                                                          </div>');
+                            }
+                        }
+                        $(".msg_history").animate({ scrollTop: $('.msg_history').prop("scrollHeight")}, 5000);
+                        $('#message_text').val('');
+                        console.log(response);
+                    }
+            });
+        });
+
         $('.dropdown-toggle').click(function() {
                 $('#dropdown-notification').slideUp();
                 $('#dropdown-notification').slideDown();
@@ -1041,6 +1157,24 @@ jQuery(document).ready(function($) {
             }
             $("#pupop").fadeIn("slow");
         });
+
+        //image open logic
+        $('#selectImage').click(function(){
+            var element = $('.mobile-inner p.selected');
+            if(element.length != 0){
+                var id = $(element).attr('id');
+                id = id.split('_');
+                if(id[0] == 'image'){
+                    $('#inputImage')[0].click();
+                }
+            }
+        });
+
+        $('input[type=file]').change(function(e){
+            console.log(e.target.files[0].name);
+            console.log(e.target.files[0].mozFullPath);
+            console.log(e.target.files[0]);
+        });
 });
 
 function previewSingleActivity(id){
@@ -1060,6 +1194,48 @@ function previewSingleActivity(id){
             });
         }
     }
+}
+
+//view all chat function
+function select_chat_box(id){
+    $('#sms_send_button').attr('data-myval',id);
+    $.ajax({
+        url: baseURL + 'chat/get_all_chat_by_id',
+        method: 'post',
+        type: 'post',
+        data: { chat_id: id },
+        dataType: 'json',
+        success: function(response) {
+            $('.msg_history').html('');
+            var myId = response[0]['myid'];
+            for(var i = 0; i < response.length; i++){
+                if(myId == response[i]['sent_by']){
+                    $('.msg_history').append('<div class="outgoing_msg">\
+                                                <div class="sent_msg">\
+                                                  <p>'+response[i]['message_text']+'</p>\
+                                                  <span class="time_date">'+response[i]['message_time']+'</span>\
+                                                </div>\
+                                              </div>');
+                }else{
+                    $('.msg_history').append('<div class="incoming_msg">\
+                                                <div class="incoming_msg_img">\
+                                                  <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">\
+                                                </div>\
+                                                <div class="received_msg">\
+                                                  <div class="received_withd_msg">\
+                                                    <p>'+response[i]['message_text']+'</p>\
+                                                    <span class="time_date">'+response[i]['message_time']+'</span>\
+                                                  </div>\
+                                                </div>\
+                                              </div>');
+                }
+            }
+            $(".msg_history").animate({ scrollTop: $('.msg_history').prop("scrollHeight")}, 1000);
+            $('#message_text').val('');
+            console.log(response);
+        }
+    });
+    
 }
 
 function dataTableProjectInit() {
@@ -2009,6 +2185,12 @@ function selectedActivity(a, b) {
                         $('.mobile-inner').html(response[0]['act_code']);
                         if (b == 1) {
                                 $('.mobile-inner p').removeClass('selected');
+                                $(".mobile-inner p").mousedown(function() {
+                                        $('.mobile-inner p').removeClass('selected');
+                                        $(this).addClass('selected');
+                                        var id = $(this).attr('id');
+                                        addSomeAttributesForMockups(this, id);
+                                });
                         } else {
                                 $(a).parent().addClass('active');
                                 $('.mobile-inner p').draggable({
@@ -2029,6 +2211,110 @@ function selectedActivity(a, b) {
                         }
                 }
         });
+}
+
+function addSomeAttributesForMockups(component, id){
+    $(component).attr('id', id);
+    var spliting = id.split('_');
+    if(spliting[0] == 'text'){
+        $(component).css('height', 'auto');
+        var innerText = $(component).text();
+        var color = $(component).css('color');
+        var fontSize = $(component).css('fontSize');
+        var fontWieght = $(component).css('fontWeight');
+        var marginTop = $(component).css('marginTop');
+        var marginLeft = $(component).css('marginLeft');
+        var marginRight = $(component).css('marginRight');
+        var marginBottom = $(component).css('marginBottom');
+        var paddingTop = $(component).css('paddingTop');
+        var paddingLeft = $(component).css('paddingLeft');
+        var paddingRight = $(component).css('paddingRight');
+        var paddingBottom = $(component).css('paddingBottom');
+        var backgroundColor = $(component).css('backgroundColor');
+        var lineHeight = $(component).css('lineHeight');
+        var align = $(component).css('textAlign');
+        fillTheMockupProperties(innerText, color, fontSize, fontWieght, marginTop, marginLeft, marginRight, marginBottom, paddingTop, paddingLeft, paddingRight, paddingBottom, backgroundColor, lineHeight, align);
+    }else if(spliting[0] == 'edit'){
+        var component = $(component).children();
+        var color = $(component).css('color');
+        var fontSize = $(component).css('fontSize');
+        var fontWieght = $(component).css('fontWeight');
+        var marginTop = $(component).css('marginTop');
+        var marginLeft = $(component).css('marginLeft');
+        var marginRight = $(component).css('marginRight');
+        var marginBottom = $(component).css('marginBottom');
+        var paddingTop = $(component).css('paddingTop');
+        var paddingLeft = $(component).css('paddingLeft');
+        var paddingRight = $(component).css('paddingRight');
+        var paddingBottom = $(component).css('paddingBottom');
+        var backgroundColor = $(component).css('backgroundColor');
+        var lineHeight = $(component).css('lineHeight');
+        fillTheMockupProperties('', color, fontSize, fontWieght, marginTop, marginLeft, marginRight, marginBottom, paddingTop, paddingLeft, paddingRight, paddingBottom, backgroundColor, lineHeight);
+    }else if(spliting[0] == 'Button'){
+        var component = $(component).children();
+        var innerText = $(component).attr('value');
+        var color = $(component).css('color');
+        var fontSize = $(component).css('fontSize');
+        var fontWieght = $(component).css('fontWeight');
+        var marginTop = $(component).css('marginTop');
+        var marginLeft = $(component).css('marginLeft');
+        var marginRight = $(component).css('marginRight');
+        var marginBottom = $(component).css('marginBottom');
+        var paddingTop = $(component).css('paddingTop');
+        var paddingLeft = $(component).css('paddingLeft');
+        var paddingRight = $(component).css('paddingRight');
+        var paddingBottom = $(component).css('paddingBottom');
+        var backgroundColor = $(component).css('backgroundColor');
+        var lineHeight = $(component).css('lineHeight');
+        fillTheMockupProperties(innerText, color, fontSize, fontWieght, marginTop, marginLeft, marginRight, marginBottom, paddingTop, paddingLeft, paddingRight, paddingBottom, backgroundColor, lineHeight);
+    }else if(spliting[0] == 'image'){
+        var component = $(component).children();
+        var color = $(component).css('color');
+        var fontSize = $(component).css('fontSize');
+        var fontWieght = $(component).css('fontWeight');
+        var marginTop = $(component).css('marginTop');
+        var marginLeft = $(component).css('marginLeft');
+        var marginRight = $(component).css('marginRight');
+        var marginBottom = $(component).css('marginBottom');
+        var paddingTop = $(component).css('paddingTop');
+        var paddingLeft = $(component).css('paddingLeft');
+        var paddingRight = $(component).css('paddingRight');
+        var paddingBottom = $(component).css('paddingBottom');
+        var backgroundColor = $(component).css('backgroundColor');
+        var image = $(component).attr('src');
+        var lineHeight = $(component).css('lineHeight');
+        fillTheMockupProperties('', color, fontSize, fontWieght, marginTop, marginLeft, marginRight, marginBottom, paddingTop, paddingLeft, paddingRight, paddingBottom, backgroundColor, lineHeight);
+    }
+    // console.log(component);
+    // console.log(id)
+}
+
+function fillTheMockupProperties(innerText, color, fontSize, fontWieght, marginTop, marginLeft, marginRight, marginBottom, paddingTop, paddingLeft, paddingRight, paddingBottom, backgroundColor, lineHeight, align){
+    var fontSize = fontSize.split('p');
+    var marginTop = marginTop.split('p');
+    var marginLeft = marginLeft.split('p');
+    var marginRight = marginRight.split('p');
+    var marginBottom = marginBottom.split('p');
+    var paddingTop = paddingTop.split('p');
+    var paddingLeft = paddingLeft.split('p');
+    var paddingRight = paddingRight.split('p');
+    var paddingBottom = paddingBottom.split('p');
+    var lineHeight = lineHeight.split('p');
+    $('#inputText').val(innerText);
+    $('#inputColor').val(color);
+    $('#inputFontSize').val(fontSize[0]);
+    $('#inputFontWeight').val(fontWieght);
+    $('#inputMarginTop').val(marginTop[0]);
+    $('#inputMarginLeft').val(marginLeft[0]);
+    $('#inputMarginRight').val(marginRight[0]);
+    $('#inputMarginBottom').val(marginBottom[0]);
+    $('#inputPaddingTop').val(paddingTop[0]);
+    $('#inputPaddingLeft').val(paddingLeft[0]);
+    $('#inputPaddingRight').val(paddingRight[0]);
+    $('#inputPaddingBottom').val(paddingBottom[0]);
+    $('#inputLineHeight').val(lineHeight[0]);
+    $('#inputBgColor').val(backgroundColor);
+    $('#inputAlignText').val(align);
 }
 
 function addSomeAttributes(component, id) {
@@ -2125,35 +2411,35 @@ function allProjectCreatedChat(){
                         var mockup;
                         var prototype;
                         if(response[i]['supervisor'].length > 0){
-                            supervisor = '<u>Supervisor:</u> ' + response[i]['supervisor'][0]['u_fname'] + ' ' + response[i]['supervisor'][0]['u_lname'];
+                            supervisor = '<u>Supervisor:</u> ' + response[i]['supervisor'][0]['u_fname'] + ' ' + response[i]['supervisor'][0]['u_lname'] + '<br>';
                         }else{
                             supervisor = '';
                         }
                         if(response[i]['wireframe'].length > 0){
-                            wireframe = '<u>Wireframe:</u> ' + response[i]['wireframe'][0]['u_fname'] + ' ' + response[i]['wireframe'][0]['u_lname'];
+                            wireframe = '<u>Wireframe:</u> ' + response[i]['wireframe'][0]['u_fname'] + ' ' + response[i]['wireframe'][0]['u_lname'] + '<br>';
                         }else{
                             wireframe = '';
                         }
                         if(response[i]['mockup'].length > 0){
-                            mockup = '<u>Mockup:</u> ' +response[i]['mockup'][0]['u_fname'] + ' ' + response[i]['mockup'][0]['u_lname'];
+                            mockup = '<u>Mockup:</u> ' +response[i]['mockup'][0]['u_fname'] + ' ' + response[i]['mockup'][0]['u_lname'] + '<br>';
                         }else{
                             mockup = '';
                         }
                         if(response[i]['prototype'].length > 0){
-                            prototype = '<u>Prototype:</u> ' + response[i]['prototype'][0]['u_fname'] + ' ' + response[i]['prototype'][0]['u_lname'];
+                            prototype = '<u>Prototype:</u> ' + response[i]['prototype'][0]['u_fname'] + ' ' + response[i]['prototype'][0]['u_lname'] + '<br>';
                         }else{
                             prototype = '';
                         }
-                        $('#inbox_chat').append('<div class="chat_list active_chat">\
+                        $('#inbox_chat').append('<div class="chat_list active_chat" onclick=select_chat_box('+response[i]['ch_id']+')>\
                                         <div class="chat_people">\
                                           <div class="chat_img"><img src="https://cdn2.iconfinder.com/data/icons/startup-management/325/Project_management_Business_Case-512.png"></div>\
                                           <div class="chat_ib">\
                                             <h5>'+response[i]['p_name']+' <span class="chat_date">Dec 25</span></h5>\
                                             <p>'+ '<u>Project Owner:</u> ' + response[i]['owner'][0]['u_fname'] + ' ' + response[i]['owner'][0]['u_lname'] + '<br>'
-                                                + supervisor + '<br>'
-                                                + wireframe + '<br>'
-                                                + mockup + '<br>'
-                                                + prototype + '<br>'
+                                                + supervisor
+                                                + wireframe 
+                                                + mockup
+                                                + prototype
                                                 +'</p>\
                                           </div>\
                                         </div>\
