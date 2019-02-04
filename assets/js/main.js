@@ -1207,16 +1207,17 @@ function select_chat_box(id){
         dataType: 'json',
         success: function(response) {
             $('.msg_history').html('');
-            var myId = response[0]['myid'];
+            var myId = response[0]['myId'];
             for(var i = 0; i < response.length; i++){
                 if(myId == response[i]['sent_by']){
                     $('.msg_history').append('<div class="outgoing_msg">\
                                                 <div class="sent_msg">\
                                                   <p>'+response[i]['message_text']+'</p>\
-                                                  <span class="time_date">'+response[i]['message_time']+'</span>\
+                                                  <span class="time_date">'+response[i]['message_time'] + ' by me' +'</span>\
                                                 </div>\
                                               </div>');
                 }else{
+                    console.log(response[i]['name'].u_lname);
                     $('.msg_history').append('<div class="incoming_msg">\
                                                 <div class="incoming_msg_img">\
                                                   <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">\
@@ -1224,7 +1225,8 @@ function select_chat_box(id){
                                                 <div class="received_msg">\
                                                   <div class="received_withd_msg">\
                                                     <p>'+response[i]['message_text']+'</p>\
-                                                    <span class="time_date">'+response[i]['message_time']+'</span>\
+                                                    <span class="time_date">'+response[i]['message_time']
+                                                    + ' by ' + response[i]['name'].u_fname + ' ' + response[i]['name'].u_lname + '</span>\
                                                   </div>\
                                                 </div>\
                                               </div>');
@@ -1232,7 +1234,9 @@ function select_chat_box(id){
             }
             $(".msg_history").animate({ scrollTop: $('.msg_history').prop("scrollHeight")}, 1000);
             $('#message_text').val('');
-            console.log(response);
+        },
+        error: function(a, b){
+            console.log(a + " ---- " + b);
         }
     });
     
@@ -2410,23 +2414,23 @@ function allProjectCreatedChat(){
                         var wireframe;
                         var mockup;
                         var prototype;
-                        if(response[i]['supervisor'].length > 0){
-                            supervisor = '<u>Supervisor:</u> ' + response[i]['supervisor'][0]['u_fname'] + ' ' + response[i]['supervisor'][0]['u_lname'] + '<br>';
+                        if(response[i].supervisor != null){
+                            supervisor = '<u>Supervisor:</u> ' + response[i].supervisor.u_fname + ' ' + response[i].supervisor.u_lname + '<br>';
                         }else{
                             supervisor = '';
                         }
-                        if(response[i]['wireframe'].length > 0){
-                            wireframe = '<u>Wireframe:</u> ' + response[i]['wireframe'][0]['u_fname'] + ' ' + response[i]['wireframe'][0]['u_lname'] + '<br>';
+                        if(response[i].wireframe != null){
+                            wireframe = '<u>Wireframe:</u> ' + response[i].wireframe.u_fname + ' ' + response[i].wireframe.u_lname + '<br>';
                         }else{
                             wireframe = '';
                         }
-                        if(response[i]['mockup'].length > 0){
-                            mockup = '<u>Mockup:</u> ' +response[i]['mockup'][0]['u_fname'] + ' ' + response[i]['mockup'][0]['u_lname'] + '<br>';
+                        if(response[i].mockup != null){
+                            mockup = '<u>Mockup:</u> ' +response[i].mockup.u_fname + ' ' + response[i].mockup.u_lname + '<br>';
                         }else{
                             mockup = '';
                         }
-                        if(response[i]['prototype'].length > 0){
-                            prototype = '<u>Prototype:</u> ' + response[i]['prototype'][0]['u_fname'] + ' ' + response[i]['prototype'][0]['u_lname'] + '<br>';
+                        if(response[i].prototype != null){
+                            prototype = '<u>Prototype:</u> ' + response[i].prototype.u_fname + ' ' + response[i].prototype.u_lname + '<br>';
                         }else{
                             prototype = '';
                         }
@@ -2435,12 +2439,9 @@ function allProjectCreatedChat(){
                                           <div class="chat_img"><img src="https://cdn2.iconfinder.com/data/icons/startup-management/325/Project_management_Business_Case-512.png"></div>\
                                           <div class="chat_ib">\
                                             <h5>'+response[i]['p_name']+' <span class="chat_date">Dec 25</span></h5>\
-                                            <p>'+ '<u>Project Owner:</u> ' + response[i]['owner'][0]['u_fname'] + ' ' + response[i]['owner'][0]['u_lname'] + '<br>'
-                                                + supervisor
-                                                + wireframe 
-                                                + mockup
-                                                + prototype
-                                                +'</p>\
+                                            <p>'+ '<u>Project Owner:</u> ' + response[i].owner.u_fname + ' ' + response[i].owner.u_lname + '<br>'
+                                                + supervisor + wireframe + mockup + prototype +
+                                            '</p>\
                                           </div>\
                                         </div>\
                                       </div>');

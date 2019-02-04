@@ -37,7 +37,7 @@ class Chat_model extends CI_Model{
         $this->db->from('users');
         $this->db->where('u_id', $id);
         $query = $this->db->get();
-        return $query->result();
+        return $query->row();
     }
 
     public function send_message($id,$message_text,$date){
@@ -60,8 +60,36 @@ class Chat_model extends CI_Model{
         $this->db->order_by('message_id', 'asc');
         $query = $this->db->get();
         $result = $query->result();
-        $result[0]->myid = $this->session->userdata('u_id');
+        foreach ($result as $row)
+        {
+            $row->name = $this->get_user_name($row->sent_by);
+            $row->myId = $this->session->userdata('u_id');
+        }
         return $result;
+    }
+
+    function name_of_the_user_chat($id, $check){
+        $this->db->select('*');
+        $this->db->from('chat');
+        $this->db->where('ch_id', $id);
+        $query = $this->db->get();
+        $ret = $query->row();
+        if($check == 1){
+            //supervisor
+            return $this->get_user_name($ret->s_id);
+        }else if($check == 2){
+            //wireframe
+            return $this->get_user_name($ret->w_id);
+        }else if($check == 3){
+            //mockup
+            return $this->get_user_name($ret->m_id);
+        }else if($check == 4){
+            //prototype
+            return $this->get_user_name($ret->pr_id);
+        }else{
+            //owner
+            return $this->get_user_name($ret->u_id);
+        }
     }
 }
 ?>
