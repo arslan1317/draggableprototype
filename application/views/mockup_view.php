@@ -107,7 +107,7 @@
                 <label for="inputImage" class="col-form-label">Select Image</label>
                 <div class="left-input">
                     <button class="form-control" id="selectImage">Select Image</button>
-                    <input type="file" class="form-control no-select" id="inputImage" style="display: none" accept="image/*">
+                    <input type="file" class="form-control no-select" id="inputImage" style="display: none" accept="image/*" name="file">
                 </div>
             </div>
             <div class="form-group row">

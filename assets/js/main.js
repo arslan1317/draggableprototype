@@ -481,8 +481,8 @@ jQuery(document).ready(function($) {
             $('.mobile-inner p.selected').css('lineHeight', value+'px');
         });
 
-        $('#inputAlignText').keyup(function() {
-            var value = $(this).val();
+        $('#inputAlignText').change(function() {
+            var value = $(this).find('option:selected').val();
             $('.mobile-inner p.selected').css('textAlign', value);
         });
 
@@ -1005,8 +1005,8 @@ jQuery(document).ready(function($) {
                                         errorBox(response.message);
                                 } else if (response.code == 2) {
                                         //successfully add
-                                        $('#projectNameTask').html('');
-                                        $('#projectNameTask').append('<option value="">--Select--</option>');
+                                        // $('#projectNameTask').html('');
+                                        // $('#projectNameTask').append('<option value="">--Select--</option>');
                                         successBox(response.message);
                                         emptyAllTaskFields();
                                         loadAllTasksFromDatabase();
@@ -1090,16 +1090,17 @@ jQuery(document).ready(function($) {
                     dataType: 'json',
                     success: function(response) {
                         $('.msg_history').html('');
-                        var myId = response[0]['myid'];
+                        var myId = response[0]['myId'];
                         for(var i = 0; i < response.length; i++){
                             if(myId == response[i]['sent_by']){
                                 $('.msg_history').append('<div class="outgoing_msg">\
                                                             <div class="sent_msg">\
                                                               <p>'+response[i]['message_text']+'</p>\
-                                                              <span class="time_date">'+response[i]['message_time']+'</span>\
+                                                              <span class="time_date">'+response[i]['message_time'] + ' by me' +'</span>\
                                                             </div>\
                                                           </div>');
                             }else{
+                                console.log(response[i]['name'].u_lname);
                                 $('.msg_history').append('<div class="incoming_msg">\
                                                             <div class="incoming_msg_img">\
                                                               <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">\
@@ -1107,15 +1108,15 @@ jQuery(document).ready(function($) {
                                                             <div class="received_msg">\
                                                               <div class="received_withd_msg">\
                                                                 <p>'+response[i]['message_text']+'</p>\
-                                                                <span class="time_date">'+response[i]['message_time']+'</span>\
+                                                                <span class="time_date">'+response[i]['message_time']
+                                                                + ' by ' + response[i]['name'].u_fname + ' ' + response[i]['name'].u_lname + '</span>\
                                                               </div>\
                                                             </div>\
                                                           </div>');
                             }
                         }
-                        $(".msg_history").animate({ scrollTop: $('.msg_history').prop("scrollHeight")}, 5000);
+                        $(".msg_history").animate({ scrollTop: $('.msg_history').prop("scrollHeight")}, 1000);
                         $('#message_text').val('');
-                        console.log(response);
                     }
             });
         });
@@ -1171,11 +1172,46 @@ jQuery(document).ready(function($) {
         });
 
         $('input[type=file]').change(function(e){
+            readURL(this);
+            // $.ajax({
+            //      url: baseURL + 'mockups/do_upload',
+            //      type:"post",
+            //      data: new FormData(this),
+            //      processData:false,
+            //      contentType:false,
+            //      cache:false,
+            //      async:false,
+            //      success: function(data){
+            //           alert(data);
+            //    }
+            // });
+            var file = this.files[0];
+            console.log(file);
             console.log(e.target.files[0].name);
-            console.log(e.target.files[0].mozFullPath);
             console.log(e.target.files[0]);
         });
+
+        $('#message_text').keypress(function (e) {
+            var key = e.which;
+            if(key == 13){
+                $('#sms_send_button').click();
+                return false;  
+            }
+        });
 });
+
+function readURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            $('.mobile-inner p.selected').find('img').attr('src', e.target.result);
+        }
+
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
 
 function previewSingleActivity(id){
     $('#mobile-preview').html('');
@@ -1217,10 +1253,15 @@ function select_chat_box(id){
                                                 </div>\
                                               </div>');
                 }else{
+                    if(response[i]['name'].path == null){
+                        var src = 'http://www.homeworkhelp.novelguide.com/sites/default/files/pictures/default/default_user_image.jpg';
+                    }else{
+                        var src = 'http://www.homeworkhelp.novelguide.com/sites/default/files/pictures/default/default_user_image.jpg';
+                    }
                     console.log(response[i]['name'].u_lname);
                     $('.msg_history').append('<div class="incoming_msg">\
                                                 <div class="incoming_msg_img">\
-                                                  <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">\
+                                                  <img src="'+src+'" alt="sunil" class="rounded-circle">\
                                                 </div>\
                                                 <div class="received_msg">\
                                                   <div class="received_withd_msg">\
@@ -2189,11 +2230,18 @@ function selectedActivity(a, b) {
                         $('.mobile-inner').html(response[0]['act_code']);
                         if (b == 1) {
                                 $('.mobile-inner p').removeClass('selected');
-                                $(".mobile-inner p").mousedown(function() {
+                                $('.mobile-inner').mousedown(function(){
+                                    $('.mobile-inner p').removeClass('selected');
+                                    $(this).addClass('selected');
+                                    addSomeAttributesForMockups(this , -1);
+                                });
+                                $(".mobile-inner p").mousedown(function(e) {
                                         $('.mobile-inner p').removeClass('selected');
+                                        $('.mobile-inner').removeClass('selected');
                                         $(this).addClass('selected');
                                         var id = $(this).attr('id');
                                         addSomeAttributesForMockups(this, id);
+                                        e.stopPropagation();
                                 });
                         } else {
                                 $(a).parent().addClass('active');
@@ -2218,79 +2266,83 @@ function selectedActivity(a, b) {
 }
 
 function addSomeAttributesForMockups(component, id){
-    $(component).attr('id', id);
-    var spliting = id.split('_');
-    if(spliting[0] == 'text'){
-        $(component).css('height', 'auto');
-        var innerText = $(component).text();
-        var color = $(component).css('color');
-        var fontSize = $(component).css('fontSize');
-        var fontWieght = $(component).css('fontWeight');
-        var marginTop = $(component).css('marginTop');
-        var marginLeft = $(component).css('marginLeft');
-        var marginRight = $(component).css('marginRight');
-        var marginBottom = $(component).css('marginBottom');
-        var paddingTop = $(component).css('paddingTop');
-        var paddingLeft = $(component).css('paddingLeft');
-        var paddingRight = $(component).css('paddingRight');
-        var paddingBottom = $(component).css('paddingBottom');
-        var backgroundColor = $(component).css('backgroundColor');
-        var lineHeight = $(component).css('lineHeight');
-        var align = $(component).css('textAlign');
-        fillTheMockupProperties(innerText, color, fontSize, fontWieght, marginTop, marginLeft, marginRight, marginBottom, paddingTop, paddingLeft, paddingRight, paddingBottom, backgroundColor, lineHeight, align);
-    }else if(spliting[0] == 'edit'){
-        var component = $(component).children();
-        var color = $(component).css('color');
-        var fontSize = $(component).css('fontSize');
-        var fontWieght = $(component).css('fontWeight');
-        var marginTop = $(component).css('marginTop');
-        var marginLeft = $(component).css('marginLeft');
-        var marginRight = $(component).css('marginRight');
-        var marginBottom = $(component).css('marginBottom');
-        var paddingTop = $(component).css('paddingTop');
-        var paddingLeft = $(component).css('paddingLeft');
-        var paddingRight = $(component).css('paddingRight');
-        var paddingBottom = $(component).css('paddingBottom');
-        var backgroundColor = $(component).css('backgroundColor');
-        var lineHeight = $(component).css('lineHeight');
-        fillTheMockupProperties('', color, fontSize, fontWieght, marginTop, marginLeft, marginRight, marginBottom, paddingTop, paddingLeft, paddingRight, paddingBottom, backgroundColor, lineHeight);
-    }else if(spliting[0] == 'Button'){
-        var component = $(component).children();
-        var innerText = $(component).attr('value');
-        var color = $(component).css('color');
-        var fontSize = $(component).css('fontSize');
-        var fontWieght = $(component).css('fontWeight');
-        var marginTop = $(component).css('marginTop');
-        var marginLeft = $(component).css('marginLeft');
-        var marginRight = $(component).css('marginRight');
-        var marginBottom = $(component).css('marginBottom');
-        var paddingTop = $(component).css('paddingTop');
-        var paddingLeft = $(component).css('paddingLeft');
-        var paddingRight = $(component).css('paddingRight');
-        var paddingBottom = $(component).css('paddingBottom');
-        var backgroundColor = $(component).css('backgroundColor');
-        var lineHeight = $(component).css('lineHeight');
-        fillTheMockupProperties(innerText, color, fontSize, fontWieght, marginTop, marginLeft, marginRight, marginBottom, paddingTop, paddingLeft, paddingRight, paddingBottom, backgroundColor, lineHeight);
-    }else if(spliting[0] == 'image'){
-        var component = $(component).children();
-        var color = $(component).css('color');
-        var fontSize = $(component).css('fontSize');
-        var fontWieght = $(component).css('fontWeight');
-        var marginTop = $(component).css('marginTop');
-        var marginLeft = $(component).css('marginLeft');
-        var marginRight = $(component).css('marginRight');
-        var marginBottom = $(component).css('marginBottom');
-        var paddingTop = $(component).css('paddingTop');
-        var paddingLeft = $(component).css('paddingLeft');
-        var paddingRight = $(component).css('paddingRight');
-        var paddingBottom = $(component).css('paddingBottom');
-        var backgroundColor = $(component).css('backgroundColor');
-        var image = $(component).attr('src');
-        var lineHeight = $(component).css('lineHeight');
-        fillTheMockupProperties('', color, fontSize, fontWieght, marginTop, marginLeft, marginRight, marginBottom, paddingTop, paddingLeft, paddingRight, paddingBottom, backgroundColor, lineHeight);
+    if(id == -1){
+        $('#property :input').val('');
+        $('#inputBgColor').val($(component).css('backgroundColor'));
+
+    }else{
+        $(component).attr('id', id);
+        var spliting = id.split('_');
+        if(spliting[0] == 'text'){
+            $(component).css('height', 'auto');
+            var innerText = $(component).text();
+            var color = $(component).css('color');
+            var fontSize = $(component).css('fontSize');
+            var fontWieght = $(component).css('fontWeight');
+            var marginTop = $(component).css('marginTop');
+            var marginLeft = $(component).css('marginLeft');
+            var marginRight = $(component).css('marginRight');
+            var marginBottom = $(component).css('marginBottom');
+            var paddingTop = $(component).css('paddingTop');
+            var paddingLeft = $(component).css('paddingLeft');
+            var paddingRight = $(component).css('paddingRight');
+            var paddingBottom = $(component).css('paddingBottom');
+            var backgroundColor = $(component).css('backgroundColor');
+            var lineHeight = $(component).css('lineHeight');
+            var align = $(component).css('textAlign');
+            fillTheMockupProperties(innerText, color, fontSize, fontWieght, marginTop, marginLeft, marginRight, marginBottom, paddingTop, paddingLeft, paddingRight, paddingBottom, backgroundColor, lineHeight, align);
+        }else if(spliting[0] == 'edit'){
+            var component = $(component).children();
+            var color = $(component).css('color');
+            var fontSize = $(component).css('fontSize');
+            var fontWieght = $(component).css('fontWeight');
+            var marginTop = $(component).css('marginTop');
+            var marginLeft = $(component).css('marginLeft');
+            var marginRight = $(component).css('marginRight');
+            var marginBottom = $(component).css('marginBottom');
+            var paddingTop = $(component).css('paddingTop');
+            var paddingLeft = $(component).css('paddingLeft');
+            var paddingRight = $(component).css('paddingRight');
+            var paddingBottom = $(component).css('paddingBottom');
+            var backgroundColor = $(component).css('backgroundColor');
+            var lineHeight = $(component).css('lineHeight');
+            fillTheMockupProperties('', color, fontSize, fontWieght, marginTop, marginLeft, marginRight, marginBottom, paddingTop, paddingLeft, paddingRight, paddingBottom, backgroundColor, lineHeight);
+        }else if(spliting[0] == 'Button'){
+            var component = $(component).children();
+            var innerText = $(component).attr('value');
+            var color = $(component).css('color');
+            var fontSize = $(component).css('fontSize');
+            var fontWieght = $(component).css('fontWeight');
+            var marginTop = $(component).css('marginTop');
+            var marginLeft = $(component).css('marginLeft');
+            var marginRight = $(component).css('marginRight');
+            var marginBottom = $(component).css('marginBottom');
+            var paddingTop = $(component).css('paddingTop');
+            var paddingLeft = $(component).css('paddingLeft');
+            var paddingRight = $(component).css('paddingRight');
+            var paddingBottom = $(component).css('paddingBottom');
+            var backgroundColor = $(component).css('backgroundColor');
+            var lineHeight = $(component).css('lineHeight');
+            fillTheMockupProperties(innerText, color, fontSize, fontWieght, marginTop, marginLeft, marginRight, marginBottom, paddingTop, paddingLeft, paddingRight, paddingBottom, backgroundColor, lineHeight);
+        }else if(spliting[0] == 'image'){
+            var component = $(component).children();
+            var color = $(component).css('color');
+            var fontSize = $(component).css('fontSize');
+            var fontWieght = $(component).css('fontWeight');
+            var marginTop = $(component).css('marginTop');
+            var marginLeft = $(component).css('marginLeft');
+            var marginRight = $(component).css('marginRight');
+            var marginBottom = $(component).css('marginBottom');
+            var paddingTop = $(component).css('paddingTop');
+            var paddingLeft = $(component).css('paddingLeft');
+            var paddingRight = $(component).css('paddingRight');
+            var paddingBottom = $(component).css('paddingBottom');
+            var backgroundColor = $(component).css('backgroundColor');
+            var image = $(component).attr('src');
+            var lineHeight = $(component).css('lineHeight');
+            fillTheMockupProperties('', color, fontSize, fontWieght, marginTop, marginLeft, marginRight, marginBottom, paddingTop, paddingLeft, paddingRight, paddingBottom, backgroundColor, lineHeight);
+        }
     }
-    // console.log(component);
-    // console.log(id)
 }
 
 function fillTheMockupProperties(innerText, color, fontSize, fontWieght, marginTop, marginLeft, marginRight, marginBottom, paddingTop, paddingLeft, paddingRight, paddingBottom, backgroundColor, lineHeight, align){

@@ -23,6 +23,7 @@
             onChange: function(hsb, hex, rgb){
                 $("#inputBgColor").val('#'+hex);
                 $('.mobile-inner p.selected').css('backgroundColor', '#'+hex);
+                $('.mobile-inner.selected').css('backgroundColor', '#'+hex);
             }
         });
     </script>
