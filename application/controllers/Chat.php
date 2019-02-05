@@ -27,7 +27,7 @@ class Chat extends CI_Controller {
 
 	public function index($data = NULL){
             if(isset($_SESSION['u_id'])){
-		$this->load->view('chat_view');
+				$this->load->view('chat_view');
             }else{
                 redirect('Login/index');
             }
@@ -49,6 +49,11 @@ class Chat extends CI_Controller {
 	public function get_all_chat_by_id(){
 		$id = $this->input->post('chat_id');
 		$data = $this->Chat_model->getAllChatById($id);
+		echo json_encode($data);
+	}
+
+	public function get_unread_chat(){
+		$data = $this->Chat_model->get_unread_chat();
 		echo json_encode($data);
 	}
 

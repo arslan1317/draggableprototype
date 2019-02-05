@@ -1212,7 +1212,6 @@ function readURL(input) {
     }
 }
 
-
 function previewSingleActivity(id){
     $('#mobile-preview').html('');
     for(var i = 0; i < GLOBAL_ACTIVITY_RESULT.length; i++){
@@ -1964,47 +1963,19 @@ function checkNotificationOfProjectAssign() {
                                         } else {
                                                 notifyColor = "";
                                         }
-                                        // if(response[i]['a_accept'] == 0){
-                                        //  acceptCheck = '<p class="text-center">\
-                                        //                  <span class="span-btn">\
-                                        //                    <a href="#" onclick="acceptNotification('+response[i]['a_id']+')">Accept</a>\
-                                        //                  </span> &nbsp;\
-                                        //                  <span class="span-btn">\
-                                        //                    <a href="#" onclick="declineNotification('+response[i]['a_id']+')">Decline</a>\
-                                        //                  </span>\
-                                        //                </p>';
-                                        // }else if(response[i]['a_accept'] == 1){
-                                        //  acceptCheck = '<p class="text-center">\
-                                        //                  <span class="span-btn" style="opacity:0.7">\
-                                        //                    Accepted\
-                                        //                  </span> &nbsp;\
-                                        //                  <span class="span-btn" >\
-                                        //                    <a href="#" onclick="declineNotification('+response[i]['a_id']+')">Decline</a>\
-                                        //                  </span>\
-                                        //                </p>';
-                                        // }else if(response[i]['a_accept'] == 2){
-                                        //  acceptCheck = '<p class="text-center">\
-                                        //                  <span class="span-btn" style="opacity:1">\
-                                        //                    <a href="#" onclick="acceptNotification('+response[i]['a_id']+')">Accept</a>\
-                                        //                  </span> &nbsp;\
-                                        //                  <span class="span-btn" style="opacity:0.7">\
-                                        //                    Declined\
-                                        //                  </span>\
-                                        //                </p>';
-                                        // }
 
                                         $('#main-notifier').append('<div class="notify" style="background-color:' + notifyColor + '">\
-<a class="dropdown-item media" href="' + baseURL + 'user/get_single_notification/' + response[i]['a_id'] + '">\
-<span class="photo media-left">\
-<img src="' + checkImage + '">\
-</span>\
-<span class="message media-body">\
-<span class="name float-left">' + response[i]['u_fname'] + " " + response[i]['u_lname'] + " (" + response[i]['u_email'] + ')\
-</span>\
-<p>Assign You the ' + taskType + ' of ' + response[i]['p_name'] + '</p>\
-</span>\
-</a>\
-</div>');
+                                                                        <a class="dropdown-item media" href="' + baseURL + 'user/get_single_notification/' + response[i]['a_id'] + '">\
+                                                                        <span class="photo media-left">\
+                                                                        <img src="' + checkImage + '">\
+                                                                        </span>\
+                                                                        <span class="message media-body">\
+                                                                        <span class="name float-left">' + response[i]['u_fname'] + " " + response[i]['u_lname'] + " (" + response[i]['u_email'] + ')\
+                                                                        </span>\
+                                                                        <p>Assign You the ' + taskType + ' of ' + response[i]['p_name'] + '</p>\
+                                                                        </span>\
+                                                                        </a>\
+                                                                    </div>');
                                 }
                                 $('#count').text(seen);
                         } else {
@@ -2052,14 +2023,14 @@ function checkAcceptOrDeclineOfUser() {
                                                 acceptCheck = "";
                                         }
                                         $('#main-message-notifier').append('<div class="notify" style="background-color:' + backgroundColor + '">\
-<a class="dropdown-item media" href="#">\
-<span class="message media-body">\
-<span class="name float-left">' + response[i]['u_fname'] + " " + response[i]['u_lname'] + " (" + response[i]['u_email'] + ')\
-</span>\
-<p>' + acceptCheck + ' the ' + taskType + ' of ' + response[i]["p_name"] + '</p>\
-</span>\
-</a>\
-</div>');
+                                                                                <a class="dropdown-item media" href="#">\
+                                                                                <span class="message media-body">\
+                                                                                <span class="name float-left">' + response[i]['u_fname'] + " " + response[i]['u_lname'] + " (" + response[i]['u_email'] + ')\
+                                                                                </span>\
+                                                                                <p>' + acceptCheck + ' the ' + taskType + ' of ' + response[i]["p_name"] + '</p>\
+                                                                                </span>\
+                                                                                </a>\
+                                                                                </div>');
                                 }
                                 $('#message-count').text(seen);
                         } else {
@@ -2466,27 +2437,45 @@ function allProjectCreatedChat(){
                         var wireframe;
                         var mockup;
                         var prototype;
+                        var assignType = '';
                         if(response[i].supervisor != null){
+                            if(response[i].supervisor.u_id == response[0]['myid']){
+                                assignType = 's_seen';
+                            }
                             supervisor = '<u>Supervisor:</u> ' + response[i].supervisor.u_fname + ' ' + response[i].supervisor.u_lname + '<br>';
                         }else{
                             supervisor = '';
                         }
                         if(response[i].wireframe != null){
+                            if(response[i].wireframe.u_id == response[0]['myid']){
+                                assignType = 'w_seen';
+                            }
                             wireframe = '<u>Wireframe:</u> ' + response[i].wireframe.u_fname + ' ' + response[i].wireframe.u_lname + '<br>';
                         }else{
                             wireframe = '';
                         }
                         if(response[i].mockup != null){
+                            if(response[i].mockup.u_id == response[0]['myid']){
+                                assignType = 'm_seen';
+                            }
                             mockup = '<u>Mockup:</u> ' +response[i].mockup.u_fname + ' ' + response[i].mockup.u_lname + '<br>';
                         }else{
                             mockup = '';
                         }
                         if(response[i].prototype != null){
+                            if(response[i].prototype.u_id == response[0]['myid']){
+                                assignType = 'p_seen';
+                            }
                             prototype = '<u>Prototype:</u> ' + response[i].prototype.u_fname + ' ' + response[i].prototype.u_lname + '<br>';
                         }else{
                             prototype = '';
                         }
-                        $('#inbox_chat').append('<div class="chat_list active_chat" onclick=select_chat_box('+response[i]['ch_id']+')>\
+                        if(response[i].owner.u_id == response[0]['myid']){
+                            assignType = "u_seen";
+                            console.log(response[i].owner.u_id);
+                        }
+
+                        $('#inbox_chat').append('<div class="chat_list active_chat" onclick=select_chat_box('+response[i]['ch_id']+ ',"' +assignType +'")>\
                                         <div class="chat_people">\
                                           <div class="chat_img"><img src="https://cdn2.iconfinder.com/data/icons/startup-management/325/Project_management_Business_Case-512.png"></div>\
                                           <div class="chat_ib">\

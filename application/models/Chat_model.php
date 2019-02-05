@@ -21,13 +21,13 @@ class Chat_model extends CI_Model{
                 ->or_where('chat.pr_id', $this->session->userdata('u_id'));
         $query = $this->db->get();
         $result = $query->result();
-
         for ($i=0; $i<count($result) ; $i++) { 
                 $result[$i]->owner = $this->get_user_name($result[$i]->u_id);
                 $result[$i]->supervisor = $this->get_user_name($result[$i]->s_id);
                 $result[$i]->wireframe = $this->get_user_name($result[$i]->w_id);
                 $result[$i]->mockup = $this->get_user_name($result[$i]->m_id);
                 $result[$i]->prototype = $this->get_user_name($result[$i]->pr_id);
+                $result[$i]->myid = $this->session->userdata('u_id');
         }
         return $result;  
     }
@@ -91,5 +91,6 @@ class Chat_model extends CI_Model{
             return $this->get_user_name($ret->u_id);
         }
     }
+
 }
 ?>
