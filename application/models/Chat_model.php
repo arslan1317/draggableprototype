@@ -40,7 +40,7 @@ class Chat_model extends CI_Model{
         return $query->row();
     }
 
-    public function send_message($id,$message_text,$date){
+    public function send_message($id,$message_text,$date, $seen){
 
         $message = array(
             'message_text' => $message_text,
@@ -50,10 +50,11 @@ class Chat_model extends CI_Model{
         );
 
         $results = $this->db->insert('message', $message);
-        return $this->getAllChatById($id);
+        return $this->getAllChatById($id, $seen);
     }
 
-    function getAllChatById($id){
+    function getAllChatById($id, $seen){
+        $this->update_seen($id, $seen);
         $this->db->select('*');
         $this->db->from('message');
         $this->db->where('ch_id', $id);
@@ -66,6 +67,29 @@ class Chat_model extends CI_Model{
             $row->myId = $this->session->userdata('u_id');
         }
         return $result;
+    }
+
+    function update_seen($id, $seen){
+        $seen_status = '';
+
+        if($seen == 'u_seen'){
+            $seen_status = 'u_seen';
+        }
+        else if ($seen == 's_seen') {
+             $seen_status = 's_seen';
+        }
+        elseif ($seen == 'w_seen') {
+            $seen_status = 'w_seen';
+        }
+        elseif ($seen == 'm_seen') {
+           $seen_status = 'm_seen';
+        }
+        elseif ($seen == 'pr_seen') {
+            $seen_status = 'p_seen';
+        }
+        $this->db->set($seen_status, $this->session->userdata('u_id'));
+        $this->db->where('ch_id', $id);
+        $this->db->update('message');
     }
 
     function name_of_the_user_chat($id, $check){

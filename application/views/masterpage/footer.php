@@ -15,14 +15,24 @@
         $('#inputColor').ColorPicker({
             onChange: function(hsb, hex, rgb){
                 $("#inputColor").val('#'+hex);
-                $('.mobile-inner p.selected').css('color', '#'+hex);
+                var a = $('.mobile-inner p.selected').has('input');
+                if(a.length == 0){
+                    $('.mobile-inner p.selected').css('color', '#'+hex);
+                }else{
+                    $('.mobile-inner p.selected input').css('color', '#'+hex);
+                }
             }
         });
 
         $('#inputBgColor').ColorPicker({
             onChange: function(hsb, hex, rgb){
                 $("#inputBgColor").val('#'+hex);
-                $('.mobile-inner p.selected').css('backgroundColor', '#'+hex);
+                var a = $('.mobile-inner p.selected').has('input');
+                if(a.length == 0){
+                    $('.mobile-inner p.selected').css('backgroundColor', '#'+hex);
+                }else{
+                    $('.mobile-inner p.selected input').css('backgroundColor', '#'+hex);
+                }
                 $('.mobile-inner.selected').css('backgroundColor', '#'+hex);
             }
         });

@@ -4,6 +4,7 @@ jQuery(document).ready(function($) {
         //Notication VIew
         GLOBALREQUEST = new Array();
         $(document).on('keydown', function(e) {
+            console.log(e);
             if((e.target.id != 'inputWidth') && (e.target.id != 'inputHeight') && (e.target.id != 'inputTop') && (e.target.id != 'inputLeft') && (e.target.id != 'inputRight') && (e.target.id != 'inputBottom') && ($(e.target).attr('class') != 'form-control no-select')){
                 if ((e.keyCode == 46) || (e.keyCode == 8)) {
                         $('.mobile-inner .selected').remove();
@@ -423,12 +424,22 @@ jQuery(document).ready(function($) {
         //for mockups
         $( "#inputText" ).keyup(function() {
             var value = $(this).val();
-            $('.mobile-inner p.selected').text(value);
+            var a = $('.mobile-inner p.selected').has('input');
+            if(a.length == 0){
+                $('.mobile-inner p.selected').text(value);
+            }else{
+                $('.mobile-inner p.selected input').val(value);
+            }
         });
 
         $( "#inputFontSize" ).keyup(function() {
             var value = $(this).val();
-            $('.mobile-inner p.selected').css('fontSize', value+'px');
+            var a = $('.mobile-inner p.selected').has('input');
+            if(a.length == 0){
+                $('.mobile-inner p.selected').css('fontSize', value+'px');
+            }else{
+                $('.mobile-inner p.selected input').css('fontSize', value+'px');
+            }
         });
 
         $( "#inputFontWeight" ).keyup(function() {
@@ -1081,12 +1092,13 @@ jQuery(document).ready(function($) {
                 + currentdate.getMinutes() + ":" 
                 + currentdate.getSeconds();
             var chat_id = $('#sms_send_button').attr('data-myval');
+            var seen = $('#sms_send_button').attr('data-seen');
             var message_text = $('#message_text').val();
             $.ajax({
                     url: baseURL + 'chat/send_message',
                     method: 'post',
                     type: 'post',
-                    data: { chat_id: chat_id, message_text: message_text, datetime:datetime},
+                    data: { chat_id: chat_id, message_text: message_text, datetime:datetime, seen:seen},
                     dataType: 'json',
                     success: function(response) {
                         $('.msg_history').html('');
@@ -1100,10 +1112,15 @@ jQuery(document).ready(function($) {
                                                             </div>\
                                                           </div>');
                             }else{
+                                if(response[i]['name'].path == null){
+                                    var src = 'http://www.homeworkhelp.novelguide.com/sites/default/files/pictures/default/default_user_image.jpg';
+                                }else{
+                                    var src = 'http://www.homeworkhelp.novelguide.com/sites/default/files/pictures/default/default_user_image.jpg';
+                                }
                                 console.log(response[i]['name'].u_lname);
                                 $('.msg_history').append('<div class="incoming_msg">\
                                                             <div class="incoming_msg_img">\
-                                                              <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">\
+                                                              <img src="'+src+'" alt="sunil" class="rounded-circle">\
                                                             </div>\
                                                             <div class="received_msg">\
                                                               <div class="received_withd_msg">\
@@ -1232,13 +1249,14 @@ function previewSingleActivity(id){
 }
 
 //view all chat function
-function select_chat_box(id){
+function select_chat_box(id, b){
     $('#sms_send_button').attr('data-myval',id);
+    $('#sms_send_button').attr('data-seen',b);
     $.ajax({
         url: baseURL + 'chat/get_all_chat_by_id',
         method: 'post',
         type: 'post',
-        data: { chat_id: id },
+        data: { chat_id: id, b: b },
         dataType: 'json',
         success: function(response) {
             $('.msg_history').html('');
@@ -2214,6 +2232,7 @@ function selectedActivity(a, b) {
                                         addSomeAttributesForMockups(this, id);
                                         e.stopPropagation();
                                 });
+                                $(".mobile-inner p input").addClass('form-control no-select');
                         } else {
                                 $(a).parent().addClass('active');
                                 $('.mobile-inner p').draggable({
