@@ -77,8 +77,8 @@
                         </div>
                         <input type="hidden" id="assign-id" value="-1">
                         <div class="save-button">
-                            <button class="btn main-btn" id="save-wireframe">Save</button>
-                            <button class="btn main-btn" id="submit-wireframe">Submit</button>
+                            <button class="btn main-btn" id="save-mockup">Save</button>
+                            <button class="btn main-btn" id="submit-mockup">Submit</button>
                         </div>
                     </div>
                 </div>

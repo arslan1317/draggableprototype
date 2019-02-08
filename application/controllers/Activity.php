@@ -56,10 +56,19 @@ class Activity extends CI_Controller {
         $data = $this->Activity_model->get_activity($id, $task);
         echo json_encode($data);
     }
+
     public function insert_wireframe_code(){
         $id = $this->input->post('activityId');
         $code = $this->input->post('getWireframeCode');
         $data = $this->Activity_model->insert_wireframe_code($id, $code);
+        echo json_encode($data);
+    }
+
+    public function insert_mockup_code(){
+        $id = $this->input->post('id');
+        $code = $this->input->post('getMockupCode');
+        $bg_color = $this->input->post('bgColor');
+        $data = $this->Activity_model->insert_mockup_code($id, $code, $bg_color);
         echo json_encode($data);
     }
     

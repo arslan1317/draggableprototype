@@ -4,8 +4,7 @@ jQuery(document).ready(function($) {
         //Notication VIew
         GLOBALREQUEST = new Array();
         $(document).on('keydown', function(e) {
-            console.log(e);
-            if((e.target.id != 'inputWidth') && (e.target.id != 'inputHeight') && (e.target.id != 'inputTop') && (e.target.id != 'inputLeft') && (e.target.id != 'inputRight') && (e.target.id != 'inputBottom') && ($(e.target).attr('class') != 'form-control no-select')){
+            if((e.target.id != 'inputWidth') && (e.target.id != 'inputHeight') && (e.target.id != 'inputTop') && (e.target.id != 'inputLeft') && (e.target.id != 'inputRight') && (e.target.id != 'inputBottom') && ($(e.target).attr('class') != 'form-control no-select') && ($(e.target).attr('class') != 'no-select')){
                 if ((e.keyCode == 46) || (e.keyCode == 8)) {
                         $('.mobile-inner .selected').remove();
                 }
@@ -390,6 +389,38 @@ jQuery(document).ready(function($) {
                 }
         });
 
+        //for mockupsave
+        $('#save-mockup').click(function() {
+                var id = $('#activity-name-show li.active').attr('id');
+                if(id == null){
+                    errorBox('<p>Please Select the Activity</p>')
+                }else{
+                    $('.mobile-inner').removeClass('selected');
+                    $('.mobile-inner p').removeClass('selected');
+                    var bgColor = $('.mobile-inner').css('backgroundColor');
+                    var getMockupCode = $('.mobile-inner').html();
+                    $.ajax({
+                            url: baseURL + 'activity/insert_mockup_code',
+                            method: 'post',
+                            type: 'post',
+                            dataType: 'json',
+                            data: { id: id, getMockupCode: getMockupCode, bgColor:bgColor},
+                            dataType: 'json',
+                            success: function(response) {
+                                    console.log(response);
+                                    console.log(response.act_id);
+                                    if(response.mockup_code != null){
+                                        $('.mobile-inner').html(response.mockup_code);
+                                        $('.mobile-inner').css('backgroundColor', response.mockup_back_color)
+                                    }else{
+                                        $('.mobile-inner').html(response.act_code);
+                                    }
+                                    successBox('<p>Mockup Saved Successfully</p>');
+                            }
+                    });
+                }
+        });
+
         //for wireframe
         $( "#inputWidth" ).keyup(function() {
             var value = $(this).val();
@@ -428,7 +459,13 @@ jQuery(document).ready(function($) {
             if(a.length == 0){
                 $('.mobile-inner p.selected').text(value);
             }else{
-                $('.mobile-inner p.selected input').val(value);
+                var getInputId = $(a).attr('id');
+                var splitId = getInputId.split('_');
+                if(splitId[0] == 'edit'){
+                    $('.mobile-inner p.selected input').attr("placeholder", value);
+                }else{
+                    $('.mobile-inner p.selected input').val(value);  
+                }
             }
         });
 
@@ -469,22 +506,42 @@ jQuery(document).ready(function($) {
 
         $('#inputPaddingTop').keyup(function() {
             var value = $(this).val();
-            $('.mobile-inner p.selected').css('paddingTop', value+'px');
+            var a = $('.mobile-inner p.selected').has('input');
+            if(a.length == 0){
+                $('.mobile-inner p.selected').css('paddingTop', value+'px');
+            }else{
+                $('.mobile-inner p.selected').css('paddingTop', value+'px');
+            }
         });
 
         $('#inputPaddingLeft').keyup(function() {
             var value = $(this).val();
-            $('.mobile-inner p.selected').css('paddingLeft', value+'px');
+            var a = $('.mobile-inner p.selected').has('input');
+            if(a.length == 0){
+                $('.mobile-inner p.selected').css('paddingLeft', value+'px');
+            }else{
+                $('.mobile-inner p.selected input').css('paddingLeft', value+'px');
+            }
         });
 
         $('#inputPaddingRight').keyup(function() {
             var value = $(this).val();
-            $('.mobile-inner p.selected').css('paddingRight', value+'px');
+            var a = $('.mobile-inner p.selected').has('input');
+            if(a.length == 0){
+                $('.mobile-inner p.selected').css('paddingRight', value+'px');
+            }else{
+                $('.mobile-inner p.selected input').css('paddingRight', value+'px');
+            }
         });
 
         $('#inputPaddingBottom').keyup(function() {
             var value = $(this).val();
-            $('.mobile-inner p.selected').css('paddingBottom', value+'px');
+            var a = $('.mobile-inner p.selected').has('input');
+            if(a.length == 0){
+                $('.mobile-inner p.selected').css('paddingBottom', value+'px');
+            }else{
+                $('.mobile-inner p.selected input').css('paddingBottom', value+'px');
+            }
         });
 
         $('#inputLineHeight').keyup(function() {
@@ -1263,12 +1320,34 @@ function select_chat_box(id, b){
             var myId = response[0]['myId'];
             for(var i = 0; i < response.length; i++){
                 if(myId == response[i]['sent_by']){
+                    var u_seen = "";
+                    var s_seen = "";
+                    var w_seen = "";
+                    var m_seen = "";
+                    var pr_seen = "";
+                    // console.log(response[i]['s_seen']);
+                    if(response[i]['u_seen'] != null && response[i]['u_seen'].u_id != response[i]['sent_by']){
+                        u_seen = response[i]['u_seen'].u_fname;
+                    }
+                    if(response[i]['s_seen'] != null && response[i]['s_seen'].u_id != response[i]['sent_by']){
+                        s_seen = response[i]['s_seen'].u_fname;
+                    }
+                    if(response[i]['m_seen'] != null && response[i]['m_seen'].u_id != response[i]['sent_by']){
+                        m_seen = response[i]['m_seen'].u_fname;
+                    }
+                    if(response[i]['w_seen'] != null && response[i]['w_seen'].u_id != response[i]['sent_by']){
+                        w_seen = response[i]['w_seen'].u_fname;
+                    }
+                    if(response[i]['pr_seen'] != null && response[i]['pr_seen'].u_id != response[i]['sent_by']){
+                        pr_seen = response[i]['pr_seen'].u_fname;
+                    }
                     $('.msg_history').append('<div class="outgoing_msg">\
                                                 <div class="sent_msg">\
                                                   <p>'+response[i]['message_text']+'</p>\
-                                                  <span class="time_date">'+response[i]['message_time'] + ' by me' +'</span>\
+                                                  <span class="time_date">'+ response[i]['message_time']  + '  seen by ' + ' ' +u_seen + ' '+ s_seen + ' '+ w_seen + ' ' + m_seen + ' '+ w_seen+ '</span>\
                                                 </div>\
                                               </div>');
+                
                 }else{
                     if(response[i]['name'].path == null){
                         var src = 'http://www.homeworkhelp.novelguide.com/sites/default/files/pictures/default/default_user_image.jpg';
@@ -1277,14 +1356,15 @@ function select_chat_box(id, b){
                     }
                     console.log(response[i]['name'].u_lname);
                     $('.msg_history').append('<div class="incoming_msg">\
-                                                <div class="incoming_msg_img">\
+                                                <div class="incoming_msg_img" style="margin-top: 20px;">\
                                                   <img src="'+src+'" alt="sunil" class="rounded-circle">\
                                                 </div>\
                                                 <div class="received_msg">\
                                                   <div class="received_withd_msg">\
+                                                  <span ><b>'+ response[i]['name'].u_fname + ' ' + response[i]['name'].u_lname + '<b/></span>\
                                                     <p>'+response[i]['message_text']+'</p>\
                                                     <span class="time_date">'+response[i]['message_time']
-                                                    + ' by ' + response[i]['name'].u_fname + ' ' + response[i]['name'].u_lname + '</span>\
+                                                     +'</span>\
                                                   </div>\
                                                 </div>\
                                               </div>');
@@ -2202,6 +2282,7 @@ function allPrototypeMethods() {
 }
 
 function selectedActivity(a, b) {
+        $('.mobile-inner').css('backgroundColor', 'transparent');
         $('#activity-name-show li').removeClass('active');
         $(a).addClass('active');
         var activityName = $(a).html();
@@ -2216,8 +2297,13 @@ function selectedActivity(a, b) {
                 method: 'post',
                 data: { getActivityId: getActivityId },
                 success: function(response) {
-                        $('.mobile-inner').html(response[0]['act_code']);
+                    console.log(response);
+                        $('.mobile-inner').html(response.act_code);
                         if (b == 1) {
+                                if(response.mockup_code != null){
+                                    $('.mobile-inner').css('backgroundColor', response.mockup_back_color);
+                                    $('.mobile-inner').html(response.mockup_code);
+                                }
                                 $('.mobile-inner p').removeClass('selected');
                                 $('.mobile-inner').mousedown(function(){
                                     $('.mobile-inner p').removeClass('selected');
@@ -2232,7 +2318,8 @@ function selectedActivity(a, b) {
                                         addSomeAttributesForMockups(this, id);
                                         e.stopPropagation();
                                 });
-                                $(".mobile-inner p input").addClass('form-control no-select');
+                                $('#save-mockup').attr('data-act-id', response.act_id);
+                                $(".mobile-inner p input").addClass('no-select');
                         } else {
                                 $(a).parent().addClass('active');
                                 $('.mobile-inner p').draggable({

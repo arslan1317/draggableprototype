@@ -64,6 +64,11 @@ class Chat_model extends CI_Model{
         foreach ($result as $row)
         {
             $row->name = $this->get_user_name($row->sent_by);
+            $row->w_seen = $this->get_user_name($row->w_seen);
+            $row->m_seen = $this->get_user_name($row->m_seen);
+            $row->s_seen = $this->get_user_name($row->s_seen);
+            $row->pr_seen = $this->get_user_name($row->pr_seen);
+            $row->u_seen = $this->get_user_name($row->u_seen);
             $row->myId = $this->session->userdata('u_id');
         }
         return $result;

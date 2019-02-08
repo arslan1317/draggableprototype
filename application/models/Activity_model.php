@@ -55,13 +55,29 @@ class Activity_model extends CI_Model{
         $this->db->update('activities');
         return $this->db->affected_rows();
     }
+
+    public function insert_mockup_code($id, $code, $bg_color){
+        $this->db->set('mockup_code', $code);
+        $this->db->set('mockup_back_color', $bg_color);
+        $this->db->where('act_id', $id);
+        $this->db->update('activities');
+        return $this->get_the_updated_mockup($id);
+    }
+
+    function get_the_updated_mockup($id){
+        $this->db->select("*"); 
+        $this->db->from('activities');
+        $this->db->where('act_id', $id);
+        $query = $this->db->get();
+        return $query->row();
+    }
     
     public function get_html_of_activity($id){
         $this->db->select("*"); 
         $this->db->from('activities');
         $this->db->where('act_id', $id);
         $query = $this->db->get();
-        return $query->result();
+        return $query->row();
     }
 
     public function update_first_activity($value, $id){
