@@ -1,5 +1,6 @@
 // $.noConflict();
 var GLOBALREQUEST;
+var USER_APPROVED_GLOBAL_ACTIVITY_RESULT;
 jQuery(document).ready(function($) {
         //Notication VIew
         GLOBALREQUEST = new Array();
@@ -161,8 +162,8 @@ jQuery(document).ready(function($) {
                 } else {
                     $("#preview-prototype").prop('disabled', false);
                     if($('#selectProjectForPrototype option:selected').attr('data-assign-id') != 0){
-                        $("#submit-prototype").prop('disabled', true);
-                        $('#first-activity').prop('disabled', true);
+                        $("#submit-prototype").prop('disabled', false);
+                        $('#first-activity').prop('disabled', false);
                     }
                     var assignId = $('#selectProjectForPrototype option:selected').attr('data-assign-id');
                     $('#assign-id').val(assignId);
@@ -187,9 +188,9 @@ jQuery(document).ready(function($) {
                         dataType: 'json',
                         success: function(response) {
                             if(response == true){
+                                $('#exampleModal').modal('hide');
                                 successBox('<p>Sequence Of Prototype Updated</p>');
                                 printPrototype($("#selectProjectForPrototype option:selected").val());
-                                $('#exampleModal').modal('hide');
                             }
                         }
                 });
@@ -312,9 +313,10 @@ jQuery(document).ready(function($) {
                         $('#activity-name-show i').attr("disabled", "disabled");
                         $('.save-button button').attr("disabled", "disabled");
                 } else if (assignStatus == 2) {
+                        //when approved
                         $('#startWireframes').attr("disabled", "disabled");
                         $('#assign-approved').css({ 'background-color': 'blue', 'border-radius': '50px' });
-
+                        $('.save-button button').attr("disabled", "disabled");
                 } else {
                         //when change is occured
 
@@ -335,6 +337,26 @@ jQuery(document).ready(function($) {
                                 dataType: 'json',
                                 success: function(response) {
                                         successBox('<p>Wireframe Submitted Successfully</p>');
+                                        assingStatusFunction(1);
+                                }
+                        });
+                }
+        });
+
+        $('#submit-mockup').click(function() {
+                var activityId = $('#assign-id').val();
+                if (activityId == -1) {
+                        errorBox('<p>No Project Selected</p>');
+                } else {
+                        $.ajax({
+                                url: baseURL + 'assign/update_status',
+                                method: 'post',
+                                type: 'post',
+                                dataType: 'json',
+                                data: { activityId: activityId },
+                                dataType: 'json',
+                                success: function(response) {
+                                        successBox('<p>Mockup Submitted Successfully</p>');
                                         assingStatusFunction(1);
                                 }
                         });
@@ -395,6 +417,12 @@ jQuery(document).ready(function($) {
                 if(id == null){
                     errorBox('<p>Please Select the Activity</p>')
                 }else{
+                    var image = $('.mobile-inner p').has('img');
+                    if(image.length != 0){
+                        image = $(image).children().attr('src');
+                    }else{
+                        image = '';
+                    }
                     $('.mobile-inner').removeClass('selected');
                     $('.mobile-inner p').removeClass('selected');
                     var bgColor = $('.mobile-inner').css('backgroundColor');
@@ -404,7 +432,7 @@ jQuery(document).ready(function($) {
                             method: 'post',
                             type: 'post',
                             dataType: 'json',
-                            data: { id: id, getMockupCode: getMockupCode, bgColor:bgColor},
+                            data: { id: id, getMockupCode: getMockupCode, bgColor:bgColor, image:image},
                             dataType: 'json',
                             success: function(response) {
                                     console.log(response);
@@ -552,6 +580,19 @@ jQuery(document).ready(function($) {
         $('#inputAlignText').change(function() {
             var value = $(this).find('option:selected').val();
             $('.mobile-inner p.selected').css('textAlign', value);
+        });
+
+        $('#download-wireframe').click(function(){
+            html2canvas($('.mobile-inner'), 
+            {
+              onrendered: function (canvas) {
+                var a = document.createElement('a');
+                // toDataURL defaults to png, so we need to request a jpeg, then convert for file download.
+                a.href = canvas.toDataURL("image/jpeg").replace("image/jpeg", "image/octet-stream");
+                a.download = 'image.jpg';
+                a.click();
+              }
+            });
         });
 
         function getAllActivities(selectedProject) {
@@ -929,6 +970,7 @@ jQuery(document).ready(function($) {
         $("#selectProjectForMockup").change(function() {
                 var projectid = $('#selectProjectForMockup').val();
                 if (projectid != 0) {
+                        $('#assign-id').val($(this).find(':selected').attr('data-assign-id'));
                         $.ajax({
                                 url: baseURL + 'mockups/getMockupStatus',
                                 method: 'post',
@@ -943,10 +985,16 @@ jQuery(document).ready(function($) {
                                         } else if (statusOfWireframe == 1) {
                                                 errorBox('<p>Wireframe is in Submit State</p>');
                                         } else if (statusOfWireframe == 2) {
-                                                successBox('<p>Mockups Can Start</p>');
                                                 var a = $('#selectProjectForMockup').find(':selected').data('status-id');
                                                 if (a == 0) {
-                                                        $('#assign-progress').css({ 'background-color': 'blue', 'border-radius': '50px' });
+                                                        successBox('<p>Mockups Can Start</p>');
+                                                        assingStatusFunction(0);
+                                                }else if(a == 1 ){
+                                                        successBox('<p>Mockups is in Submit State</p>');
+                                                        assingStatusFunction(1);
+                                                }else if(a == 2){
+                                                        successBox('<p>Mockups is Approved</p>');
+                                                        assingStatusFunction(2);
                                                 }
                                         } else {
                                                 errorBox('<p>Wireframe is in Change Request State</p>');
@@ -959,6 +1007,7 @@ jQuery(document).ready(function($) {
         $('#startMockups').click(function() {
                 var projectName = $('#selectProjectForMockup').val();
                 if (projectName != 0) {
+                        var status = $('#selectProjectForMockup').find(':selected').attr('data-status-id');
                         $.ajax({
                                 method: 'post',
                                 type: 'post',
@@ -966,7 +1015,9 @@ jQuery(document).ready(function($) {
                                 data: { selectedProject: projectName },
                                 dataType: 'json',
                                 success: function(response) {
-                                        $('.open-mockup-box').show();
+                                        if((status != 1) && (status != 2)){
+                                            $('.open-mockup-box').show();
+                                        }
                                         $('#activity-name-show').html('');
                                         for (var i = 0; i < response.length; i++) {
                                                 $('#activity-name-show').append('<li onclick="selectedActivity(this, 1)" id="' + response[i]['act_id'] + '">' + response[i]['act_name'] + '</li>');
@@ -989,22 +1040,29 @@ jQuery(document).ready(function($) {
                                 data: { projectid: projectid },
                                 dataType: 'json',
                                 success: function(response) {
-                                    console.log(response);
+                                    console.log(response[0]['a_status']);
                                         var statusOfWireframe = response[0]['a_status'];
                                         if (statusOfWireframe == 0) {
                                                 errorBox('<p>Mockups is in Progress State</p>');
                                         } else if (statusOfWireframe == 1) {
                                                 errorBox('<p>Mockups is in Submit State</p>');
                                         } else if (statusOfWireframe == 2) {
-                                                errorBox('<p>Mockups is in Change Request State</p>');
-                                        } else {
-                                                successBox('<p>Prototype Can Start</p>');
                                                 var a = $('#selectProjectForPrototype').find(':selected').data('status-id');
                                                 if (a == 0) {
-                                                        $('#assign-progress').css({ 'background-color': 'blue', 'border-radius': '50px' });
-                                                }else if(a == 1){
-                                                        $('#assign-submit').css({ 'background-color': 'blue', 'border-radius': '50px' });
+                                                        successBox('<p>Prototype Can Start</p>');
+                                                        assingStatusFunction(0);
+                                                }else if(a == 1 ){
+                                                        successBox('<p>Prototype is in Submit State</p>');
+                                                        assingStatusFunction(1);
+                                                }else if(a == 2){
+                                                        successBox('<p>Prototype is Approved</p>');
+                                                        $('#first-activity').prop('disabled', true);
+                                                        $('#startPrototype').prop('disabled', true);
+                                                        assingStatusFunction(2);
+                                                        $('#preview-prototype').prop('disabled', false);
                                                 }
+                                        } else {
+                                                errorBox('<p>Mockups is in Change Request State</p>');
                                         }
                                 }
                         });
@@ -1139,6 +1197,24 @@ jQuery(document).ready(function($) {
                 });
         });
 
+        //Approved Prototype
+        $('.approved-btn-owner').click(function() {
+                var a_id = $(this).data('id');
+                $.ajax({
+                        url: baseURL + 'user/approved_prototype',
+                        method: 'post',
+                        type: 'post',
+                        data: { a_id: a_id },
+                        dataType: 'json',
+                        success: function(response) {
+                                console.log(response);
+                                if (response == true) {
+                                        successBox('<p>Prototype Approved</p>');
+                                }
+                        }
+                });
+        });
+
         //send chat
         $('#sms_send_button').click(function() {
             var currentdate = new Date(); 
@@ -1165,7 +1241,7 @@ jQuery(document).ready(function($) {
                                 $('.msg_history').append('<div class="outgoing_msg">\
                                                             <div class="sent_msg">\
                                                               <p>'+response[i]['message_text']+'</p>\
-                                                              <span class="time_date">'+response[i]['message_time'] + ' by me' +'</span>\
+                                                              <span class="time_date">'+ response[i]['message_time']  + '  seen by ' + ' ' +u_seen + ' '+ s_seen + ' '+ w_seen + ' ' + m_seen + ' '+ w_seen+ '</span>\
                                                             </div>\
                                                           </div>');
                             }else{
@@ -1181,9 +1257,9 @@ jQuery(document).ready(function($) {
                                                             </div>\
                                                             <div class="received_msg">\
                                                               <div class="received_withd_msg">\
+                                                              <span ><b>'+ response[i]['name'].u_fname + ' ' + response[i]['name'].u_lname + '<b/></span>\
                                                                 <p>'+response[i]['message_text']+'</p>\
-                                                                <span class="time_date">'+response[i]['message_time']
-                                                                + ' by ' + response[i]['name'].u_fname + ' ' + response[i]['name'].u_lname + '</span>\
+                                                                <span class="time_date">'+ response[i]['message_time'] + '</span>\
                                                               </div>\
                                                             </div>\
                                                           </div>');
@@ -1214,21 +1290,55 @@ jQuery(document).ready(function($) {
 
         $('#preview-prototype').click(function(){
             $('#mobile-preview').html('');
-            var firstactivity = GLOBAL_ACTIVITY_RESULT[0]['first_act'];
-            for(var i = 0; i < GLOBAL_ACTIVITY_RESULT.length; i++){
-                if(GLOBAL_ACTIVITY_RESULT[i]['act_id'] == firstactivity) {
-                    $('#mobile-preview').append(GLOBAL_ACTIVITY_RESULT[i]['act_code']);
-                    var div = $('#mobile-preview');
-                    if(GLOBAL_ACTIVITY_RESULT[i]['prototype'].length != 0){
-                        for(var j = 0; j < GLOBAL_ACTIVITY_RESULT[i]['prototype'].length; j++){
-                            $(div).find('#' + GLOBAL_ACTIVITY_RESULT[i]['prototype'][j]['act_button']).children().attr('data-activity-open', GLOBAL_ACTIVITY_RESULT[i]['prototype'][j]['act_open_id']);
+            if(GLOBAL_ACTIVITY_RESULT != null){
+                var firstactivity = GLOBAL_ACTIVITY_RESULT[0]['first_act'];
+                for(var i = 0; i < GLOBAL_ACTIVITY_RESULT.length; i++){
+                    if(GLOBAL_ACTIVITY_RESULT[i]['act_id'] == firstactivity) {
+                        $('#mobile-preview').append(GLOBAL_ACTIVITY_RESULT[i]['mockup_code']);
+                        var div = $('#mobile-preview');
+                        $(div).css('backgroundColor', GLOBAL_ACTIVITY_RESULT[i]['mockup_back_color']);
+                        if(GLOBAL_ACTIVITY_RESULT[i]['prototype'].length != 0){
+                            for(var j = 0; j < GLOBAL_ACTIVITY_RESULT[i]['prototype'].length; j++){
+                                $(div).find('#' + GLOBAL_ACTIVITY_RESULT[i]['prototype'][j]['act_button']).children().attr('data-activity-open', GLOBAL_ACTIVITY_RESULT[i]['prototype'][j]['act_open_id']);
+                            }
                         }
+                        $('#mobile`-preview input[type="button"]').click(function(){
+                            var openId = $(this).attr('data-activity-open');
+                            previewSingleActivity(openId);
+                        });
                     }
-                    $('#mobile-preview input[type="button"]').click(function(){
-                        var openId = $(this).attr('data-activity-open');
-                        previewSingleActivity(openId);
-                    });
                 }
+            }else{
+                USER_APPROVED_GLOBAL_ACTIVITY_RESULT = '';
+                var id = $('#selectProjectForPrototype option:selected').val();
+                $.ajax({
+                        url: baseURL + 'prototypes/get_all_prototype_layout',
+                        type: 'post',
+                        dataType: 'json',
+                        data: { selectedProject: id },
+                        dataType: 'json',
+                        success: function(response) {
+                            USER_APPROVED_GLOBAL_ACTIVITY_RESULT = response;
+                            console.log(response);
+                            var firstactivity = USER_APPROVED_GLOBAL_ACTIVITY_RESULT[0]['first_act'];
+                            for(var i = 0; i < USER_APPROVED_GLOBAL_ACTIVITY_RESULT.length; i++){
+                                if(USER_APPROVED_GLOBAL_ACTIVITY_RESULT[i]['act_id'] == firstactivity) {
+                                    $('#mobile-preview').append(USER_APPROVED_GLOBAL_ACTIVITY_RESULT[i]['mockup_code']);
+                                    var div = $('#mobile-preview');
+                                    $(div).css('backgroundColor', USER_APPROVED_GLOBAL_ACTIVITY_RESULT[i]['mockup_back_color'])
+                                    if(USER_APPROVED_GLOBAL_ACTIVITY_RESULT[i]['prototype'].length != 0){
+                                        for(var j = 0; j < USER_APPROVED_GLOBAL_ACTIVITY_RESULT[i]['prototype'].length; j++){
+                                            $(div).find('#' + USER_APPROVED_GLOBAL_ACTIVITY_RESULT[i]['prototype'][j]['act_button']).children().attr('data-activity-open', USER_APPROVED_GLOBAL_ACTIVITY_RESULT[i]['prototype'][j]['act_open_id']);
+                                        }
+                                    }
+                                    $('#mobile-preview input[type="button"]').click(function(){
+                                        var openId = $(this).attr('data-activity-open');
+                                        previewSingleActivityAfterApproved(openId);
+                                    });
+                                }
+                            }
+                        }
+                });
             }
             $("#pupop").fadeIn("slow");
         });
@@ -1290,8 +1400,9 @@ function previewSingleActivity(id){
     $('#mobile-preview').html('');
     for(var i = 0; i < GLOBAL_ACTIVITY_RESULT.length; i++){
         if(GLOBAL_ACTIVITY_RESULT[i]['act_id'] == id) {
-            $('#mobile-preview').append(GLOBAL_ACTIVITY_RESULT[i]['act_code']);
+            $('#mobile-preview').append(GLOBAL_ACTIVITY_RESULT[i]['mockup_code']);
             var div = $('#mobile-preview');
+            $(div).css('backgroundColor', GLOBAL_ACTIVITY_RESULT[i]['mockup_back_color'])
             if(GLOBAL_ACTIVITY_RESULT[i]['prototype'].length != 0){
                 for(var j = 0; j < GLOBAL_ACTIVITY_RESULT[i]['prototype'].length; j++){
                     $(div).find('#' + GLOBAL_ACTIVITY_RESULT[i]['prototype'][j]['act_button']).children().attr('data-activity-open', GLOBAL_ACTIVITY_RESULT[i]['prototype'][j]['act_open_id']);
@@ -1300,6 +1411,26 @@ function previewSingleActivity(id){
             $('#mobile-preview input[type="button"]').click(function(){
                 var openId = $(this).attr('data-activity-open');
                 previewSingleActivity(openId);
+            });
+        }
+    }
+}
+
+function previewSingleActivityAfterApproved(id){
+    $('#mobile-preview').html('');
+    for(var i = 0; i < USER_APPROVED_GLOBAL_ACTIVITY_RESULT.length; i++){
+        if(USER_APPROVED_GLOBAL_ACTIVITY_RESULT[i]['act_id'] == id) {
+            $('#mobile-preview').append(USER_APPROVED_GLOBAL_ACTIVITY_RESULT[i]['mockup_code']);
+            var div = $('#mobile-preview');
+            $(div).css('backgroundColor', USER_APPROVED_GLOBAL_ACTIVITY_RESULT[i]['mockup_back_color'])
+            if(USER_APPROVED_GLOBAL_ACTIVITY_RESULT[i]['prototype'].length != 0){
+                for(var j = 0; j < USER_APPROVED_GLOBAL_ACTIVITY_RESULT[i]['prototype'].length; j++){
+                    $(div).find('#' + USER_APPROVED_GLOBAL_ACTIVITY_RESULT[i]['prototype'][j]['act_button']).children().attr('data-activity-open', USER_APPROVED_GLOBAL_ACTIVITY_RESULT[i]['prototype'][j]['act_open_id']);
+                }
+            }
+            $('#mobile-preview input[type="button"]').click(function(){
+                var openId = $(this).attr('data-activity-open');
+                previewSingleActivityAfterApproved(openId);
             });
         }
     }
@@ -1944,6 +2075,10 @@ function closePreviewPupop(){
         $("#preview-prototype").fadeOut();
 }
 
+function closePreviewPupopOwner(){
+        $("#preview-prototype-admin").fadeOut();
+}
+
 function printUserEmail(e, id) {
         $('#user-email-id').attr('value', id);
         $('#user-email').val(e.getElementsByTagName("p")[0].innerHTML);
@@ -2254,11 +2389,12 @@ function allMockupsMethods() {
                 url: baseURL + 'mockups/get_all_mockups',
                 dataType: 'json',
                 success: function(response) {
+                    console.log(response);
                         if (response.length == 0) {
                                 errorBox('<p>No Mockup Assigned</p>');
                         } else {
                                 for (var i = 0; i < response.length; i++) {
-                                        $('#selectProjectForMockup').append('<option value=' + response[i]['p_id'] + ' data-status-id=' + response[i]['a_status'] + '>' + response[i]['p_name'] + '</option>');
+                                        $('#selectProjectForMockup').append('<option value=' + response[i]['p_id'] + ' data-status-id=' + response[i]['a_status'] + ' data-assign-id='+response[i]['a_id']+'>' + response[i]['p_name'] + '</option>');
                                 }
                         }
                 }
@@ -2270,6 +2406,7 @@ function allPrototypeMethods() {
                 url: baseURL + 'prototypes/get_all_prototype',
                 dataType: 'json',
                 success: function(response) {
+                    console.log(response);
                         if (response.length == 0) {
                                 errorBox('<p>No Prototype Assigned</p>');
                         } else {
@@ -2282,7 +2419,7 @@ function allPrototypeMethods() {
 }
 
 function selectedActivity(a, b) {
-        $('.mobile-inner').css('backgroundColor', 'transparent');
+        $('.mobile-inner').css('backgroundColor', 'white');
         $('#activity-name-show li').removeClass('active');
         $(a).addClass('active');
         var activityName = $(a).html();
@@ -2298,7 +2435,7 @@ function selectedActivity(a, b) {
                 data: { getActivityId: getActivityId },
                 success: function(response) {
                     console.log(response);
-                        $('.mobile-inner').html(response.act_code);
+                        //1 for mockups
                         if (b == 1) {
                                 if(response.mockup_code != null){
                                     $('.mobile-inner').css('backgroundColor', response.mockup_back_color);
@@ -2320,7 +2457,9 @@ function selectedActivity(a, b) {
                                 });
                                 $('#save-mockup').attr('data-act-id', response.act_id);
                                 $(".mobile-inner p input").addClass('no-select');
-                        } else {
+                        } //0 for wireframe
+                        else {
+                                $('.mobile-inner').html(response.act_code);
                                 $(a).parent().addClass('active');
                                 $('.mobile-inner p').draggable({
                                         containment: 'parent',
@@ -2481,6 +2620,8 @@ function fillTheProperties(id, text, width, height, top, left, right, bottom) {
 }
 
 function openWireframeModel(p_id, t_type, a_id) {
+        $('.mobile-inner').html('');
+        $('.mobile-inner').css('backgroundColor', 'transparent');
         $.ajax({
                 method: 'post',
                 type: 'post',
@@ -2488,17 +2629,77 @@ function openWireframeModel(p_id, t_type, a_id) {
                 data: { selectedProject: p_id, tastType: t_type },
                 dataType: 'json',
                 success: function(response) {
+                    console.log(response);
                         $('#wireframeProject').html(response[0]['p_name']);
                         $('#approved-wireframe').attr('data-id', a_id);
                         $('#change-wireframe').attr('data-id', a_id);
                         $('#activity-name-show').html('');
                         for (var i = 0; i < response.length; i++) {
-                                $('#activity-name-show').append('<li onclick="selectedActivity(this, 1)" id="' + response[i]['act_id'] + '">' + response[i]['act_name'] + '</li>');
+                                $('#activity-name-show').append('<li onclick="selectedActivity(this, '+t_type+')" id="' + response[i]['act_id'] + '">' + response[i]['act_name'] + '</li>');
                         }
                 }
         });
         $("#pupop").fadeIn("slow");
 }
+
+var ADMIN_VIEW_GLOBAL_ACTIVITY_RESULT;
+
+function previewMobileForOwner(id, assin_id){
+    $('.approved-btn-owner').attr('data-id', assin_id);
+    $('.change-btn-owner').attr('data-id', assin_id);
+    ADMIN_VIEW_GLOBAL_ACTIVITY_RESULT = '';
+    $('#mobile-preview').html('');
+    $.ajax({
+            url: baseURL + 'prototypes/get_all_prototype_layout',
+            type: 'post',
+            dataType: 'json',
+            data: { selectedProject: id },
+            dataType: 'json',
+            success: function(response) {
+                ADMIN_VIEW_GLOBAL_ACTIVITY_RESULT = response;
+                console.log(ADMIN_VIEW_GLOBAL_ACTIVITY_RESULT);
+                var firstactivity = ADMIN_VIEW_GLOBAL_ACTIVITY_RESULT[0]['first_act'];
+                for(var i = 0; i < ADMIN_VIEW_GLOBAL_ACTIVITY_RESULT.length; i++){
+                    if(ADMIN_VIEW_GLOBAL_ACTIVITY_RESULT[i]['act_id'] == firstactivity) {
+                        $('#mobile-preview').append(ADMIN_VIEW_GLOBAL_ACTIVITY_RESULT[i]['mockup_code']);
+                        var div = $('#mobile-preview');
+                        $(div).css('backgroundColor', ADMIN_VIEW_GLOBAL_ACTIVITY_RESULT[i]['mockup_back_color']);
+                        if(ADMIN_VIEW_GLOBAL_ACTIVITY_RESULT[i]['prototype'].length != 0){
+                            for(var j = 0; j < ADMIN_VIEW_GLOBAL_ACTIVITY_RESULT[i]['prototype'].length; j++){
+                                $(div).find('#' + ADMIN_VIEW_GLOBAL_ACTIVITY_RESULT[i]['prototype'][j]['act_button']).children().attr('data-activity-open', ADMIN_VIEW_GLOBAL_ACTIVITY_RESULT[i]['prototype'][j]['act_open_id']);
+                            }
+                        }
+                        $('#mobile-preview input[type="button"]').click(function(){
+                            var openId = $(this).attr('data-activity-open');
+                            previewSingleActivityAdmin(openId);
+                        });
+                    }
+                }
+            }
+    });
+    $("#preview-prototype-admin").fadeIn("slow");
+}
+
+function previewSingleActivityAdmin(id){
+    $('#mobile-preview').html('');
+    for(var i = 0; i < ADMIN_VIEW_GLOBAL_ACTIVITY_RESULT.length; i++){
+        if(ADMIN_VIEW_GLOBAL_ACTIVITY_RESULT[i]['act_id'] == id) {
+            $('#mobile-preview').append(ADMIN_VIEW_GLOBAL_ACTIVITY_RESULT[i]['mockup_code']);
+            var div = $('#mobile-preview');
+            $(div).css('backgroundColor', ADMIN_VIEW_GLOBAL_ACTIVITY_RESULT[i]['mockup_back_color'])
+            if(ADMIN_VIEW_GLOBAL_ACTIVITY_RESULT[i]['prototype'].length != 0){
+                for(var j = 0; j < ADMIN_VIEW_GLOBAL_ACTIVITY_RESULT[i]['prototype'].length; j++){
+                    $(div).find('#' + ADMIN_VIEW_GLOBAL_ACTIVITY_RESULT[i]['prototype'][j]['act_button']).children().attr('data-activity-open', ADMIN_VIEW_GLOBAL_ACTIVITY_RESULT[i]['prototype'][j]['act_open_id']);
+                }
+            }
+            $('#mobile-preview input[type="button"]').click(function(){
+                var openId = $(this).attr('data-activity-open');
+                previewSingleActivityAdmin(openId);
+            });
+        }
+    }
+}
+
 
 function openPrototypeModel(p_id, t_type, a_id) {
         $.ajax({
@@ -2508,6 +2709,7 @@ function openPrototypeModel(p_id, t_type, a_id) {
                 data: { selectedProject: p_id, tastType: t_type },
                 dataType: 'json',
                 success: function(response) {
+                        console.log(response);
                         $('#mobile-preview').html('');
                         var firstactivity = GLOBAL_ACTIVITY_RESULT[0]['first_act'];
                         for(var i = 0; i < GLOBAL_ACTIVITY_RESULT.length; i++){
@@ -2520,7 +2722,7 @@ function openPrototypeModel(p_id, t_type, a_id) {
                                     }
                                 }
                                 $('#mobile-preview input[type="button"]').click(function(){
-                                    var openId = $(this).attr('data-activity-open');
+                                    var openId = $(this).attr('data-activity-o`pen');
                                     previewSingleActivity(openId);
                                 });
                             }
@@ -2610,6 +2812,7 @@ function printPrototype(selectedProject){
             dataType: 'json',
             success: function(response) {
                 GLOBAL_ACTIVITY_RESULT = response;
+                console.log(GLOBAL_ACTIVITY_RESULT);
                 $('#select-activity').html('');
                 $('#select-activity').html('');
                 $('#select-activity').append('<option value="0">--Select First Activity--</option>');
@@ -2621,7 +2824,7 @@ function printPrototype(selectedProject){
                                 pos = 1;
                                 top = 552;
                             }
-                            $('#pro-box-screens').append('<div class="mobile-inner mt-0 prototype-mobile-inner" data-content="'+response[i]['act_name']+'" data-id="'+response[i]['act_id']+'" style="left:' + pos + 'rem;top:'+top+'px;position:absolute;background-color:white">' + response[i]['act_code'] + '</div>');
+                            $('#pro-box-screens').append('<div class="mobile-inner mt-0 prototype-mobile-inner" data-content="'+response[i]['act_name']+'" data-id="'+response[i]['act_id']+'" style="left:' + pos + 'rem;top:'+top+'px;position:absolute;background-color:'+response[i]['mockup_back_color']+';">' + response[i]['mockup_code'] + '</div>');
                             pos = pos + 17;
                             $('#select-activity').append('<option value="'+response[i]['act_id']+'">'+response[i]['act_name']+'</option>');
                             var selectedActivity = '';

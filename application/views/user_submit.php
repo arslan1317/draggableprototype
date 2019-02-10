@@ -36,6 +36,7 @@
                                     <tr>
                                         <td>No.</td>
                                         <td>Project Name</td>
+                                        <td>Username</td>
                                         <td>Assign Detail</td>
                                         <td>Status</td>
                                         <td>Action</td>
@@ -48,6 +49,7 @@
                                     <tr>
                                         <td><?php echo $wireframeCount; ?></td>
                                         <td><?php echo $data->p_name; ?></td>
+                                        <td><?php echo $data->assignTo[0]->u_fname . ' '. $data->assignTo[0]->u_lname; ?></td>
                                         <td><?php echo $data->a_detail; ?></td>
                                         <td>
                                             <?php
@@ -60,7 +62,8 @@
                                                 }
                                             ?>
                                         </td>
-                                        <td><span onclick="openWireframeModel(<?php echo $data->p_id; ?>,1,<?php echo $data->a_id; ?>)" class="tweak pointer">View</span></td>
+                                        <!-- 0 for wireframe -->
+                                        <td><span onclick="openWireframeModel(<?php echo $data->p_id; ?>,0,<?php echo $data->a_id; ?>)" class="tweak pointer">View</span></td>
                                     </tr>
                                     <?php } ?>
                                 </tbody>
@@ -78,90 +81,33 @@
                 </div>
             </div>
         </div>
-        <?php
-        print_r($mockup);
-        ?>
+
         <?php if(empty($mockup)) { ?>
-            <div class="col-md-12 content mt-2">
-                <div class="col-md-12 no-data-found bg-danger text-white p-2">
-                    <span>No Data Found</span>
-                </div>
-        <?php }else { ?>
-            <div class="col-md-12 content mt-4">
-                <?php foreach ($mockup as $data) { ?>
-                        <div class="col-md-4">
-                            <div class="all-data-box">
-                                <div class="product-name">
-                                    <p><span class="tweak">N</span>ame: <?php echo $data->p_name; ?></p>
-                                    <p><span class="tweak">T</span>ype: <?php echo $data->p_type; ?></p>
-                                </div>
-                                <div class="supervisor-name">
-                                    <p><span class="tweak">P</span>roject Owner: <?php echo $data->u_fname . ' ' . $data->u_lname; ?><i class="fas fa-check text-success"></i>
-                                    </p>
-                                </div>
-                                <div class="task-box">
-                                    <?php foreach ($data->task as $task) { ?>
-                                        <p><?php
-                                            if($task->t_type == 1){
-                                                echo '<span class="tweak">W</span>ireframe';
-                                            }else if($task->t_type == 2){
-                                                echo '<span class="tweak">M</span>ockup';
-                                            }else{
-                                                echo '<span class="tweak">P</span>rototype';
-                                            }
-                                        ?>: <?php echo $task->u_fname . ' ' . $task->u_lname; ?>
-                                        <?php 
-                                            if($task->a_accept == 0){
-                                                echo '<i class="far fa-eye-slash text-primary"></i>';
-                                            }else if($task->a_accept == 1){
-                                                echo '<i class="fas fa-check text-success""></i>';
-                                            }else{
-                                                echo '<i class="fas fa-times text-danger"></i>';
-                                            }
-                                        ?>
-                                        </p>
-                                    <?php } ?>
-                                </div>
-                            </div>
-                        </div>
-                <?php } ?>
-        <?php } ?>
-            </div>
-
-        <div class="breadcrumbs mt-4">
-            <div class="col-sm-4 blue-border-left">
-                <div class="page-header float-left">
-                    <div class="page-title">
-                        <h1><span class="tweak">P</span>rototype</h1>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <?php if(empty($prototype)) { ?>
                 <div class="col-md-12 no-data-found bg-danger text-white p-2">
                     <span>No Data Found</span>
                 </div>
                 <?php }else{ ?>
-                     <div class="content mt-3 mb-5">
+                     <div class="content mt-3">
                         <div class="col-md-12">
                             <table id="wireframe-submit-table" class="table table-condensed table-striped">
                                 <thead>
                                     <tr>
                                         <td>No.</td>
                                         <td>Project Name</td>
+                                        <td>Username</td>
                                         <td>Assign Detail</td>
                                         <td>Status</td>
                                         <td>Action</td>
                                     </tr>
                                 </thead>
                                 <tbody id="wireframe-submit-table-tbody">
-                                    <?php $wireframeCount = 0; ?>
-                                    <?php foreach ($prototype as $data) { ?>
-                                    <?php $wireframeCount++; ?>
+                                    <?php $mockupCount = 0; ?>
+                                    <?php foreach ($mockup as $key => $data) { ?>
+                                    <?php $mockupCount++; ?>
                                     <tr>
-                                        <td><?php echo $wireframeCount; ?></td>
+                                        <td><?php echo $mockupCount; ?></td>
                                         <td><?php echo $data->p_name; ?></td>
+                                        <td><?php echo $data->assignTo[0]->u_fname . ' '. $data->assignTo[0]->u_lname; ?></td>
                                         <td><?php echo $data->a_detail; ?></td>
                                         <td>
                                             <?php
@@ -174,7 +120,65 @@
                                                 }
                                             ?>
                                         </td>
-                                        <td><span onclick="openPrototypeModel(<?php echo $data->p_id; ?>,3,<?php echo $data->a_id; ?>)" class="tweak pointer">View</span></td>
+                                        <!-- 1 for mockups -->
+                                        <td><span onclick="openWireframeModel(<?php echo $data->p_id; ?>,1,<?php echo $data->a_id; ?>)" class="tweak pointer">View</span></td>
+                                    </tr>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                <?php }?>
+
+        <div class="breadcrumbs mt-4">
+            <div class="col-sm-4 blue-border-left">
+                <div class="page-header float-left">
+                    <div class="page-title">
+                        <h1><span class="tweak">P</span>rototype</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <?php if(empty($prototype)) { ?>
+                <div class="col-md-12 no-data-found bg-danger text-white p-2">
+                    <span>No Data Found</span>
+                </div>
+                <?php }else{ ?>
+                     <div class="content mt-3 mb-5">
+                        <div class="col-md-12">
+                            <table id="wireframe-submit-table" class="table table-condensed table-striped">
+                                <thead>
+                                    <tr>
+                                        <td>No.</td>
+                                        <td>Project Name</td>
+                                        <td>Username</td>
+                                        <td>Assign Detail</td>
+                                        <td>Status</td>
+                                        <td>Action</td>
+                                    </tr>
+                                </thead>
+                                <tbody id="wireframe-submit-table-tbody">
+                                    <?php $wireframeCount = 0; ?>
+                                    <?php foreach ($prototype as $data) { ?>
+                                    <?php $wireframeCount++; ?>
+                                    <tr>
+                                        <td><?php echo $wireframeCount; ?></td>
+                                        <td><?php echo $data->p_name; ?></td>
+                                        <td><?php echo $data->assignTo[0]->u_fname . ' '. $data->assignTo[0]->u_lname; ?></td>
+                                        <td><?php echo $data->a_detail; ?></td>
+                                        <td>
+                                            <?php
+                                                if($data->a_status == 1){
+                                                    echo 'Submitted';
+                                                }else if($data->a_status == 2){
+                                                    echo 'Approved';
+                                                }else if($data->a_status == 3){
+                                                    echo 'Changed';
+                                                }
+                                            ?>
+                                        </td>
+                                        <td><span onclick="previewMobileForOwner(<?php echo $data->p_id; ?>, <?php echo $data->a_id; ?>)" class="tweak pointer">View</span></td>
                                     </tr>
                                     <?php } ?>
                                 </tbody>
@@ -218,19 +222,22 @@
                 <div class="wireframe save-button text-center" style="margin:1rem auto 0rem">
                     <button class="btn main-btn" id="approved-wireframe">Approved</button>
                     <button class="btn main-btn" id="change-wireframe">Changed</button>
+                    <button class="btn main-btn" id="download-wireframe">Download</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<div class="col-12 pupopBg overflow-yscroll" id="preview-prototype" style="display: none">
-        <div class="col-lg-offset-4 col-lg-4 col-md-offset-3 col-md-6 col-sm-offset-2 col-sm-8 col-11 boxes pupopInnerBox pb-4" id="mobile-preview-outer">
-            <div class="mobile-top"></div>
-            <p class="float-right pointer closePopopIcon tweak mr-4" onclick="closePreviewPupop()">X</p>
-            <div class="col-12 pt-3 overflow-hidden p-0 mt-2 mb-2 mobile-preview" style="width: 16rem !important;height: 477px !important" id="mobile-preview">
-            </div>
-            <div class="mobile-bottom" style="position: absolute;bottom:8px;left:0;right: 0"></div>
+<div class="col-12 pupopBg overflow-yscroll" id="preview-prototype-admin" style="display: none">
+    <div class="col-lg-offset-4 col-lg-4 col-md-offset-3 col-md-6 col-sm-offset-2 col-sm-8 col-11 boxes pupopInnerBox pb-4" id="mobile-preview-outer">
+        <div class="mobile-top"></div>
+        <p class="float-right pointer closePopopIcon tweak mr-4" onclick="closePreviewPupopOwner()">X</p>
+        <button class="btn main-btn approved-btn-owner">Approved</button>
+        <button class="btn main-btn change-btn-owner">Changed</button>
+        <div class="col-12 pt-3 overflow-hidden p-0 mt-2 mb-2 mobile-preview" style="width: 16rem !important;height: 477px !important" id="mobile-preview">
         </div>
+        <div class="mobile-bottom" style="position: absolute;bottom:8px;left:0;right: 0"></div>
     </div>
-    <!-- Right Panel -->
+</div>
+<!-- Right Panel -->
 <?php $this->view('masterpage/footer.php'); ?>

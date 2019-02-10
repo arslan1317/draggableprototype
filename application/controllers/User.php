@@ -105,4 +105,10 @@ class User extends CI_Controller {
 		echo json_encode($data);
 	}
 
+	public function approved_prototype(){
+		$id = $this->input->post('a_id');
+		$data = $this->User_model->approved_wireframe($id);
+		echo json_encode($data);
+	}
+
 }

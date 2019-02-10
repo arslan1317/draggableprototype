@@ -8,6 +8,7 @@ class Activity_model extends CI_Model{
         parent::__construct();
         $this->load->database();
         $this->load->library('session');
+        $this->load->helper('file');
     }
 
     public function insert_activity($data){  
@@ -40,11 +41,16 @@ class Activity_model extends CI_Model{
     }
     
     public function get_activity($id, $task){
+        if($task == 0){
+            $task = 1;
+        }else if($task == 1){
+            $task = 2;
+        }
         $this->db->select("*"); 
         $this->db->from('activities');
         $this->db->join('projects', 'projects.p_id = activities.p_id');
         $this->db->where('activities.p_id', $id);
-        $this->db->where('activities.t_type', $task);
+        // $this->db->where('activities.t_type', 1);
         $query = $this->db->get();
         return $query->result();
     }
@@ -56,12 +62,17 @@ class Activity_model extends CI_Model{
         return $this->db->affected_rows();
     }
 
-    public function insert_mockup_code($id, $code, $bg_color){
+    public function insert_mockup_code($id, $code, $bg_color, $image){
         $this->db->set('mockup_code', $code);
         $this->db->set('mockup_back_color', $bg_color);
         $this->db->where('act_id', $id);
         $this->db->update('activities');
         return $this->get_the_updated_mockup($id);
+    }
+
+    public function move_image_path($image){
+        $string = read_file($image);
+        return $string;
     }
 
     function get_the_updated_mockup($id){

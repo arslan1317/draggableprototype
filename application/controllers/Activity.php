@@ -68,7 +68,8 @@ class Activity extends CI_Controller {
         $id = $this->input->post('id');
         $code = $this->input->post('getMockupCode');
         $bg_color = $this->input->post('bgColor');
-        $data = $this->Activity_model->insert_mockup_code($id, $code, $bg_color);
+        $image = $this->input->post('image');
+        $data = $this->Activity_model->insert_mockup_code($id, $code, $bg_color, $image);
         echo json_encode($data);
     }
     
