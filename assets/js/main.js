@@ -1238,22 +1238,44 @@ jQuery(document).ready(function($) {
                         var myId = response[0]['myId'];
                         for(var i = 0; i < response.length; i++){
                             if(myId == response[i]['sent_by']){
+                                var u_seen = "";
+                                var s_seen = "";
+                                var w_seen = "";
+                                var m_seen = "";
+                                var pr_seen = "";
+                                // console.log(response[i]['s_seen']);
+                                if(response[i]['u_seen'] != null && response[i]['u_seen'].u_id != response[i]['sent_by']){
+                                    u_seen = response[i]['u_seen'].u_fname;
+                                }
+                                if(response[i]['s_seen'] != null && response[i]['s_seen'].u_id != response[i]['sent_by']){
+                                    s_seen = response[i]['s_seen'].u_fname;
+                                }
+                                if(response[i]['m_seen'] != null && response[i]['m_seen'].u_id != response[i]['sent_by']){
+                                    m_seen = response[i]['m_seen'].u_fname;
+                                }
+                                if(response[i]['w_seen'] != null && response[i]['w_seen'].u_id != response[i]['sent_by']){
+                                    w_seen = response[i]['w_seen'].u_fname;
+                                }
+                                if(response[i]['pr_seen'] != null && response[i]['pr_seen'].u_id != response[i]['sent_by']){
+                                    pr_seen = response[i]['pr_seen'].u_fname;
+                                }
                                 $('.msg_history').append('<div class="outgoing_msg">\
                                                             <div class="sent_msg">\
                                                               <p>'+response[i]['message_text']+'</p>\
                                                               <span class="time_date">'+ response[i]['message_time']  + '  seen by ' + ' ' +u_seen + ' '+ s_seen + ' '+ w_seen + ' ' + m_seen + ' '+ w_seen+ '</span>\
                                                             </div>\
                                                           </div>');
+                            
                             }else{
                                 if(response[i]['name'].path == null){
                                     var src = 'http://www.homeworkhelp.novelguide.com/sites/default/files/pictures/default/default_user_image.jpg';
                                 }else{
-                                    var src = 'http://www.homeworkhelp.novelguide.com/sites/default/files/pictures/default/default_user_image.jpg';
+                                    var src = response[i]['name'].path;
                                 }
                                 console.log(response[i]['name'].u_lname);
                                 $('.msg_history').append('<div class="incoming_msg">\
                                                             <div class="incoming_msg_img">\
-                                                              <img src="'+src+'" alt="sunil" class="rounded-circle">\
+                                                              <img src="'+src+'" alt="sunil" class="user-avatar rounded-circle hideShowDropDown" style="height: 50px;">\
                                                             </div>\
                                                             <div class="received_msg">\
                                                               <div class="received_withd_msg">\
@@ -1483,12 +1505,12 @@ function select_chat_box(id, b){
                     if(response[i]['name'].path == null){
                         var src = 'http://www.homeworkhelp.novelguide.com/sites/default/files/pictures/default/default_user_image.jpg';
                     }else{
-                        var src = 'http://www.homeworkhelp.novelguide.com/sites/default/files/pictures/default/default_user_image.jpg';
+                        var src = response[i]['name'].path;
                     }
                     console.log(response[i]['name'].u_lname);
                     $('.msg_history').append('<div class="incoming_msg">\
                                                 <div class="incoming_msg_img" style="margin-top: 20px;">\
-                                                  <img src="'+src+'" alt="sunil" class="rounded-circle">\
+                                                  <img src="'+src+'" alt="sunil" class="user-avatar rounded-circle hideShowDropDown" style="height: 50px;">\
                                                 </div>\
                                                 <div class="received_msg">\
                                                   <div class="received_withd_msg">\
@@ -1601,8 +1623,9 @@ function checkSupervisorAssignProject() {
                                         } else {
                                                 buttonTag = '<button onclick="acceptSupervisor(' + response[i]['p_id'] + ')" class="btn main-btn notification-btn">Accept</button> <button class="btn main-btn notification-btn" disabled>Rejected</button>';
                                         }
+                                        var src = 'http://www.homeworkhelp.novelguide.com/sites/default/files/pictures/default/default_user_image.jpg';
                                         $('.supervisor-count').text(status);
-                                        $('#supervisor-box').append('<div class="supervisor-inner-box col-12 text-center pb-4 pt-4"><u>' + response[i]['u_fname'] + ' ' + response[i]['u_lname'] + '</u> Supervise the Project <u>' + response[i]['p_name'] + '</u><p class="mb-0 mt-1">' + buttonTag + '</p></div>');
+                                        $('#supervisor-box').append('<div class="supervisor-inner-box col-12  pb-4 pt-4"><img src="' + src + '" class="user-avatar email-image"><u><b>' + response[i]['u_fname'] + ' ' + response[i]['u_lname'] + '</b></u> Supervise the Project <u>' + response[i]['p_name'] + '</u><p class="mb-0 mt-1">' + buttonTag + '</p></div>');
                                 }
                         }
                         hidePreloader();

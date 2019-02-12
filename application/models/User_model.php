@@ -85,8 +85,8 @@ class User_model extends CI_Model{
         return $this->db->update('users', $data);    //update status as 1 to make active user
     }
 
-    function insert_images($image_data = array()){
-        $path = base_url()."uploads/profile/".$image_data['file_name'];
+   function insert_images($image_data = array()){
+        $path = base_url()."uploads/".$image_data['file_name'];
         $id = $this->session->userdata('u_id');
         $this->session->set_userdata('path', $path);
         $this->db->set('path', $path);

@@ -59,10 +59,10 @@
                     <div class="col-md-3">
                         <div class="form-group">
                             <!-- <?php print_r($error); ?> -->
-                            <?php echo form_open_multipart('setting/do_upload');?>
-                                <input type="file" name="userfile" size="20" />
+                            <?php echo form_open_multipart('setting/image_upload');?>
+                                <input type="file" name="file_name"/>
                                 <br /><br />
-                                <input type="submit" class="btn btn-custom" value="upload" />
+                                <input type="submit" name="upload" class="btn btn-custom" value="upload" />
                             </form>
                         </div>
                     </div>

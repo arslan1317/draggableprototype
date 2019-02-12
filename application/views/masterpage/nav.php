@@ -53,7 +53,7 @@
                                     echo 'src="http://www.homeworkhelp.novelguide.com/sites/default/files/pictures/default/default_user_image.jpg"';
                                 }
                             ?>
-                            class="user-avatar rounded-circle hideShowDropDown">
+                            class="user-avatar rounded-circle hideShowDropDown" style="height: 50px;">
                             <!-- <img class="user-avatar rounded-circle" src="<?php echo base_url(); ?>assets/automated/img/admin.jpg" alt="User Avatar"> -->
                         </a>
 
