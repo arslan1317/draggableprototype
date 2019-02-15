@@ -2457,12 +2457,14 @@ function selectedActivity(a, b) {
                 method: 'post',
                 data: { getActivityId: getActivityId },
                 success: function(response) {
-                    console.log(response);
                         //1 for mockups
                         if (b == 1) {
-                                if(response.mockup_code != null){
+                            console.log(response);
+                                if(response.mockup_code != ''){
                                     $('.mobile-inner').css('backgroundColor', response.mockup_back_color);
                                     $('.mobile-inner').html(response.mockup_code);
+                                }else{
+                                    $('.mobile-inner').html(response.act_code);
                                 }
                                 $('.mobile-inner p').removeClass('selected');
                                 $('.mobile-inner').mousedown(function(){
