@@ -41,7 +41,7 @@ jQuery(document).ready(function($) {
                 editDatapickerOnProjectDateField();
         } else if (bodyId == 'task-page') {
                 loadAllTasksFromDatabase();
-                initDatapickerOnTaskDateField();
+                // initDatapickerOnTaskDateField();
                 editDatapickerOnTaskDateField();
         } else if (bodyId == 'assign-page') {
                 getProjectNameHavingTask();
@@ -1181,6 +1181,7 @@ jQuery(document).ready(function($) {
 
         //Approved Wireframe
         $('#approved-wireframe').click(function() {
+                var checker = $(this).data('chekcer');
                 var a_id = $(this).data('id');
                 $.ajax({
                         url: baseURL + 'user/approved_wireframe',
@@ -1191,7 +1192,13 @@ jQuery(document).ready(function($) {
                         success: function(response) {
                                 console.log(response);
                                 if (response == true) {
+                                    if(checker == 0){
+                                        //wireframe
                                         successBox('<p>Wireframe Approved</p>');
+                                    }else{
+                                        //mockups
+                                        successBox('<p>Mockup Approved</p>');
+                                    }
                                 }
                         }
                 });
@@ -1324,7 +1331,7 @@ jQuery(document).ready(function($) {
                                 $(div).find('#' + GLOBAL_ACTIVITY_RESULT[i]['prototype'][j]['act_button']).children().attr('data-activity-open', GLOBAL_ACTIVITY_RESULT[i]['prototype'][j]['act_open_id']);
                             }
                         }
-                        $('#mobile`-preview input[type="button"]').click(function(){
+                        $('#mobile-preview input[type="button"]').click(function(){
                             var openId = $(this).attr('data-activity-open');
                             previewSingleActivity(openId);
                         });
@@ -1404,7 +1411,140 @@ jQuery(document).ready(function($) {
                 return false;  
             }
         });
+
+        $('#taskType, #projectNameTask').change(function(){
+            var projectid = $('#projectNameTask').val();
+            var texttype = $('#taskType').val();
+            if((projectid != '') && (texttype != '')){
+                $.ajax({
+                    url: baseURL + 'task/check_pre_task',
+                    method: 'post',
+                    type: 'post',
+                    data: { projectid: projectid, texttype: texttype},
+                    dataType: 'json',
+                    success: function(response) {
+                        if($('#taskStart').hasClass('hasDatepicker')){
+                            $('#taskStart').datepicker('destroy');
+                        }
+                        if(texttype == 1){
+                            $("#taskStart").datepicker({
+                                numberOfMonths: 2,
+                                minDate: response['p_start'],
+                                maxDate: response['p_end'],
+                                onSelect: function(selected) {
+                                        $("#taskEnd").datepicker("option", "minDate", selected)
+                                }
+                            });
+                            $("#taskEnd").datepicker({
+                                    numberOfMonths: 2,
+                                    maxDate: response['p_end'],
+                                    onSelect: function(selected) {
+                                            $("#taskStart").datepicker("option", "maxDate", selected)
+                                    }
+                            });
+                        }else{
+                            $("#taskStart").datepicker({
+                                numberOfMonths: 2,
+                                minDate: response['t_end'],
+                                maxDate: response['project']['p_end'],
+                                onSelect: function(selected) {
+                                        $("#taskEnd").datepicker("option", "minDate", selected)
+                                }
+                            });
+                            $("#taskEnd").datepicker({
+                                    numberOfMonths: 2,
+                                    maxDate: response['project']['p_end'],
+                                    onSelect: function(selected) {
+                                            $("#taskStart").datepicker("option", "maxDate", selected)
+                                    }
+                            });
+                        }
+                        console.log(response);
+                    },
+                    error: function(a, b){
+                        console.log(a + " ---- " + b);
+                    }
+                });
+            }
+        });
 });
+
+function downloadxml(id, name){
+    var zip = new JSZip();
+    //xml file generation
+    $.ajax({
+        url: baseURL + 'activity/get_activity',
+        method: 'post',
+        type: 'post',
+        data: { selectedProject: id, tastType: 1},
+        dataType: 'json',
+        success: function(response) {
+            for(var i = 0; i < response.length; i++){
+                var mainXml = '';
+                console.log(response[i]['mockup_code'])
+                $(response[i]['mockup_code'] + 'p').each(function( index ) {
+                    var id = $(this).attr('id');
+                    var splitid = id.split("_");
+                    if(splitid[0] == 'edit'){
+                        var editResult = editBoxXml($(this));
+                        mainXml += editResult;
+                        console.log(editResult);
+                    }else if(splitid[0] == 'text'){
+                        var textView = textBoxXml($(this));
+                        mainXml += textView;
+                        console.log(textView);
+                    }else if(splitid[0] == 'Button'){
+                        var buttonView = buttonXml($(this));
+                        mainXml += buttonView;
+                        console.log(buttonView);
+                    }
+                });
+                zip.file(response[i]['act_name']+'.xml', mainXml);
+            }
+            zip.generateAsync({type:"blob"}).then(function (blob) {
+                saveAs(blob, name +".zip");
+            },function (err) {
+                console.log(err);
+            });
+            console.log(response);
+        },
+        error: function(a, b){
+            console.log(a + " ---- " + b);
+        }
+    });
+}
+
+function editBoxXml(editText){
+    var id = $(editText).attr('id');
+    var a = '<EditText ' + "\n" +
+                '\tandroid:id="@+id/'+id+'" ' + "\n" +
+                '\tandroid:layout_height="wrap_content"' + "\n" +
+                '\tandroid:layout_width="match_parent"' + "\n" +
+                '\tandroid:inputType="text"/>\n';
+    return a;
+}
+
+function textBoxXml(textBox){
+    var id = $(textBox).attr('id');
+    var text = $(textBox).text();
+    var a = '<TextView' + "\n" +
+                '\tandroid:id="@+id/'+id+'"' + "\n" +
+                '\tandroid:layout_height="wrap_content"' + "\n" +
+                '\tandroid:layout_width="wrap_content"' + "\n" +
+                '\tandroid:text="@string/'+text+'" />\n';
+    return a;
+}
+
+function buttonXml(buttonBox){
+    var id = $(buttonBox).attr('id');
+    var text = $(buttonBox).children().val();
+    var a = '<Button' + "\n" +
+                '\tandroid:id="@+id/'+id+'"' + "\n" +
+                '\tandroid:layout_width="wrap_content"' + "\n" +
+                '\tandroid:layout_height="wrap_content"' + "\n" +
+                '\tandroid:text="@string/'+text+'" />\n';
+    return a;
+}
 
 function readURL(input) {
     if (input.files && input.files[0]) {
@@ -2664,6 +2804,8 @@ function openWireframeModel(p_id, t_type, a_id) {
                         }
                 }
         });
+        console.log(t_type);
+        $('#approved-wireframe').attr('data-checker', t_type);
         $("#pupop").fadeIn("slow");
 }
 

@@ -85,4 +85,15 @@ class Task extends CI_Controller {
             $data = $this->Task_model->update_task_by_id($taskid, $taskprojectname, $tasktype, $taskstart, $taskend, $taskdetails);
             echo json_encode($data);
         }
+
+        public function check_pre_task(){
+            $id = $this->input->post('projectid');
+            $task = $this->input->post('texttype');
+            if($task == 1){
+                $data = $this->Task_model->check_project_date($id, $task);
+            }else{
+                $data = $this->Task_model->check_pre_task($id, $task);
+            }
+            echo json_encode($data);
+        }
 }

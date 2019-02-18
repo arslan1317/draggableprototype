@@ -51,5 +51,23 @@ class Task_model extends CI_Model{
         $this->db->update('tasks');
         return $this->db->affected_rows();
     }
+    public function check_pre_task($id, $task){
+        $task_number = (int)$task;
+        $this->db->select('*');
+        $this->db->from('tasks');
+        $this->db->where('tasks.t_type', ($task_number-1));
+        $this->db->where('tasks.p_id', $id);
+        $query = $this->db->get();
+        $result = $query->row();
+        $result->project = $this->check_project_date($id,$task);
+        return $result;
+    }
+    public function check_project_date($id, $task){
+        $this->db->select('*');
+        $this->db->from('projects');
+        $this->db->where('p_id', $id);
+        $query = $this->db->get();
+        return $query->row();
+    }
 }
 ?>

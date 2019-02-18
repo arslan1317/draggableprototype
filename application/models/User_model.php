@@ -85,7 +85,7 @@ class User_model extends CI_Model{
         return $this->db->update('users', $data);    //update status as 1 to make active user
     }
 
-   function insert_images($image_data = array()){
+    function insert_images($image_data = array()){
         $path = base_url()."uploads/".$image_data['file_name'];
         $id = $this->session->userdata('u_id');
         $this->session->set_userdata('path', $path);
@@ -93,6 +93,15 @@ class User_model extends CI_Model{
         $this->db->where('u_id', $id);
         $this->db->update('users');
     }
+
+   // function insert_images($image_data = array()){
+   //      $path = base_url()."uploads/".$image_data['file_name'];
+   //      $id = $this->session->userdata('u_id');
+   //      $this->session->set_userdata('path', $path);
+   //      $this->db->set('path', $path);
+   //      $this->db->where('u_id', $id);
+   //      $this->db->update('users');
+   //  }
 
     function get_image($id){
         $query = $this->db->select('path')

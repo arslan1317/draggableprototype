@@ -58,7 +58,6 @@
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <!-- <?php print_r($error); ?> -->
                             <?php echo form_open_multipart('setting/image_upload');?>
                                 <input type="file" name="file_name"/>
                                 <br /><br />

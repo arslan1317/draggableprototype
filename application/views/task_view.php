@@ -32,7 +32,7 @@
             <div class="upper-form-box">
                 <!-- task/add_task -->
                 <div class="col-md-12">
-                    <form id="form-reset">
+                    <form id="form-reset" autocomplete="off">
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="projectName" class="normal-bold">Project Name</label>

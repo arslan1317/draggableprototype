@@ -50,7 +50,6 @@ class Activity_model extends CI_Model{
         $this->db->from('activities');
         $this->db->join('projects', 'projects.p_id = activities.p_id');
         $this->db->where('activities.p_id', $id);
-        // $this->db->where('activities.t_type', 1);
         $query = $this->db->get();
         return $query->result();
     }

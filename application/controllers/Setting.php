@@ -27,6 +27,7 @@ class Setting extends CI_Controller {
         $this->load->library('email');
         $this->load->helper('url');
         $this->load->database();
+        $this->load->helper('file');
         $this->load->model('User_model');
         
     }

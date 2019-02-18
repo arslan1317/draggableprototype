@@ -178,7 +178,13 @@
                                                 }
                                             ?>
                                         </td>
-                                        <td><span onclick="previewMobileForOwner(<?php echo $data->p_id; ?>, <?php echo $data->a_id; ?>)" class="tweak pointer">View</span></td>
+                                        <td>
+                                            <span onclick="previewMobileForOwner(<?php echo $data->p_id; ?>, <?php echo $data->a_id; ?>)" class="tweak pointer">View</span>
+                                            <?php if ($data->a_status == 2): ?>
+                                                <span>|</span>
+                                                <span onclick="downloadxml('<?php echo $data->p_id; ?>', '<?php echo $data->p_name; ?>')" class="tweak pointer">Download</span>
+                                            <?php endif; ?>
+                                        </td>
                                     </tr>
                                     <?php } ?>
                                 </tbody>

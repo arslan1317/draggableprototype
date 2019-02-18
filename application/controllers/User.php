@@ -23,12 +23,14 @@ class User extends CI_Controller {
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 		$this->load->library('session');
-
+		$this->load->library('zip');
+		$this->load->helper('download');
 		$this->load->library('email');
 		$this->load->helper('url');
 		$this->load->database();
 		$this->load->model('User_model');
 		$this->load->model('Wireframe_model');
+		$this->load->model('Activity_model');
 
 	}
 
@@ -110,5 +112,6 @@ class User extends CI_Controller {
 		$data = $this->User_model->approved_wireframe($id);
 		echo json_encode($data);
 	}
+
 
 }
