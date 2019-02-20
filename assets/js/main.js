@@ -1599,7 +1599,10 @@ function previewSingleActivityAfterApproved(id){
 }
 
 //view all chat function
-function select_chat_box(id, b){
+function select_chat_box(obj, id, b){
+    $('.chat_list').removeClass('active_chat');
+    $(obj).addClass('active_chat');
+    console.log($(obj));
     $('#sms_send_button').attr('data-myval',id);
     $('#sms_send_button').attr('data-seen',b);
     $.ajax({
@@ -1609,7 +1612,9 @@ function select_chat_box(id, b){
         data: { chat_id: id, b: b },
         dataType: 'json',
         success: function(response) {
-            $('.msg_history').html('');
+            console.log(response.length);
+            if(response.length != 0){
+                $('.msg_history').html('');
             var myId = response[0]['myId'];
             for(var i = 0; i < response.length; i++){
                 if(myId == response[i]['sent_by']){
@@ -1665,6 +1670,10 @@ function select_chat_box(id, b){
             }
             $(".msg_history").animate({ scrollTop: $('.msg_history').prop("scrollHeight")}, 1000);
             $('#message_text').val('');
+            }else{
+                $('.msg_history').html('No Message Found');
+                $('#message_text').val('');
+            }
         },
         error: function(a, b){
             console.log(a + " ---- " + b);
@@ -2950,7 +2959,7 @@ function allProjectCreatedChat(){
                             console.log(response[i].owner.u_id);
                         }
 
-                        $('#inbox_chat').append('<div class="chat_list active_chat" onclick=select_chat_box('+response[i]['ch_id']+ ',"' +assignType +'")>\
+                        $('#inbox_chat').append('<div class="chat_list" onclick=select_chat_box(this,'+response[i]['ch_id']+ ',"' +assignType +'")>\
                                         <div class="chat_people">\
                                           <div class="chat_img"><img src="https://cdn2.iconfinder.com/data/icons/startup-management/325/Project_management_Business_Case-512.png"></div>\
                                           <div class="chat_ib">\
